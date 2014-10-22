@@ -4,6 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -154,6 +160,43 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 			}
 		} catch (Exception e) {
 			log.error(e);
+		}
+	}
+
+	public void removeLocalDirectories() {
+		removeLocalDirectory(jackrabbitHome + "/version");
+		removeLocalDirectory(jackrabbitHome + "/workspaces");
+		removeLocalDirectory(jackrabbitHome + "/repository");
+	}
+
+	public void removeLocalDirectory(String dirName) {
+		Path dir = Paths.get(dirName);
+		try {
+			Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
+
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+
+					log.trace("Deleting file: " + file);
+					Files.delete(file);
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+
+					log.trace("Deleting dir: " + dir);
+					if (exc == null) {
+						Files.delete(dir);
+						return FileVisitResult.CONTINUE;
+					} else {
+						throw exc;
+					}
+				}
+
+			});
+		} catch (IOException e) {
+			log.error("Exception when deleting local directory: " + dirName, e);
 		}
 	}
 
@@ -368,6 +411,15 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 			log.trace("config file: " + jackrabbitConfigFile);
 			log.trace("home directory: " + jackrabbitHome);
 
+			// remove all the local directories used by JackRabbit
+			// only when profile is
+			// devel OR productioninit (initial import for production)
+			if (env.acceptsProfiles("devel", "productioninit")) {
+				log.trace("Trying to remove all directories in local filesystem");
+				removeLocalDirectories();
+				log.trace("Removed all directories in local filesystem");
+			}
+
 			// create Repository using RespositoryConfig
 			// config file is searched for in Classpath
 			// (to allow relative paths in the property value)
@@ -377,10 +429,11 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 
 			// remove everything from the repository only when profile is
 			// devel OR productioninit (initial import for production)
-			if (env.acceptsProfiles("devel", "productioninit")) {
-				log.trace("Deleting everything in the repository");
-				deleteAll();
-			}
+			// if (env.acceptsProfiles("devel", "productioninit")) {
+			// log.trace("Deleting everything in the repository");
+			// deleteAll();
+			// }
+
 			log.trace("Jackrabbit repository initialized");
 		} catch (Exception e) {
 			log.fatal("Jackrabbit repository initialization exception: ", e);

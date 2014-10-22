@@ -21,4 +21,13 @@ public class TopicTreeController {
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		return new ResponseEntity<String>(TranslatedTopic.toJsonByParent(id), headers, HttpStatus.OK);
 	}
+
+	@RequestMapping(value = "/tree-all", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> treeAll(@RequestParam(value = "node", required = false) String id) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		return new ResponseEntity<String>(TranslatedTopic.toJsonByParent(id), headers, HttpStatus.OK);
+	}
+
 }

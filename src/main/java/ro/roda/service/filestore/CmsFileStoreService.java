@@ -30,4 +30,5 @@ public interface CmsFileStoreService {
 
 	public abstract void deleteAll();
 
+	public abstract void removeLocalDirectories();
 }

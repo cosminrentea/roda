@@ -11,8 +11,9 @@ public class RodaPageConstants {
 	public final static int PAGE_MAPPING_LENGTH = ((PAGE_MAPPING.length() > 1) ? PAGE_MAPPING.length() : 0);
 
 	// this depends on the URL mapping of "RodaPageController":
-	// /roda => /roda/j/cmsfilecontent
-	// /roda/page => /roda/page/../j/cmsfilecontent !!!
+	// / => /cmsfilecontent/
+	// /roda => /roda/cmsfilecontent/
+	// /roda/page => /roda/page/../cmsfilecontent/
 	public static String CMS_FILE_CONTENT_URL = "cmsfilecontent/";
 	public static int OFFSET_RELATIVE_URL = 1;
 

@@ -485,6 +485,7 @@ public class StudyInfo extends JsonInfo {
 		serializer.include("orgs.id", "orgs.fullName");
 		serializer.include("keywords.id", "keywords.name");
 		serializer.include("translatedTopics.translation");
+		serializer.include("translatedTopics.indice");
 
 		// exclude ALL other fields
 		serializer.exclude("*");

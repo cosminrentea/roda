@@ -61,16 +61,16 @@
 	</prerequisites>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>7</java.version>
+		<java.version>1.7</java.version>
 		<license.licenseName>gpl_v3</license.licenseName>
 
 		<!-- dependencies versions -->
-		<spring.version>4.1.1.RELEASE</spring.version> <!-- original: 3.2.6.RELEASE -->
+		<spring.version>4.0.7.RELEASE</spring.version> <!-- original: 3.2.6.RELEASE -->
 		<spring-security.version>3.2.5.RELEASE</spring-security.version> <!-- original: 3.2.5.RELEASE -->
 		<spring-js-resources.version>2.4.1.RELEASE</spring-js-resources.version>
 		<spring-data-jpa.version>1.7.0.RELEASE</spring-data-jpa.version> <!-- original 1.6.0.RELEASE -->
 		<spring-data-rest-webmvc.version>2.2.0.RELEASE</spring-data-rest-webmvc.version> <!-- 2.1.1.RELEASE -->
-		<aspectj.version>1.7.4</aspectj.version> <!-- verified: 1.7.2 -->
+		<aspectj.version>1.7.2</aspectj.version> <!-- verified: 1.7.2 -->
 		<slf4j.version>1.7.7</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
 		<servlet-api.version>2.5</servlet-api.version>
@@ -113,7 +113,7 @@
 
 		<!-- plugins versions -->
 		<maven-assembly-plugin.version>2.4.1</maven-assembly-plugin.version> <!-- original: 2.3 -->
-		<maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version> <!-- original: 2.5.1 -->
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version> <!-- original: 2.5.1 -->
 		<maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version> <!-- original: 2.14.1 -->
 		<maven-surefire-plugin.version>2.17</maven-surefire-plugin.version> <!-- original: 2.12 -->
 		<maven-surefire-report-plugin.version>2.17</maven-surefire-report-plugin.version>
@@ -126,7 +126,7 @@
 		<maven-jxr-plugin.version>2.4</maven-jxr-plugin.version>
 		<maven-pmd-plugin.version>3.2</maven-pmd-plugin.version>
 		<maven-site-plugin.version>3.4</maven-site-plugin.version>
-		<aspectj-maven-plugin.version>1.2</aspectj-maven-plugin.version> <!-- !! original: 1.2 -->
+		<aspectj-maven-plugin.version>1.6</aspectj-maven-plugin.version> <!-- !! original: 1.2 -->
 		<cobertura-maven-plugin.version>2.5.2</cobertura-maven-plugin.version>
 		<jdepend-maven-plugin.version>2.0</jdepend-maven-plugin.version>
 		<javancss-maven-plugin.version>2.0</javancss-maven-plugin.version>
@@ -636,6 +636,7 @@
 							<artifactId>spring-aspects</artifactId>
 						</aspectLibrary>
 					</aspectLibraries>
+					<complianceLevel>${java.version}</complianceLevel>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
@@ -771,7 +772,7 @@
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<url>http://www2.roda.ro:8080/manager</url>
+					<url>http://wwwdev.roda.ro:8080/manager</url>
 					<server>IntegrationTomcatServer</server>
 					<path>/</path>
 				</configuration>

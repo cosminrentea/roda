@@ -8,9 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -37,7 +35,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +69,6 @@ import ro.roda.domain.Lang;
 import ro.roda.domain.OtherStatistic;
 import ro.roda.domain.Person;
 import ro.roda.domain.Question;
-import ro.roda.domain.Series;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.StudyDescrPK;
@@ -96,7 +92,6 @@ import au.com.bytecode.opencsv.CSVReader;
 import flexjson.JSONSerializer;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class DdiImporterServiceImpl implements DdiImporterService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -171,7 +166,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		return unmarshaller;
 	}
 
-	// @Async(value = "asyncSerialExecutor")
 	public void importDdiFiles() throws Exception {
 
 		// import catalogs
@@ -239,6 +233,11 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		}
 		log.debug("DDI files were imported");
 
+		afterImport(csvLines);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void afterImport(List<String[]> csvLines) {
 		for (String[] csvLine : csvLines) {
 			log.trace("Catalog: " + csvLine[0] + " -- Study Filename: " + csvLine[1]);
 			Study study = Study.findFirstStudyWithFilename(csvLine[1]);
@@ -255,6 +254,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		log.debug("DDI files put into Catalogs and Series");
 	}
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
 			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv)
 			throws FileNotFoundException, IOException {

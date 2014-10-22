@@ -906,7 +906,7 @@ public class AdminJson {
 			if (parentFolder != null) {
 				CmsFolder.entityManager().merge(parentFolder);
 			}
-		} catch (EntityExistsException e) {
+		} catch (Exception e) {
 			return new AdminJson(false, "CMS Folder not created. Exception: " + e.getMessage());
 		}
 

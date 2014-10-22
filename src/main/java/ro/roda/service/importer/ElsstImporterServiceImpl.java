@@ -65,7 +65,6 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 		return em;
 	}
 
-	// @Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importElsst() throws Exception {
 		log.trace("Importing ELSST");

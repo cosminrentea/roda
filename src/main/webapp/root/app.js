@@ -3,7 +3,7 @@ Ext.Loader.setConfig({
     enabled: true,
     paths: {
         'Ext.ux': 'ux/',
-     	 'Ext.ux.plugins': '/roda/resources/root/ux/plugins',
+     	 'Ext.ux.plugins': '/resources/root/ux/plugins',
      	'databrowser.util' : 'app/util'
     }
 });
@@ -65,7 +65,7 @@ Ext.application({
 	controllers : ['VariableView', 'DataBrowser', 'Browser', 'CatalogView', 'YearView', 'History'],
     autoCreateViewport: false,
     name: 'databrowser',
-    appFolder:'/roda/root/app',
+    appFolder:'/root/app',
     init : function() {  	
 //    	console.log('init');
     	Ext.Ajax.timeout = 200000; // 200 seconds 

@@ -8,7 +8,7 @@ Ext.define('RODAdmin.store.dashboard.Trafic', {
     model: 'RODAdmin.model.dashboard.Trafic',
    
     autoLoad: true,
-    proxy: {type: 'main', url: 'dashboard/trafic'},
+    proxy: {type: 'main', url: '/adminjson/dashboard/trafic'},
 //    proxy: {type: 'main', url: 'http://roda.apiary.io/dashboard/trafic'},
 
 });

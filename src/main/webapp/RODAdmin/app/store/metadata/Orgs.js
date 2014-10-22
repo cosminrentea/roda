@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.metadata.Orgs', {
 
     model: 'RODAdmin.model.metadata.Orgs',
     autoload: true,   
-    proxy: {type: 'main', url: '/roda/ddieditororglist'},    
+    proxy: {type: 'main', url: 'ddieditororglist'},    
  
 });

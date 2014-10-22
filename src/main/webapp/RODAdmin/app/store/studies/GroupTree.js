@@ -9,6 +9,6 @@ Ext.define('RODAdmin.store.studies.GroupTree', {
     ],
 
     model: 'RODAdmin.model.studies.Study',
-    proxy: {type: 'mainajax', url: '/roda/catalogtree'},   
+    proxy: {type: 'mainajax', url: 'catalogtree'},   
 
 });

@@ -1,5 +1,7 @@
 package ro.roda.service.importer;
 
+import java.util.List;
+
 import javax.xml.bind.Unmarshaller;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -14,5 +16,7 @@ public interface DdiImporterService {
 
 	public abstract void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
 			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv) throws Exception;
+
+	public abstract void afterImport(List<String[]> csvLines);
 
 }

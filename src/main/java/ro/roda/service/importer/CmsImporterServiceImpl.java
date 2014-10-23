@@ -63,9 +63,6 @@ public class CmsImporterServiceImpl implements CmsImporterService {
 
 	private static final String pageXmlFile = "page.xml";
 
-	@PersistenceContext
-	transient EntityManager entityManager;
-
 	@Autowired
 	CatalogService catalogService;
 
@@ -88,14 +85,6 @@ public class CmsImporterServiceImpl implements CmsImporterService {
 	CmsFileService cmsFileService;
 
 	private Tika tika = new Tika();
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new CmsImporterServiceImpl().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
-	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importCmsFiles() throws IOException {

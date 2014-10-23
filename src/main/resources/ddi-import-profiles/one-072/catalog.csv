@@ -1,9 +1,2 @@
 name,parent_id,owner,added,sequencenr,description
 "STUDII IMPORTATE",,1,now(),1,"Cataloage si studii importate"
-"Calitatea vietii",1,1,now(),1,"Calitatea vietii"
-"Diagnoza calitatii vietii",2,1,now(),1,"Diagnoza calitatii vietii"
-"Ancheta serviciilor publice",1,1,now(),2,"Ancheta serviciilor publice"
-"Sondaje de opinie",1,1,now(),3,"Sondaje de opinie"
-"Minoritati",1,1,now(),4,"Minoritati"
-"Munca",1,1,now(),5,"Munca, somaj, ocupatii"
-"Ocupatii in afara muncii",7,1,now(),1,"Ocupatii in afara muncii"

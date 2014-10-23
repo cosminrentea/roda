@@ -217,7 +217,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				MockMultipartFile mockMultipartFileCsv = null;
 				if (importDdiCsv) {
 					// get CSV file name (RODA naming rules)
-					String csvFilename = ddiFile.getName().split("\\.")[0].split("_")[0].concat("_T.csv");
+					String csvFilename = ddiFile.getName().split("\\.|_|-")[0].concat("_T.csv");
 					// TODO @Value for "ddi" folder below
 					Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
 					FileInputStream fisCsv = null;

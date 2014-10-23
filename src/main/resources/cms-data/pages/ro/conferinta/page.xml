@@ -11,15 +11,21 @@
 <img style="float:right;" src="[[FileURL:men]]" height="50">
 <img style="float:right;" src="[[FileURL:ssr]]" height="50">
 <img style="float:right;" src="[[FileURL:osr]]" height="50">
+<img style="float:right;" src="[[FileURL:roda]]" height="50">
 </div>
 <div style="clear:both">
+
+<div style="text-align:center; font-size:20px; border-bottom: 1px solid black;padding-top:20px;padding-bottom:10px;">RODA stakeholder conference</div>
 
 <p>Arhiva Română de Date Sociale organizează evenimentul RODA Stakeholder Conference, care va avea loc în data de 28 noiembrie 2014, găzduit de Facultatea de Sociologie și Asistență Socială a Universității din București. </p>
 
 <p>În cadrul acestui eveniment vor fi prezentate rezultatele proiectului „Sistem informatic integrat pentru identificarea, arhivarea și diseminarea bazelor de date și a indicatorilor din cercetările sociale" desfășurat în perioada 2012-2014. Unul dintre rolurile proiectului a fost să modernizeze sistemul informatic al RODA în vederea asigurării compatibilității cu rețeaua europeană de arhive de date sociale CESSDA – Council of European Social Science Data Archives. Proiectul a beneficiat de finanțare din partea Ministerului Educației Naționale, prin intermediul Planului Sectorial, contract nr.  5S/2012, în valoare de 2.500.000 lei.</p>
 
-<p>Echipa de proiect va prezenta noul sistem informatic dezvoltat și felul în care acesta poate fi folosit pentru arhivarea bazelor de date sociale la nivel național și pentru diseminarea acestora la nivel național și internațional. Noul sistem informatic răspunde nevoilor unor categorii diverse de parți interesate. Evenimentul este de asemenea o buna oportunitate pentru inițierea unei discuții pe marginea oportunităților de cercetare din comunitatea științelor sociale, în contextul colaborărilor internaționale facilitate de noul program cadru Orizonturi 2020, recent lansat de Comisia Europeană. Astfel, sunt vizate interesele comunității academice, experților din științele sociale, factorilor de decizie politică, reprezentanților agențiilor guvernamentale și non-guvernamentale.</p>
+<p>Echipa de proiect va prezenta noul sistem informatic dezvoltat și felul în care acesta poate fi folosit pentru arhivarea bazelor de date sociale la nivel național și pentru diseminarea acestora la nivel național și internațional. Noul sistem informatic răspunde nevoilor unor categorii diverse de parți interesate: comunitatea academică, experți din științele sociale, factori de decizie politică, reprezentanți ai agențiilor guvernamentale și non-guvernamentale.</p>
 
+<p>Evenimentul este de asemenea o buna oportunitate pentru inițierea unei discuții pe marginea oportunităților de cercetare din comunitatea științelor sociale, în contextul colaborărilor internaționale facilitate de noul program cadru Horizon 2020, recent lansat de Comisia Europeană.</p>
+
+<p>Programul conferintei va fi publcat cu cel mult o saptamana inainte de eveniment.</p>
 <H2>Locul desfasurarii</H2>
 
 <p>
@@ -40,7 +46,7 @@ dusa.adrian@unibuc.ro<br>
 
 
 	]]></content>
-	<cms_layout>new-roda-main-ro</cms_layout>
+	<cms_layout>new-roda-conference-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		

@@ -25,8 +25,6 @@ import flexjson.transformer.DateTransformer;
 @Configurable
 public class JsonInfo {
 
-	// public abstract String toJson();
-
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	public static final String CATALOG_TYPE = "C";
@@ -44,9 +42,6 @@ public class JsonInfo {
 	public static final DateTransformer DATE_TRANSFORMER = new DateTransformer("MM/dd/yyyy hh:mm:ss");
 
 	public static final DateTransformer DATE_TRANSFORMER2 = new DateTransformer("yyyy-MM-dd");
-
-	// protected static final String[] auditedClasses = {
-	// "ro.roda.domain.CmsLayout", "ro.roda.domain.CmsLayoutGroup" };
 
 	private Integer id;
 

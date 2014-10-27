@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
 import ro.roda.domain.CmsPage;
-import ro.roda.domain.UserSettingValue;
 import ro.roda.domainjson.AdminJson;
 import ro.roda.service.page.RodaPageService;
 import ro.roda.service.thumbnails.ThumbnailsService;

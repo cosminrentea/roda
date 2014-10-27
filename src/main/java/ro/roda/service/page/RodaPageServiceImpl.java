@@ -11,6 +11,7 @@ import static ro.roda.service.page.RodaPageConstants.IMG_LINK_CODE;
 import static ro.roda.service.page.RodaPageConstants.OFFSET_RELATIVE_URL;
 import static ro.roda.service.page.RodaPageConstants.PAGE_BREADCRUMBS_CODE;
 import static ro.roda.service.page.RodaPageConstants.PAGE_CONTENT_CODE;
+import static ro.roda.service.page.RodaPageConstants.PAGE_CONTEXT_PATH;
 import static ro.roda.service.page.RodaPageConstants.PAGE_LINK_BY_URL_CODE;
 import static ro.roda.service.page.RodaPageConstants.PAGE_MAPPING;
 import static ro.roda.service.page.RodaPageConstants.PAGE_TITLE_CODE;
@@ -26,6 +27,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +38,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
 import ro.roda.domain.CmsFile;
@@ -48,9 +51,9 @@ import ro.roda.domain.News;
 
 @Service
 @Transactional
-public class RodaPageServiceImpl implements RodaPageService {
+public class RodaPageServiceImpl implements RodaPageService, ServletContextAware {
 
-	private String RODA_PAGE_BASE_URL;
+	private ServletContext servletContext;
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -88,13 +91,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	@Cacheable(value = "pages", key = "#cmsPageUrl")
 	public String[] generatePage(String cmsPageUrl, HttpServletRequest request) throws Exception {
 
-		log.trace("cmsPageUrl = " + cmsPageUrl);
-
-		// set this field - will be used later when expanding codes etc.
-		// normally the value shoud be: /roda/page, or /roda
-		RODA_PAGE_BASE_URL = request.getContextPath() + PAGE_MAPPING;
-
-		// log.trace("RODA_PAGE_URL = " + RODA_PAGE_BASE_URL);
+		log.trace("cmsPageUrl: " + cmsPageUrl);
 
 		// Request Parameters can be obtained here: request.getParameterMap()
 
@@ -226,6 +223,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		layoutContent = replaceGetNews(layoutContent, cmsPage, newsCount, newsMaxTitle, newsMaxText);
 
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
+		layoutContent = replaceContextPath(layoutContent);
 		layoutContent = replaceSnippets(layoutContent);
 
 		layoutContent = replacePageLinkByUrl(layoutContent, cmsPage);
@@ -244,6 +242,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		String resultLayoutContent = layoutContent;
 		resultLayoutContent = replaceSnippets(resultLayoutContent);
 		resultLayoutContent = replacePageTitle(resultLayoutContent, cmsPage.getMenuTitle());
+		resultLayoutContent = replaceContextPath(resultLayoutContent);
 		resultLayoutContent = replacePageLinkByUrl(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageBreadcrumbs(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageTreeByUrl(resultLayoutContent, cmsPage);
@@ -259,6 +258,10 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return content.replace(PAGE_TITLE_CODE, pageTitle != null ? pageTitle : "");
 	}
 
+	private String replaceContextPath(String content) {
+		return content.replace(PAGE_CONTEXT_PATH, servletContext.getContextPath() + PAGE_MAPPING);
+	}
+
 	private String replacePageLinkByUrl(String content, CmsPage cmsPage) {
 		int fromIndex = content.indexOf(PAGE_LINK_BY_URL_CODE, 0);
 		String result = content;
@@ -266,8 +269,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 			String url = result.substring(fromIndex + PAGE_LINK_BY_URL_CODE.length(),
 					result.indexOf("')]]", fromIndex + PAGE_LINK_BY_URL_CODE.length()));
 
-			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]", RODA_PAGE_BASE_URL
-					+ generateFullRelativeUrl(url, cmsPage));
+			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]", servletContext.getContextPath()
+					+ PAGE_MAPPING + generateFullRelativeUrl(url, cmsPage));
 			fromIndex = result.indexOf(PAGE_LINK_BY_URL_CODE, fromIndex + PAGE_LINK_BY_URL_CODE.length());
 		}
 
@@ -366,8 +369,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 			CmsPage page = findRelativePage(url, cmsPage);
 
-			result = result.substring(0, fromIndex) + "<a href=\"" + RODA_PAGE_BASE_URL + generateFullRelativeUrl(page)
-					+ "\">" + (page != null ? page.getMenuTitle() : url) + "</a>"
+			result = result.substring(0, fromIndex) + "<a href=\"" + servletContext.getContextPath() + PAGE_MAPPING
+					+ generateFullRelativeUrl(page) + "\">" + (page != null ? page.getMenuTitle() : url) + "</a>"
 					+ result.substring(result.indexOf("]]", fromIndex + PAGE_URL_LINK_CODE.length()) + "]]".length());
 
 			fromIndex = result.indexOf(PAGE_URL_LINK_CODE, fromIndex + PAGE_URL_LINK_CODE.length());
@@ -449,6 +452,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			// We assume that a CmsPage has a single CmsPageContent
 			String pageContent = page.getCmsPageContents().iterator().next().getContentText();
 			pageContent = replacePageTitle(pageContent, page.getMenuTitle());
+			pageContent = replaceContextPath(pageContent);
 			pageContent = replacePageLinkByUrl(pageContent, page);
 			pageContent = replacePageBreadcrumbs(pageContent, page);
 			pageContent = replaceSnippets(pageContent);
@@ -470,6 +474,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			// We assume that a CmsPage has a single CmsPageContent
 			String resultContent = pageContent;
 			resultContent = replacePageTitle(pageContent, page.getMenuTitle());
+			resultContent = replaceContextPath(pageContent);
 			resultContent = replacePageLinkByUrl(pageContent, page);
 			resultContent = replacePageBreadcrumbs(pageContent, page);
 			resultContent = replaceSnippets(pageContent);
@@ -592,8 +597,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 		// the hierarchy of parents - as links
 		cmsPage = cmsPage.getCmsPageId();
 		while (cmsPage != null) {
-			result = result.insert(0, "<a href=\"" + RODA_PAGE_BASE_URL + generateFullRelativeUrl(cmsPage) + "\">"
-					+ cmsPage.getMenuTitle() + "</a>" + separator);
+			result = result.insert(0, "<a href=\"" + servletContext.getContextPath() + PAGE_MAPPING
+					+ generateFullRelativeUrl(cmsPage) + "\">" + cmsPage.getMenuTitle() + "</a>" + separator);
 			cmsPage = cmsPage.getCmsPageId();
 		}
 		// log.trace("Breadcrumbs = " + result);
@@ -683,6 +688,12 @@ public class RodaPageServiceImpl implements RodaPageService {
 		}
 
 		return result.toString();
+	}
+
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		log.trace("ContextPath: " + servletContext.getContextPath());
+		this.servletContext = servletContext;
 	}
 
 }

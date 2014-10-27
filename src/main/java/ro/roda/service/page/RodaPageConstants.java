@@ -23,6 +23,7 @@ public class RodaPageConstants {
 
 	// CMS Codes (to be replaced / expanded)
 	public static String PAGE_TITLE_CODE = "[[Code: PageTitle]]";
+	public static String PAGE_CONTEXT_PATH = "[[Code: ContextPath]]";
 	public static String PAGE_LINK_BY_URL_CODE = "[[Code: PageLinkbyUrl('";
 	public static String PAGE_URL_LINK_CODE = "[[PageURLLink:";
 	public static String FILE_URL_LINK_CODE = "[[FileURL:";

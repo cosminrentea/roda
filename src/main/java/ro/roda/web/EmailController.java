@@ -24,7 +24,6 @@ import org.springframework.web.util.WebUtils;
 
 import ro.roda.domain.Email;
 import ro.roda.service.EmailService;
-import ro.roda.service.PersonEmailService;
 
 @RequestMapping("/emails")
 @Controller
@@ -32,9 +31,6 @@ public class EmailController {
 
 	@Autowired
 	EmailService emailService;
-
-	@Autowired
-	PersonEmailService personEmailService;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid Email email, BindingResult bindingResult, Model uiModel,
@@ -108,7 +104,6 @@ public class EmailController {
 
 	void populateEditForm(Model uiModel, Email email) {
 		uiModel.addAttribute("email", email);
-		uiModel.addAttribute("personemails", personEmailService.findAllPersonEmails());
 	}
 
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

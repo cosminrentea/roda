@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
@@ -223,14 +225,15 @@ public class Person {
 	@Column(name = "mname", columnDefinition = "varchar", length = 100)
 	private String mname;
 
-	@OneToMany(mappedBy = "personId")
-	private Set<PersonAddress> personAddresses;
+	@Column(name = "address_line1", columnDefinition = "varchar", length = 200)
+	private String addressLine1;
 
-	@OneToMany(mappedBy = "personId")
-	private Set<PersonEmail> personEmails;
+	@Column(name = "address_line2", columnDefinition = "varchar", length = 200)
+	private String addressLine2;
 
-	@OneToMany(mappedBy = "personId")
-	private Set<PersonInternet> personInternets;
+	@ManyToOne
+	@JoinColumn(name = "org_city", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
+	private City city;
 
 	@OneToMany(mappedBy = "personId")
 	private Set<PersonLinks> personLinkss;
@@ -240,6 +243,14 @@ public class Person {
 
 	@OneToMany(mappedBy = "personId")
 	private Set<PersonPhone> personPhones;
+
+	@ManyToMany
+	@JoinTable(name = "email_person", joinColumns = { @JoinColumn(name = "person_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "email_id", nullable = false) })
+	private Set<Email> emails;
+
+	@ManyToMany
+	@JoinTable(name = "internet_person", joinColumns = { @JoinColumn(name = "person_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "internet_id", nullable = false) })
+	private Set<Internet> internets;
 
 	@ManyToOne
 	@JoinColumn(name = "prefix_id", columnDefinition = "integer", referencedColumnName = "id")
@@ -296,18 +307,6 @@ public class Person {
 		return mname;
 	}
 
-	public Set<PersonAddress> getPersonAddresses() {
-		return personAddresses;
-	}
-
-	public Set<PersonEmail> getPersonEmails() {
-		return personEmails;
-	}
-
-	public Set<PersonInternet> getPersonInternets() {
-		return personInternets;
-	}
-
 	public Set<PersonLinks> getPersonLinkss() {
 		return personLinkss;
 	}
@@ -330,6 +329,26 @@ public class Person {
 
 	public Suffix getSuffixId() {
 		return suffixId;
+	}
+
+	public Set<Email> getEmails() {
+		return emails;
+	}
+
+	public Set<Internet> getInternets() {
+		return internets;
+	}
+
+	public String getAddressLine1() {
+		return addressLine1;
+	}
+
+	public String getAddressLine2() {
+		return addressLine2;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
 	}
 
 	@Transactional
@@ -384,18 +403,6 @@ public class Person {
 		this.mname = mname;
 	}
 
-	public void setPersonAddresses(Set<PersonAddress> personAddresses) {
-		this.personAddresses = personAddresses;
-	}
-
-	public void setPersonEmails(Set<PersonEmail> personEmails) {
-		this.personEmails = personEmails;
-	}
-
-	public void setPersonInternets(Set<PersonInternet> personInternets) {
-		this.personInternets = personInternets;
-	}
-
 	public void setPersonLinkss(Set<PersonLinks> personLinkss) {
 		this.personLinkss = personLinkss;
 	}
@@ -418,6 +425,26 @@ public class Person {
 
 	public void setSuffixId(Suffix suffixId) {
 		this.suffixId = suffixId;
+	}
+
+	public void setEmails(Set<Email> emails) {
+		this.emails = emails;
+	}
+
+	public void setInternets(Set<Internet> internets) {
+		this.internets = internets;
+	}
+
+	public City getCity() {
+		return city;
+	}
+
+	public void setAddressLine1(String addressLine1) {
+		this.addressLine1 = addressLine1;
+	}
+
+	public void setAddressLine2(String addressLine2) {
+		this.addressLine2 = addressLine2;
 	}
 
 	public String toJson() {

@@ -3,7 +3,6 @@ package ro.roda.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -281,9 +279,6 @@ public class Address {
 	// , columnDefinition = "serial")
 	private Integer id;
 
-	@OneToMany(mappedBy = "addressId")
-	private Set<PersonAddress> personAddresses;
-
 	@Column(name = "postal_code", columnDefinition = "varchar", length = 30)
 	private String postalCode;
 
@@ -335,10 +330,6 @@ public class Address {
 
 	public Integer getId() {
 		return this.id;
-	}
-
-	public Set<PersonAddress> getPersonAddresses() {
-		return personAddresses;
 	}
 
 	public String getPostalCode() {
@@ -395,10 +386,6 @@ public class Address {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public void setPersonAddresses(Set<PersonAddress> personAddresses) {
-		this.personAddresses = personAddresses;
 	}
 
 	public void setPostalCode(String postalCode) {

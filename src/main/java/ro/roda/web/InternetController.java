@@ -24,7 +24,6 @@ import org.springframework.web.util.WebUtils;
 
 import ro.roda.domain.Internet;
 import ro.roda.service.InternetService;
-import ro.roda.service.PersonInternetService;
 
 @RequestMapping("/internets")
 @Controller
@@ -32,9 +31,6 @@ public class InternetController {
 
 	@Autowired
 	InternetService internetService;
-
-	@Autowired
-	PersonInternetService personInternetService;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid Internet internet, BindingResult bindingResult, Model uiModel,
@@ -108,7 +104,6 @@ public class InternetController {
 
 	void populateEditForm(Model uiModel, Internet internet) {
 		uiModel.addAttribute("internet", internet);
-		uiModel.addAttribute("personinternets", personInternetService.findAllPersonInternets());
 	}
 
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

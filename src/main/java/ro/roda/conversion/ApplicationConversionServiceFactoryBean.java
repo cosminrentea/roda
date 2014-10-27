@@ -190,15 +190,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	PersonService personService;
 
 	@Autowired
-	PersonAddressService personAddressService;
-
-	@Autowired
-	PersonEmailService personEmailService;
-
-	@Autowired
-	PersonInternetService personInternetService;
-
-	@Autowired
 	PersonLinksService personLinksService;
 
 	@Autowired
@@ -1564,79 +1555,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		};
 	}
 
-	public Converter<PersonAddress, String> getPersonAddressToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonAddress, java.lang.String>() {
-			public String convert(PersonAddress personAddress) {
-				return new StringBuilder().append(personAddress.getDateStart()).append(' ')
-						.append(personAddress.getDateEnd()).toString();
-			}
-		};
-	}
-
-	public Converter<PersonAddressPK, PersonAddress> getIdToPersonAddressConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonAddressPK, ro.roda.domain.PersonAddress>() {
-			public ro.roda.domain.PersonAddress convert(ro.roda.domain.PersonAddressPK id) {
-				return personAddressService.findPersonAddress(id);
-			}
-		};
-	}
-
-	public Converter<String, PersonAddress> getStringToPersonAddressConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonAddress>() {
-			public ro.roda.domain.PersonAddress convert(String id) {
-				return getObject().convert(getObject().convert(id, PersonAddressPK.class), PersonAddress.class);
-			}
-		};
-	}
-
-	public Converter<PersonEmail, String> getPersonEmailToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonEmail, java.lang.String>() {
-			public String convert(PersonEmail personEmail) {
-				return "(no displayable fields)";
-			}
-		};
-	}
-
-	public Converter<PersonEmailPK, PersonEmail> getIdToPersonEmailConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonEmailPK, ro.roda.domain.PersonEmail>() {
-			public ro.roda.domain.PersonEmail convert(ro.roda.domain.PersonEmailPK id) {
-				return personEmailService.findPersonEmail(id);
-			}
-		};
-	}
-
-	public Converter<String, PersonEmail> getStringToPersonEmailConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonEmail>() {
-			public ro.roda.domain.PersonEmail convert(String id) {
-				return getObject().convert(getObject().convert(id, PersonEmailPK.class), PersonEmail.class);
-			}
-		};
-	}
-
-	public Converter<PersonInternet, String> getPersonInternetToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonInternet, java.lang.String>() {
-			public String convert(PersonInternet personInternet) {
-				return "(no displayable fields)";
-			}
-		};
-	}
-
-	public Converter<PersonInternetPK, PersonInternet> getIdToPersonInternetConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonInternetPK, ro.roda.domain.PersonInternet>() {
-			public ro.roda.domain.PersonInternet convert(ro.roda.domain.PersonInternetPK id) {
-				return personInternetService.findPersonInternet(id);
-			}
-		};
-	}
-
-	public Converter<String, PersonInternet> getStringToPersonInternetConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonInternet>() {
-			public ro.roda.domain.PersonInternet convert(String id) {
-				return getObject().convert(getObject().convert(id, PersonInternetPK.class), PersonInternet.class);
-			}
-		};
-	}
-
 	public Converter<PersonLinks, String> getPersonLinksToStringConverter() {
 		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonLinks, java.lang.String>() {
 			public String convert(PersonLinks personLinks) {
@@ -2582,38 +2500,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		};
 	}
 
-	public Converter<String, PersonAddressPK> getJsonToPersonAddressPKConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonAddressPK>() {
-			public PersonAddressPK convert(String encodedJson) {
-				return PersonAddressPK.fromJsonToPersonAddressPK(new String(Base64.decodeBase64(encodedJson)));
-			}
-		};
-	}
-
-	public Converter<PersonAddressPK, String> getPersonAddressPKToJsonConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonAddressPK, java.lang.String>() {
-			public String convert(PersonAddressPK personAddressPK) {
-				return Base64.encodeBase64URLSafeString(personAddressPK.toJson().getBytes());
-			}
-		};
-	}
-
-	public Converter<String, PersonEmailPK> getJsonToPersonEmailPKConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonEmailPK>() {
-			public PersonEmailPK convert(String encodedJson) {
-				return PersonEmailPK.fromJsonToPersonEmailPK(new String(Base64.decodeBase64(encodedJson)));
-			}
-		};
-	}
-
-	public Converter<PersonEmailPK, String> getPersonEmailPKToJsonConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonEmailPK, java.lang.String>() {
-			public String convert(PersonEmailPK personEmailPK) {
-				return Base64.encodeBase64URLSafeString(personEmailPK.toJson().getBytes());
-			}
-		};
-	}
-
 	public Converter<String, StudyDescrPK> getJsonToStudyDescrPKConverter() {
 		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyDescrPK>() {
 			public StudyDescrPK convert(String encodedJson) {
@@ -2738,22 +2624,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgRelationsPK, java.lang.String>() {
 			public String convert(OrgRelationsPK orgRelationsPK) {
 				return Base64.encodeBase64URLSafeString(orgRelationsPK.toJson().getBytes());
-			}
-		};
-	}
-
-	public Converter<String, PersonInternetPK> getJsonToPersonInternetPKConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonInternetPK>() {
-			public PersonInternetPK convert(String encodedJson) {
-				return PersonInternetPK.fromJsonToPersonInternetPK(new String(Base64.decodeBase64(encodedJson)));
-			}
-		};
-	}
-
-	public Converter<PersonInternetPK, String> getPersonInternetPKToJsonConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonInternetPK, java.lang.String>() {
-			public String convert(PersonInternetPK personInternetPK) {
-				return Base64.encodeBase64URLSafeString(personInternetPK.toJson().getBytes());
 			}
 		};
 	}
@@ -3123,15 +2993,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getPersonToStringConverter());
 		registry.addConverter(getIdToPersonConverter());
 		registry.addConverter(getStringToPersonConverter());
-		registry.addConverter(getPersonAddressToStringConverter());
-		registry.addConverter(getIdToPersonAddressConverter());
-		registry.addConverter(getStringToPersonAddressConverter());
-		registry.addConverter(getPersonEmailToStringConverter());
-		registry.addConverter(getIdToPersonEmailConverter());
-		registry.addConverter(getStringToPersonEmailConverter());
-		registry.addConverter(getPersonInternetToStringConverter());
-		registry.addConverter(getIdToPersonInternetConverter());
-		registry.addConverter(getStringToPersonInternetConverter());
 		registry.addConverter(getPersonLinksToStringConverter());
 		registry.addConverter(getIdToPersonLinksConverter());
 		registry.addConverter(getStringToPersonLinksConverter());
@@ -3248,10 +3109,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getStringToVariableConverter());
 		registry.addConverter(getJsonToCatalogStudyPKConverter());
 		registry.addConverter(getCatalogStudyPKToJsonConverter());
-		registry.addConverter(getJsonToPersonAddressPKConverter());
-		registry.addConverter(getPersonAddressPKToJsonConverter());
-		registry.addConverter(getJsonToPersonEmailPKConverter());
-		registry.addConverter(getPersonEmailPKToJsonConverter());
 		registry.addConverter(getJsonToStudyDescrPKConverter());
 		registry.addConverter(getStudyDescrPKToJsonConverter());
 		registry.addConverter(getJsonToFormEditedTextVarPKConverter());
@@ -3268,8 +3125,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getInstancePersonPKToJsonConverter());
 		registry.addConverter(getJsonToOrgRelationsPKConverter());
 		registry.addConverter(getOrgRelationsPKToJsonConverter());
-		registry.addConverter(getJsonToPersonInternetPKConverter());
-		registry.addConverter(getPersonInternetPKToJsonConverter());
 		registry.addConverter(getJsonToInstanceDescrPKConverter());
 		registry.addConverter(getInstanceDescrPKToJsonConverter());
 		registry.addConverter(getJsonToFormSelectionVarPKConverter());

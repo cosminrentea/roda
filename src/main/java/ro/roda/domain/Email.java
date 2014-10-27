@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -215,9 +214,6 @@ public class Email {
 	@ManyToMany(mappedBy = "emails")
 	private Set<Org> orgs;
 
-	@OneToMany(mappedBy = "emailId")
-	private Set<PersonEmail> personEmails;
-
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -248,10 +244,6 @@ public class Email {
 
 	public Set<Org> getOrgs() {
 		return orgs;
-	}
-
-	public Set<PersonEmail> getPersonEmails() {
-		return personEmails;
 	}
 
 	@Transactional
@@ -288,10 +280,6 @@ public class Email {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public void setPersonEmails(Set<PersonEmail> personEmails) {
-		this.personEmails = personEmails;
 	}
 
 	public String toJson() {

@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -221,9 +220,6 @@ public class Internet {
 	@ManyToMany(mappedBy = "internets")
 	private Set<Org> orgs;
 
-	@OneToMany(mappedBy = "internetId")
-	private Set<PersonInternet> personInternets;
-
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -258,10 +254,6 @@ public class Internet {
 
 	public Set<Org> getOrgs() {
 		return orgs;
-	}
-
-	public Set<PersonInternet> getPersonInternets() {
-		return personInternets;
 	}
 
 	@Transactional
@@ -306,10 +298,6 @@ public class Internet {
 
 	public void setOrgs(Set<Org> orgs) {
 		this.orgs = orgs;
-	}
-
-	public void setPersonInternets(Set<PersonInternet> personInternets) {
-		this.personInternets = personInternets;
 	}
 
 	public String toJson() {

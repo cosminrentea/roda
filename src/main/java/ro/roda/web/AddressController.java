@@ -26,7 +26,6 @@ import ro.roda.domain.Address;
 import ro.roda.domain.City;
 import ro.roda.service.AddressService;
 import ro.roda.service.CityService;
-import ro.roda.service.PersonAddressService;
 
 @RequestMapping("/addresses")
 @Controller
@@ -37,9 +36,6 @@ public class AddressController {
 
 	@Autowired
 	CityService cityService;
-
-	@Autowired
-	PersonAddressService personAddressService;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid Address address, BindingResult bindingResult, Model uiModel,
@@ -114,7 +110,6 @@ public class AddressController {
 	void populateEditForm(Model uiModel, Address address) {
 		uiModel.addAttribute("address", address);
 		uiModel.addAttribute("citys", cityService.findAllCitys());
-		uiModel.addAttribute("personaddresses", personAddressService.findAllPersonAddresses());
 	}
 
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

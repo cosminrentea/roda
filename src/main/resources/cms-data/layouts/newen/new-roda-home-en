@@ -78,8 +78,8 @@
 				<div id="middle">
 					<div id="box_links">
 						<ul>
-							<li><a href="/en/data-creation/best-practices">Guide to good practice</a></li>
-							<li><a href="/en/data-depositing/avantages">Depositing advantages</a></li>
+							<li><a href="[[Code: PageLinkbyUrl('best-practices')]]">Guide to good practice</a></li>
+							<li><a href="[[Code: PageLinkbyUrl('avantages')]]">Depositing advantages</a></li>
 							<li><a href="[[Code: PageLinkbyUrl('data-catalog')]]">RODA Catalogue</a></li>
 						</ul>
 					</div>

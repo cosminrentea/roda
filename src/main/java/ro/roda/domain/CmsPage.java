@@ -25,8 +25,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -712,7 +710,7 @@ public class CmsPage implements Comparable<CmsPage> {
 		if (obj instanceof CmsPage) {
 			return (id != null && id.equals(((CmsPage) obj).id));
 			// TODO decide the uniqueness conditions (finally, the url and the
-			// name ar no longer unique)
+			// name are no longer unique)
 			// || (name != null && name.equalsIgnoreCase(((CmsPage) obj).name))
 			// || (url != null && url.equalsIgnoreCase(((CmsPage) obj).url));
 		}

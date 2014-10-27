@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_domain_TranslatedTopic" modelAttribute="translatedTopic" path="/translatedtopics" versionField="none" z="MYVQYU+d6E8zvKJ8DtzsvH8pDrM=">
-        <field:input field="translation" id="c_ro_roda_domain_TranslatedTopic_translation" required="true" z="ODPiwcrEd63LRf2nUnwzV32rIr0="/>
-    </form:update>
-</div>

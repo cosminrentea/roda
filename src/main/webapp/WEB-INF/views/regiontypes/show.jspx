@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_Regiontype" object="${regiontype}" path="/regiontypes" z="X3vkbwhQxplG1GK9NEIhSIDmcA4=">
-        <field:display field="name" id="s_ro_roda_domain_Regiontype_name" object="${regiontype}" z="RKPYtUgeqOJOLqj3dn05GP0RZXo="/>
-    </page:show>
-</div>

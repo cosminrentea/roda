@@ -1,5 +1,23 @@
 package ro.roda.service.page;
 
+import static ro.roda.service.page.RodaPageConstants.ADMIN_URL;
+import static ro.roda.service.page.RodaPageConstants.CMS_FILE_CONTENT_URL;
+import static ro.roda.service.page.RodaPageConstants.DEFAULT_ERROR_PAGE_LANGUAGE;
+import static ro.roda.service.page.RodaPageConstants.DEFAULT_LANGUAGE_URL;
+import static ro.roda.service.page.RodaPageConstants.FILE_URL_LINK_CODE;
+import static ro.roda.service.page.RodaPageConstants.GETNEWSID_CODE;
+import static ro.roda.service.page.RodaPageConstants.GETNEWS_CODE;
+import static ro.roda.service.page.RodaPageConstants.IMG_LINK_CODE;
+import static ro.roda.service.page.RodaPageConstants.OFFSET_RELATIVE_URL;
+import static ro.roda.service.page.RodaPageConstants.PAGE_BREADCRUMBS_CODE;
+import static ro.roda.service.page.RodaPageConstants.PAGE_CONTENT_CODE;
+import static ro.roda.service.page.RodaPageConstants.PAGE_LINK_BY_URL_CODE;
+import static ro.roda.service.page.RodaPageConstants.PAGE_MAPPING;
+import static ro.roda.service.page.RodaPageConstants.PAGE_TITLE_CODE;
+import static ro.roda.service.page.RodaPageConstants.PAGE_TREE_BY_URL_CODE;
+import static ro.roda.service.page.RodaPageConstants.PAGE_URL_LINK_CODE;
+import static ro.roda.service.page.RodaPageConstants.SNIPPET_CODE;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,8 +45,6 @@ import ro.roda.domain.CmsPageType;
 import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.Lang;
 import ro.roda.domain.News;
-
-import static ro.roda.service.page.RodaPageConstants.*;
 
 @Service
 @Transactional
@@ -208,8 +224,10 @@ public class RodaPageServiceImpl implements RodaPageService {
 		CmsLayout pageLayout = cmsPage.getCmsLayoutId();
 		String layoutContent = pageLayout.getLayoutContent();
 		layoutContent = replaceGetNews(layoutContent, cmsPage, newsCount, newsMaxTitle, newsMaxText);
-		layoutContent = replaceSnippets(layoutContent);
+
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
+		layoutContent = replaceSnippets(layoutContent);
+
 		layoutContent = replacePageLinkByUrl(layoutContent, cmsPage);
 		layoutContent = replacePageBreadcrumbs(layoutContent, cmsPage);
 		layoutContent = replacePageTreeByUrl(layoutContent, cmsPage);
@@ -349,7 +367,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			CmsPage page = findRelativePage(url, cmsPage);
 
 			result = result.substring(0, fromIndex) + "<a href=\"" + RODA_PAGE_BASE_URL + generateFullRelativeUrl(page)
-					+ "\">" + (page != null ? page.getName() : url) + "</a>"
+					+ "\">" + (page != null ? page.getMenuTitle() : url) + "</a>"
 					+ result.substring(result.indexOf("]]", fromIndex + PAGE_URL_LINK_CODE.length()) + "]]".length());
 
 			fromIndex = result.indexOf(PAGE_URL_LINK_CODE, fromIndex + PAGE_URL_LINK_CODE.length());
@@ -476,6 +494,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		CmsPage tempPage = cmsPage;
 		CmsPage resultPage = null;
 
+		// search above
 		if (cmsPage != null) {
 			while (tempPage != null) {
 				resultPage = CmsPage.findCmsPageByParent(url, tempPage);
@@ -485,6 +504,24 @@ public class RodaPageServiceImpl implements RodaPageService {
 					tempPage = tempPage.getCmsPageId();
 				}
 
+			}
+		}
+
+		// search underneath
+		if (cmsPage != null) {
+
+			Set<CmsPage> cmsPagesUnderneath = cmsPage.getCmsPages();
+
+			if (cmsPagesUnderneath != null) {
+
+				Iterator<CmsPage> itCmsPagesUnderneath = cmsPagesUnderneath.iterator();
+				while (itCmsPagesUnderneath.hasNext()) {
+					tempPage = itCmsPagesUnderneath.next();
+					resultPage = CmsPage.findCmsPageByParent(url, tempPage);
+					if (resultPage != null) {
+						return generateFullRelativeUrl(resultPage);
+					}
+				}
 			}
 		}
 
@@ -637,6 +674,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 				}
 
 				result.append("</ul>");
+				// result.append("</li>");
 			} else if (cmsPage.isNavigable()) {
 				result.append("<li>");
 				result.append(PAGE_URL_LINK_CODE + cmsPage.getUrl() + "]]");

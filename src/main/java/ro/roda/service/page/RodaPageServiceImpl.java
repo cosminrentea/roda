@@ -534,6 +534,32 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 			}
 		}
 
+		// search at the siblings' level
+		if (cmsPage != null && cmsPage.getCmsPageId() != null) {
+			Set<CmsPage> siblings = cmsPage.getCmsPageId().getCmsPages();
+			if (siblings != null) {
+				Iterator<CmsPage> itSiblings = siblings.iterator();
+				while (itSiblings.hasNext()) {
+					tempPage = itSiblings.next();
+					resultPage = CmsPage.findCmsPageByParent(url, tempPage);
+					if (resultPage != null) {
+						return generateFullRelativeUrl(resultPage);
+					}
+				}
+
+				// search under the siblings
+				itSiblings = siblings.iterator();
+				while (itSiblings.hasNext()) {
+					tempPage = itSiblings.next();
+					resultPage = CmsPage.findCmsPageByParent(url, tempPage);
+					if (resultPage != null) {
+						return generateFullRelativeUrl(resultPage);
+					}
+				}
+
+			}
+		}
+
 		return result;
 	}
 

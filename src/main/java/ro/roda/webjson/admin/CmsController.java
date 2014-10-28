@@ -444,6 +444,27 @@ public class CmsController {
 
 	}
 
+    @RequestMapping(value = "/cmspagenavigable", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String cmspageNavigable(
+                    @RequestParam(value = "navigable", required = true) Boolean navigable,
+                    @RequestParam(value = "id", required = true) Integer cmspageId) {
+
+//            AdminJson cmspageSetNavigable = adminJsonService.cmsPageSetNavigable(navigable, cmspageId);
+            AdminJson cmspageSetNavigable = adminJsonService.cmsPageNav(navigable, cmspageId);
+
+            
+            log.trace("page navigable in controller");
+
+            if (cmspageSetNavigable == null) {
+                    return null;
+            }
+            return cmspageSetNavigable.toJson();
+
+    }
+
+	
+	
 	@RequestMapping(value = "/newssave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String newsSave(@RequestParam(value = "id", required = false) Integer id,

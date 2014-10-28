@@ -214,4 +214,9 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return result;
 	}
 
+	public AdminJson cmsPageNav(boolean navigable, Integer cmsPageId) {
+		rodaPageService.evictAll();
+		return AdminJson.cmsPageSetNavigable(navigable, cmsPageId);
+	}
+	
 }

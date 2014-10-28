@@ -1185,4 +1185,21 @@ public class AdminJson {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
+	 public static AdminJson cmsPageSetNavigable(boolean navigable,
+             Integer cmsPageId) {
+
+     CmsPage cmsPage = null;
+     if (cmsPageId != null) {
+             cmsPage = CmsPage.findCmsPage(cmsPageId);
+             cmsPage.setNavigable(navigable);
+             return new AdminJson(true, "Navigable set");
+     }
+
+     if (cmsPage == null) {
+             return new AdminJson(false, "CMS Page does not exist");
+     }
+     return null;
+}
+
+	
 }

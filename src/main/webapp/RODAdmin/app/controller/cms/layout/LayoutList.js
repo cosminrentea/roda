@@ -134,7 +134,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    Ext.Ajax.request({
-			        url : '/roda/j/admin/layoutdrop',
+			        url : RODAdmin.util.Globals.baseurl + '/adminjson/layoutdrop',
 			        method : "POST",
 			        params : {
 				        layoutid : currentNode.data.indice

@@ -70,7 +70,7 @@ Ext.define('RODAdmin.controller.metadata.mcomponents.Prefix', {
     	            if (id === 'yes') {
     	                    console.log('we will delete');
     	                    Ext.Ajax.request({
-    	                        url : '/roda/j/admin/dropprefix',
+    	                        url : RODAdmin.util.Globals.baseurl + '/adminjson/dropprefix',
     	                        method : "POST",
     	                        params : {
     	                                prefixid : record.data.indice
@@ -105,9 +105,9 @@ Ext.define('RODAdmin.controller.metadata.mcomponents.Prefix', {
     	 var win = button.up('window');
     	 var editId = win.getEditId();
     	 if (editId > 0) {
-    		 var purl = '/roda/j/admin/prefixsave/' + editId
+    		 var purl = RODAdmin.util.Globals.baseurl + '/adminjson/prefixsave/' + editId
     	 } else {
-    		 var purl = '/roda/j/admin/prefixsave'
+    		 var purl = RODAdmin.util.Globals.baseurl + '/adminjson/prefixsave'
     	 }
          var formPanel = win.down('form');
          var me = this;

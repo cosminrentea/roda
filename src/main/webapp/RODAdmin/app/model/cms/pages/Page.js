@@ -53,6 +53,10 @@ Ext.define('RODAdmin.model.cms.pages.Page', {
         name: 'pagetype',
         type: 'string'
     },
+    {
+        name: 'navigable',
+        type: 'boolean'
+    }
     ]
 });
 

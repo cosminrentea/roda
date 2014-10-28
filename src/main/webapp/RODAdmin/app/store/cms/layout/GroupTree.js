@@ -9,6 +9,6 @@ Ext.define('RODAdmin.store.cms.layout.GroupTree', {
     ],
 
     model: 'RODAdmin.model.cms.layout.Layout',
-    proxy: {type: 'mainajax', url: 'cmslayoutgrouptree'},   
+    proxy: {type: 'mainajax', url: 'adminjson/cmslayoutgrouptree'},   
 
 });

@@ -114,7 +114,7 @@ Ext.define('RODAdmin.controller.cms.file.FileEdit', {
 		    form.getForm().submit({
 		        clientValidation : true,
 		        method: 'POST',
-		        url : '/roda/j/admin/cmsfilesave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmsfilesave',
 		        success : function(form, action) {
 
 			        var result = action.result;
@@ -159,7 +159,7 @@ Ext.define('RODAdmin.controller.cms.file.FileEdit', {
 		    form.getForm().submit({
 		        clientValidation : true,
 		        method: 'POST',
-		        url : '/roda/j/admin/cmsfoldersave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmsfoldersave',
 		        success : function(form, action) {
 
 			        var result = action.result;
@@ -206,7 +206,7 @@ Ext.define('RODAdmin.controller.cms.file.FileEdit', {
 		    form.getForm().submit({
 		        clientValidation : true,
 		        method: 'POST',
-		        url : '/roda/j/admin/cmsfoldersave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmsfoldersave',
 		      
 		        success : function(form, action) {
 

@@ -5,7 +5,7 @@ Ext.onReady(function(){
         labelWidth:80,
         itemId: 'loginpanel',
         id: 'loginpanel',
-        url: '/resources/j_spring_security_check',
+        url: '/roda/resources/j_spring_security_check',
         frame:true, 
         title:'RODA Login', 
         defaultType:'textfield',

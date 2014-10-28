@@ -14,7 +14,7 @@ Ext.define('RODAdmin.store.common.Globals', {
     proxy: {
         type: 'ajax',
 //        url: 'http://roda.apiary.io/admin/settings/list',        
-        url: '/settings/list',        
+        url: '/roda/settings/list',        
         reader: {
                 type: 'json',
                 root: 'data'

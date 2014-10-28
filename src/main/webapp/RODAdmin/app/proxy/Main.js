@@ -8,23 +8,18 @@ Ext.define('RODAdmin.proxy.Main', {
         messageProperty: 'msg',
         root: 'data'
     },
-
-//    writer: {
-//        type: 'json',
-//        writeAllFields: true,
-//        encode: true,
-//        allowSingle: false,
-//        root: 'data'
-//    },
-
     listeners: {
         exception: function(proxy, response, operation){
-            Ext.MessageBox.show({
-                title: 'REMOTE EXCEPTION',
-                msg: operation.getError(),
-                icon: Ext.MessageBox.ERROR,
-                buttons: Ext.Msg.OK
-            });
+        	if (response.responseText.match(/login\.js/)) {
+          		window.location = RODAdmin.util.Globals.baseurl + 'admin/login.html';
+        	} else {
+        		Ext.MessageBox.show({
+        			title: 'REMOTE EXCEPTION',
+        			msg: operation.getError(),
+        			icon: Ext.MessageBox.ERROR,
+        			buttons: Ext.Msg.OK
+        		});
+        	}
         }
     }
 });

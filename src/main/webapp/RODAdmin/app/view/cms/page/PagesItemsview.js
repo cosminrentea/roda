@@ -47,7 +47,21 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 									dataIndex : 'pagesnumber',
 									sortable : true,
 									filterable : true
-								}],
+								},{
+									xtype: "checkcolumn",
+								    columnHeaderCheckbox: true,//this setting is necessary for what you want
+								    store: 'cms.page.PageList',
+								    sortable: false,
+								    hideable: false,
+								    menuDisabled: true,
+								    dataIndex: "navigable",
+								    listeners: {
+								        checkchange: function(column, rowIndex, checked){
+								             //code for whatever on checkchange here
+								        }
+								    }
+								}
+								],
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemId : 'pgiconviewtoolbar',
@@ -178,8 +192,16 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 									dataIndex : 'searchable',
 									sortable : false,
 									filterable : true
+								},{
+									xtype: "checkcolumn",
+								    columnHeaderCheckbox: true,//this setting is necessary for what you want
+								    text: 'navigable',
+								    store: 'cms.page.PageList',
+								    sortable: false,
+								    hideable: false,
+								    menuDisabled: true,
+								    dataIndex: "navigable",
 								}
-								
 								
 								
 								]

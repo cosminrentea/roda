@@ -128,7 +128,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/j/admin/layoutgroupsave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/layoutgroupsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -180,7 +180,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/j/admin/layoutsave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/layoutsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -230,7 +230,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/j/admin/layoutsave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/layoutsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -285,7 +285,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/j/admin/layoutgroupsave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/layoutgroupsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {

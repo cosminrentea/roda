@@ -13,5 +13,5 @@ Ext.define('RODAdmin.store.audit.RevisionbyObject', {
 
     model: 'RODAdmin.model.audit.ObjectRevisions',
     autoload: true,    
-    proxy: {type: 'main', url: 'revisions-by-object'},  
+    proxy: {type: 'main', url: 'adminjson/revisions-by-object'},  
 });

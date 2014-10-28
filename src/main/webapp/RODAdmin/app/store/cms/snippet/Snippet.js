@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.cms.snippet.Snippet', {
 
     model: 'RODAdmin.model.cms.snippet.Snippet',
     autoload: true,   
-    proxy: {type: 'main', url: 'cmssnippetlist'},    
+    proxy: {type: 'main', url: 'adminjson/cmssnippetlist'},    
  
 });

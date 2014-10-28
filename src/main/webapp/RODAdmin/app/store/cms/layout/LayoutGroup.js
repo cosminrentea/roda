@@ -11,5 +11,5 @@ Ext.define('RODAdmin.store.cms.layout.LayoutGroup', {
     model: 'RODAdmin.model.cms.layout.LayoutGroup',
     
     autoload: true,
-    proxy: {type: 'main', url: 'cmslayoutgroupinfo'},    
+    proxy: {type: 'main', url: 'adminjson/cmslayoutgroupinfo'},    
 });

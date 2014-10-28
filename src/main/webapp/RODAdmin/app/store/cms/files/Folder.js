@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.cms.files.Folder', {
 
     model: 'RODAdmin.model.cms.files.Folder',
     autoload: true,    
-    proxy: {type: 'mainajax', url: 'cmsfolderinfo'},        
+    proxy: {type: 'mainajax', url: 'adminjson/cmsfolderinfo'},        
 
 });

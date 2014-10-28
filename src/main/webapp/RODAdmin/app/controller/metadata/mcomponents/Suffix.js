@@ -68,7 +68,7 @@ Ext.define('RODAdmin.controller.metadata.mcomponents.Suffix', {
     	            if (id === 'yes') {
     	                    console.log('we will delete');
     	                    Ext.Ajax.request({
-    	                        url : '/roda/j/admin/dropsuffix',
+    	                        url : RODAdmin.util.Globals.baseurl + '/adminjson/dropsuffix',
     	                        method : "POST",
     	                        params : {
     	                                prefixid : record.data.indice
@@ -103,9 +103,9 @@ Ext.define('RODAdmin.controller.metadata.mcomponents.Suffix', {
     	 var win = button.up('window');
     	 var editId = win.getEditId();
     	 if (editId > 0) {
-    		 var purl = '/roda/j/admin/suffixsave/' + editId
+    		 var purl = RODAdmin.util.Globals.baseurl + '/adminjson/suffixsave/' + editId
     	 } else {
-    		 var purl = '/roda/j/admin/suffixsave'
+    		 var purl = '/adminjson/suffixsave'
     	 }
          var formPanel = win.down('form');
          var me = this;

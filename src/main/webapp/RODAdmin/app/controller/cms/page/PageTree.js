@@ -137,9 +137,29 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 	        "pagesitemsview treepanel#pgfolderview > treeview" : {
 				drop: this.onTreeMDrop
 			},
-	        
+  		    "pagesitemsview treepanel#pgfolderview checkcolumn" : {
+				checkchange: this.onCheckChange
+			},
 
 	    });
+    },
+    
+    onCheckChange : function(column, rowIndex, checked){ 
+    	console.log('checkchange in controller');
+    	
+	    Ext.Ajax.request({
+	        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagenavigable',
+	        method : "POST",
+	        params : {
+	        	navigable : checked,
+		        id : rowIndex
+	        },
+	        failure : function(response, opts) {
+		        Ext.Msg.alert('Failure', response);
+
+	        }
+	    });
+
     },
     
     /**
@@ -156,7 +176,7 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 		    if (id === 'yes') {
 		    	console.log('what?' + currentNode.data.indice);
 			    Ext.Ajax.request({
-			        url : '/roda/j/admin/cache/evict-page-id/'+currentNode.data.indice,
+			        url : RODAdmin.util.Globals.baseurl + '/adminjson/cache/evict-page-id/'+currentNode.data.indice,
 			        method : "POST",
 			        success : function(response,request) {
 				           var responseJson = Ext.decode(response.responseText);
@@ -191,7 +211,7 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
     	var groupid = overModel.data.indice;
     	var mode = dropPosition;
     	Ext.Ajax.request({
-	        url : '/roda/j/admin/cmspagemove/',
+	        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagemove/',
 	        method : "POST",
 	        params : {
 	            id : pgid,
@@ -282,7 +302,7 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 	            + '?', function(id, value) {
 		    if (id === 'yes') {
 			    Ext.Ajax.request({
-			        url : '/roda/j/admin/cmspagedrop',
+			        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagedrop',
 			        method : "POST",
 			        params : {
 				        cmspageid : currentNode.data.indice

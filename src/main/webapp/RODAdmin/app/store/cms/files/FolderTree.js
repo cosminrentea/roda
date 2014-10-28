@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.cms.files.FolderTree', {
 
     model: 'RODAdmin.model.cms.files.Folder',
     //folderSort: true,    
-    proxy: {type: 'mainajax', url: 'cmsfoldertree'}
+    proxy: {type: 'mainajax', url: 'adminjson/cmsfoldertree'}
 
 });

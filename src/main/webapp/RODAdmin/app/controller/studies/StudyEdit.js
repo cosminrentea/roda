@@ -488,7 +488,7 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/j/admin/catalogsave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/catalogsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -540,7 +540,7 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/j/admin/studysave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/studysave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -590,7 +590,7 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/j/admin/studysave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/studysave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -645,7 +645,7 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/j/admin/catalogsave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/catalogsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {

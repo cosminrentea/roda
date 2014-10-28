@@ -124,7 +124,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                            }
 			                                            ]
 			                                        }, {
-			                                            columnWidth : 0.25,
+			                                            columnWidth : 0.15,
 			                                            margin : '0 0 0 10px',
 			                                            items : [
 				                                            {
@@ -138,6 +138,20 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                anchor : '100%',
 				                                                store : 'local.PagePublished'
 //				                                                store : [["fname":"Yes","value":"true"},{"fname":"No","value":"false"}]
+				                                            }
+			                                            ]
+			                                        },
+			                                        {
+			                                            columnWidth : 0.10,
+			                                            margin : '0 0 0 10px',
+			                                            items : [
+				                                            {
+				                                                xtype : 'checkboxfield',
+				                                                labelWidth : 60,
+				                                                name: 'navigable',
+//				                                                queryMode: 'local',
+				                                                fieldLabel : 'Nav',
+				                                                anchor : '100%',
 				                                            }
 			                                            ]
 			                                        }

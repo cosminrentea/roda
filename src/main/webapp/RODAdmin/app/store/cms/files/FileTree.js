@@ -9,5 +9,5 @@ Ext.define('RODAdmin.store.cms.files.FileTree', {
     ],
 
     model: 'RODAdmin.model.cms.files.File',
-    proxy: {type: 'mainajax', url: 'cmsfiletree'}    
+    proxy: {type: 'mainajax', url: 'adminjson/cmsfiletree'}    
 });

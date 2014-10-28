@@ -75,6 +75,7 @@ Ext.define('RODAdmin.view.cms.layout.EditLayoutWindow', {
         									fieldLabel: 'Description',
         									itemId: 'description',
         									name: 'description',
+        									allowBlank : true,
 											colspan: 2,
         									value: ''
 										},{

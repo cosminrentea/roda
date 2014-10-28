@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.cms.news.News', {
 
     model: 'RODAdmin.model.cms.news.News',
     autoload: true,   
-    proxy: {type: 'main', url: 'cmsnewslist'},    
+    proxy: {type: 'main', url: 'adminjson/cmsnewslist'},    
  
 });

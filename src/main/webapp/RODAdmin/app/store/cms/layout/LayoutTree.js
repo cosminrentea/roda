@@ -9,7 +9,7 @@ Ext.define('RODAdmin.store.cms.layout.LayoutTree', {
     ],
     autoLoad: false,
     model: 'RODAdmin.model.cms.layout.Layout',
-    proxy: {type: 'mainajax', url: 'cmslayouttree'},    
+    proxy: {type: 'mainajax', url: 'adminjson/cmslayouttree'},    
 
    folderSort: true,    
 

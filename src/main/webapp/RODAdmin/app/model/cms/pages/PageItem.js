@@ -68,6 +68,9 @@ Ext.define('RODAdmin.model.cms.pages.PageItem', {
              },{
             	 name: 'parentid',
             	 type: 'integer'
+             }, {
+                 name: 'navigable',
+                 type: 'boolean'
              }
              ]
 });

@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.cms.snippet.GroupTree', {
 
     model: 'RODAdmin.model.cms.snippet.Snippet',
    
-    proxy: {type: 'mainajax', url: 'cmssnippetgrouptree'},    
+    proxy: {type: 'mainajax', url: 'adminjson/cmssnippetgrouptree'},    
 
 });

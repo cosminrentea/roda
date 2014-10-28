@@ -177,7 +177,7 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    Ext.Ajax.request({
-			        url : '/roda/j/admin/studydrop',
+			        url : RODAdmin.util.Globals.baseurl + '/adminjson/studydrop',
 			        method : "POST",
 			        params : {
 				        studyid : currentNode.data.indice

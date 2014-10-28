@@ -133,7 +133,7 @@ Ext.define('RODAdmin.controller.cms.news.NewsList', {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    Ext.Ajax.request({
-			        url : '/roda/j/admin/newsdrop',
+			        url : RODAdmin.util.Globals.baseurl + '/adminjson/newsdrop',
 			        method : "POST",
 			        params : {
 				        newsid : currentNode.data.id

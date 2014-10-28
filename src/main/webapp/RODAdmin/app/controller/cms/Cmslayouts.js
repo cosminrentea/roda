@@ -188,11 +188,11 @@ Ext.define('RODAdmin.controller.cms.Cmslayouts', {
 			    console.log('we will delete');
 			    var url = '';
 			    if (fp.data.itemtype == 'layoutgroup') {
-				    url = '/roda/j/admin/layoutgroupdrop';
+				    url = RODAdmin.util.Globals.baseurl + '/adminjson/layoutgroupdrop';
 				    parms = {'groupid' : fp.data.id };
 			    }
 			    else {
-				    url = '/roda/j/admin/layoutdrop';
+				    url = RODAdmin.util.Globals.baseurl + '/adminjson/layoutdrop';
 				    parms = {'layoutid' : fp.data.id };
 			    }
 

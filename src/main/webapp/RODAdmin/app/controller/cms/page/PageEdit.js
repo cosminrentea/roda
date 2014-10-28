@@ -95,7 +95,7 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
   	    if (formPanel.getForm().isValid()) {
   		    formPanel.getForm().submit({
   		        clientValidation : true,
-  		        url : '/roda/j/admin/cmspagesave',
+  		        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagesave',
   		        success : function(form, action) {
   			        var result = action.result;
   			        if (result.success) {
@@ -144,7 +144,7 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
     	    if (formPanel.getForm().isValid()) {
     		    formPanel.getForm().submit({
     		        clientValidation : true,
-    		        url : '/roda/j/admin/cmspagepreview',
+    		        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagepreview',
     		        success : function(form, action) {
     			        var result = action.result;
     			        if (result.success) {
@@ -197,7 +197,7 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
     	    if (formPanel.getForm().isValid()) {
     		    formPanel.getForm().submit({
     		        clientValidation : true,
-    		        url : '/roda/j/admin/cmspagesave',
+    		        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagesave',
     		        success : function(form, action) {
     			        var result = action.result;
     			        if (result.success) {

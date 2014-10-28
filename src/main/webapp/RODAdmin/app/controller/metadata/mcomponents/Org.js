@@ -69,7 +69,7 @@ Ext.define('RODAdmin.controller.metadata.mcomponents.Org', {
     	            if (id === 'yes') {
     	                    console.log('we will delete');
     	                    Ext.Ajax.request({
-    	                        url : '/roda/j/admin/droporganisation',
+    	                        url : RODAdmin.util.Globals.baseurl + '/adminjson/droporganisation',
     	                        method : "POST",
     	                        params : {
     	                                prefixid : record.data.indice
@@ -104,9 +104,9 @@ Ext.define('RODAdmin.controller.metadata.mcomponents.Org', {
     	 var win = button.up('window');
     	 var editId = win.getEditId();
     	 if (editId > 0) {
-    		 var purl = '/roda/j/admin/orgsave/' + editId
+    		 var purl = RODAdmin.util.Globals.baseurl + '/adminjson/orgsave/' + editId
     	 } else {
-    		 var purl = '/roda/j/admin/orgsave'
+    		 var purl = RODAdmin.util.Globals.baseurl + '/adminjson/orgsave'
     	 }
          var formPanel = win.down('form');
          var me = this;

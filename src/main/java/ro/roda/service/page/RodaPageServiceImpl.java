@@ -291,12 +291,9 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 				depth = Integer.parseInt(args[1].trim());
 			}
 
-			log.debug("URL =" + url);
-			log.debug("Depth = " + depth);
+			log.trace("Replaced code is: " + PAGE_TREE_BY_URL_CODE + url + "'," + depth + ")]]");
 
 			CmsPage rootPage = CmsPage.findCmsPage(url).get(0);
-
-			log.debug("Replaced code is: " + PAGE_TREE_BY_URL_CODE + url + "'," + depth + ")]]");
 
 			result = StringUtils.replace(result, PAGE_TREE_BY_URL_CODE + url + "'," + depth + ")]]",
 					generatePageTreeMenu(rootPage, depth));
@@ -316,7 +313,7 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 				fromIndex = content.indexOf(GETNEWS_CODE, fromIndex + GETNEWS_CODE.length());
 			}
 		} else {
-			log.debug("CmsPage is null");
+			log.trace("CmsPage is null");
 		}
 		return content;
 	}
@@ -331,7 +328,7 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 				fromIndex = content.indexOf(GETNEWSID_CODE, fromIndex + GETNEWSID_CODE.length());
 			}
 		} else {
-			log.debug("CmsPage is null");
+			log.trace("CmsPage is null");
 		}
 		return content;
 	}
@@ -466,8 +463,15 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 		return result;
 	}
 
+	/**
+	 * This method is to be invoked mainly from the page preview generator.
+	 * 
+	 * @param content
+	 * @param pageContent
+	 * @param page
+	 * @return
+	 */
 	private String replacePageContent(String content, String pageContent, CmsPage page) {
-		// This method is to be invoked mainly from the page preview generator.
 
 		String result = content;
 		if (result.indexOf(PAGE_CONTENT_CODE) > -1) {
@@ -606,7 +610,6 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 	}
 
 	private String generatePageTreeMenu(CmsPage cmsPage, Integer depth) {
-
 		StringBuilder result = new StringBuilder();
 		// TODO what is the id of the menu? maybe another parameter of the
 		// function?
@@ -624,7 +627,7 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 
 		result.append("</ul>");
 
-		log.debug("The menu is:" + result);
+		log.trace("The menu is:" + result);
 
 		return result.toString();
 	}
@@ -640,7 +643,7 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 				News newsitem = (News) newsIterator.next();
 				result.append("<div class='newsitem'>");
 				result.append("<div class='newstitle'>" + newsitem.getTruncatedTitle(maxTitle) + "</div>");
-				result.append("<div class=\"newsdate\">" + newsitem.getAdded().toString() + "</div>");
+				result.append("<div class='newsdate'>" + newsitem.getAdded().toString() + "</div>");
 				result.append("<div class='newscontent'>" + newsitem.getTruncatedContent(maxText) + "</div>");
 				result.append("</div>");
 			}

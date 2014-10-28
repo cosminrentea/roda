@@ -32,72 +32,78 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	public AdminJson layoutGroupSave(String groupname, Integer parentId, String description) {
+		rodaPageService.evictAll();
 		return AdminJson.layoutGroupSave(groupname, parentId, description);
 	}
 
 	public AdminJson layoutGroupEmpty(Integer groupId) {
+		rodaPageService.evictAll();
 		return AdminJson.layoutGroupEmpty(groupId);
 	}
 
 	public AdminJson layoutGroupDrop(Integer groupId) {
+		rodaPageService.evictAll();
 		return AdminJson.layoutGroupDrop(groupId);
 	}
 
 	public AdminJson layoutDrop(Integer layoutId) {
+		rodaPageService.evictAll();
 		return AdminJson.layoutDrop(layoutId);
 	}
 
 	public AdminJson layoutSave(Integer groupId, String content, String name, String description, Integer layoutId) {
-
-		// invalidate ALL CMS Pages in cache when one of the layouts is
-		// changed/added/saved
 		rodaPageService.evictAll();
 
 		return AdminJson.layoutSave(groupId, content, name, description, layoutId);
 	}
 
 	public AdminJson layoutMove(Integer groupId, Integer layoutId) {
+		rodaPageService.evictAll();
 		return AdminJson.layoutMove(groupId, layoutId);
 	}
 
 	public AdminJson layoutGroupMove(Integer parentGroupId, Integer groupId) {
+		rodaPageService.evictAll();
 		return AdminJson.layoutGroupMove(parentGroupId, groupId);
 	}
 
 	public AdminJson snippetGroupSave(String groupname, Integer parentId, String description) {
+		rodaPageService.evictAll();
 		return AdminJson.snippetGroupSave(groupname, parentId, description);
 	}
 
 	public AdminJson snippetGroupEmpty(Integer groupId) {
+		rodaPageService.evictAll();
 		return AdminJson.snippetGroupEmpty(groupId);
 	}
 
 	public AdminJson snippetGroupDrop(Integer groupId) {
+		rodaPageService.evictAll();
 		return AdminJson.snippetGroupDrop(groupId);
 	}
 
 	public AdminJson snippetDrop(Integer snippetId) {
+		rodaPageService.evictAll();
 		return AdminJson.snippetDrop(snippetId);
 	}
 
 	public AdminJson snippetSave(Integer groupId, String content, String name, Integer snippetId) {
-
-		// invalidate ALL CMS Pages in cache when one of the snippets is
-		// changed/added/saved
 		rodaPageService.evictAll();
-
 		return AdminJson.snippetSave(groupId, content, name, snippetId);
 	}
 
 	public AdminJson snippetMove(Integer groupId, Integer snippetId) {
+		rodaPageService.evictAll();
 		return AdminJson.snippetMove(groupId, snippetId);
 	}
 
 	public AdminJson snippetGroupMove(Integer parentGroupId, Integer groupId) {
+		rodaPageService.evictAll();
 		return AdminJson.snippetGroupMove(parentGroupId, groupId);
 	}
 
 	public AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
+		rodaPageService.evictAll();
 		return AdminJson.newsSave(id, langId, title, content, added);
 	}
 
@@ -114,7 +120,7 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 		if (save) {
 			// evict page from cache (because it was just saved/updated)
-			rodaPageService.evict(rodaPageService.generateFullRelativeUrl(cmsPage));
+			rodaPageService.evictAll();
 		} else {
 			// generate preview page
 			adminJson.setMessage(rodaPageService.generatePreviewPage(cmsPage, CmsLayout.findCmsLayout(layoutId)
@@ -127,10 +133,12 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	public AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId, String mode) {
+		rodaPageService.evictAll();
 		return AdminJson.cmsPageMove(cmsPageParentId, cmsPageId, mode);
 	}
 
 	public AdminJson cmsPageDrop(Integer cmsPageId) {
+		rodaPageService.evictAll();
 		return AdminJson.cmsPageDrop(cmsPageId);
 	}
 

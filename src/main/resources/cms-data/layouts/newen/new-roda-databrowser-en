@@ -78,10 +78,10 @@ body {
 		<div id="pgheader">
 			<div id="insideheader">
 			<div id="logo_slim">
-			<a href="/en">[[ImgLink: logo_slim]]</a></div>
+			<a href="[[Code: ContextPath]]/en">[[ImgLink: logo_slim]]</a></div>
 			<div id="header_right">
 				<div id="flags">
-					<a href="/ro" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
+					<a href="[[Code: ContextPath]]/ro" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
 					<a href="#"><img src="[[FileURL:flag_uk]]"></a>
 				</div>
 			</div>

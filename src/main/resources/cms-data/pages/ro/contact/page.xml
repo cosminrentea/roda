@@ -35,21 +35,44 @@
 		<br>
 		<br>
 		<br>
-		<font face="Arial, Helvetica, sans-serif" size="2">Adresele de e-mail de mai jos se completeaza cu "@roda.ro"</font>
-		<br>
 		<br>
 
-            <table style="border-style:solid; border-width:2px; border-color:black;" border="1" width="548" align="left">
+            <table class="contacttable">
               <tbody><tr> 
-                <td><b><font face="Arial, Helvetica, sans-serif" size="2">Nume</font></b></td>
-                <td><b><font face="Arial, Helvetica, sans-serif" size="2">Pozitie</font></b></td>
-                <td><b><font face="Arial, Helvetica, sans-serif" size="2">e-mail</font></b></td>
+                <th><b><font face="Arial, Helvetica, sans-serif" size="2">Nume</font></b></th>
+                <th><b><font face="Arial, Helvetica, sans-serif" size="2">e-mail</font></b></th>
               </tr>
               <tr> 
                 <td><font face="Arial, Helvetica, sans-serif" size="2">Adrian Dusa</font></td>
-                <td><font face="Arial, Helvetica, sans-serif" size="2">director</font></td>
-                <td><font face="Arial, Helvetica, sans-serif" size="2">adi</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:dusa.adrian@gmail.com">dusa.adrian@gmail.com</a></font></td>
               </tr>
+
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Sorin Milutinovici</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:sorinmilu@gmail.com">sorinmilu@gmail.com</a></font></td>
+              </tr>
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Cosmin Rentea</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:cosmin.rentea@gmail.com">cosmin.rentea@gmail.com</a></font></td>
+              </tr>
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Letitia Velcescu</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:letitia.v@gmail.com">letitia.v@gmail.com</a></font></td>
+              </tr>
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Irina Cristescu</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:irina.cristescu@g.unibuc.ro">irina.cristescu@g.unibuc.ro</a></font></td>
+              </tr>
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Alexandra Gheondea</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:alexandra.gheondea@gmail.com">alexandra.gheondea@gmail.com</a></font></td>
+              </tr>
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Alexandra Ciritel</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:ciritel.alexandra@gmail.com">ciritel.alexandra@gmail.com</a></font></td>
+              </tr>
+
+
            </tbody></table>
 	]]></content>
 	<cms_layout>new-roda-main-ro</cms_layout>

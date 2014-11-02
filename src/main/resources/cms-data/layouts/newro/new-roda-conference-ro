@@ -19,12 +19,13 @@
 	</script>
 </head>
 <body>
+<div id="wrap">
 	<div id="header_wrapper">
 		<div id="header">
-			<div id="logo"><a href="[[Code: ContextPath]]/ro">[[ImgLink: logo]]</a></div>
+			<div id="logo"><a href="[[Code: ContextPath]]/ro">[[ImgLink: logore]]</a></div>
 			<div id="header_right">
 				<div id="flags">
-					<a href="#" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
+					<a href="#" style="margin-right:5px; margin-left:70px;"><img src="[[FileURL:flag_ro]]"></a>
 					<a href="[[Code: ContextPath]]/en"><img src="[[FileURL:flag_uk]]"></a>
 				</div>
 				<div id="search">
@@ -43,7 +44,7 @@
 				</div>
 
 			</td>
-			<td id="content_wrapper" align="left" valign="top" width="670">
+			<td id="content_wrapper" align="left" valign="top">
 				<div id="content">
 					<div id="crumbs">
 						[[Code: PageBreadcrumbs(' > ')]]
@@ -53,6 +54,7 @@
 			</td>
 		</tr>
 	</tbody></table>
+	</div>
 	<div id="footer_wrapper">
 		<div id="footer">
 		<table>
@@ -63,16 +65,12 @@
 				</td>
 				<td width="250" valign="top" align="left">
 					<ul>
-					<li><a href="http://www.unibuc.ro" target="_blank">Universitatea din Bucuresti</a></li>
-					<li><a href="http://www.societateasociologilor.ro/" target="_blank">Societatea Sociologilor din Romania</a></li>
 					</ul>
 				</td>
 				<td width="250" valign="top" align="left"><div style="width:250"></div>
 				</td>
 				<td width="250" valign="top" align="left">
 					<ul>
-					<li><a href="http://www.edu.ro/index.php/base/frontpage" target="_blank">Ministerul Educatiei Nationale</a></li>
-					<li>Observatorul Social din Romania</li>
 					</ul>
 				</td>
 				<td width="50" valign="top" align="left">

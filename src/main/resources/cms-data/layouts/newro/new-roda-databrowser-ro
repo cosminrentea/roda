@@ -2,16 +2,136 @@
       <title>RODA - [[Code: PageTitle]]</title>
       <meta http-equiv="Keywords" name="Keywords" content="Databrowser, RODA" />
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
- 	  <script src="/resources/root/ext-js/ext-all-debug-w-comments.js"></script>
-	  <link rel="stylesheet" href="/resources/root/ext-js/resources/ext-theme-roda/ext-theme-roda-all.css">
-	  <script src="/resources/root/translations/ro.js"></script>	  
-  	  <script type="text/javascript" src="/resources/root/app.js"></script>
-	  <link rel="stylesheet" href="/resources/root/style.css">  	  
+ 	  <script src="[[Code: ContextPath]]/resources/root/ext-js/ext-all-debug-w-comments.js"></script>
+	  <link rel="stylesheet" href="[[Code: ContextPath]]/resources/root/ext-js/resources/ext-theme-roda/ext-theme-roda-all.css">
+	  <script src="[[Code: ContextPath]]/resources/root/translations/ro.js"></script>	  
+  	  <script type="text/javascript" src="[[Code: ContextPath]]/resources/root/app.js"></script>
+	  <link rel="stylesheet" href="[[Code: ContextPath]]/resources/root/style.css">  	  
       <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
       <style>
 	  [[Snippet: main-css-ro]]  
       </style>
       <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
+
+ 	  <script>
+  	  Ext.Loader.setConfig({
+    enabled: true,
+    paths: {
+        'Ext.ux': 'ux/',
+     	 'Ext.ux.plugins': '[[Code: ContextPath]]/resources/root/ux/plugins',
+     	'databrowser.util' : 'app/util'
+    		}
+		});
+		
+Ext.application({
+
+    requires: [
+        'Ext.grid.*',
+        'Ext.data.*',
+        'Ext.util.*',
+        'Ext.toolbar.Paging',
+        'Ext.ModelManager',
+        'Ext.ux.plugins.FitToParent',
+    ],
+    models: [
+        'CatalogsTreeModel',
+        'CatalogsModel',
+        'YearsTreeModel',
+        'StudyModel',
+        'SeriesModel',
+        'VariableModel',
+        'StudyFileModel',
+        'YearModel',
+        'FrequencyModel',
+        'TopicTreeModel'
+     ],
+    stores: [
+        'StudyStore',
+        'SeriesStore',
+        'CatalogStore',
+        'CatalogTreeStore',
+        'YearTreeStore',
+        'YearStore',
+        'VariableStore',
+        'TopicTreeStore',
+        'MemoryVariableStore',
+        'SrMemoryVariableStore'
+    ],
+    views: [
+        'DataBrowserPanel',
+        'CatalogView',
+        'YearView',
+        'DBCard',
+        'Browser',
+        'DetailsPanel',
+        'StudyView',
+        'SeriesView',
+        'YearView',
+        'StudySeriesView',
+        'SeriesMembersView',
+        'VariableView',
+        'FrequencyChart',
+        'Histogram',
+        'VariableDetails',
+        'StackedBarChart',
+        'Alert',
+        'ScatterChart'
+    ],
+	controllers : ['VariableView', 'DataBrowser', 'Browser', 'CatalogView', 'YearView', 'History'],
+    autoCreateViewport: false,
+    name: 'databrowser',
+    appFolder:'[[Code: ContextPath]]/root/app',
+    init : function() {  	
+//    	console.log('init');
+    	Ext.Ajax.timeout = 200000; // 200 seconds 
+	    Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
+	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
+	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
+	    Ext.create('databrowser.view.DataBrowserPanel',{
+	         renderTo: 'dbcontainer',
+	         plugins : ['fittoparent'],
+	     })
+    },
+    
+    launch : function() {
+    	console.log('launch application');    	
+	    Ext.tip.QuickTipManager.init();
+	    
+	    var me = this;
+      // init Ext.util.History on app launch; if there is a hash in the url,
+//      // our controller will load the appropriate content
+//      Ext.Ajax.timeout = 300000; 
+//	    Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
+//	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
+//	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
+      
+      
+      
+      Ext.util.History.init(function(){
+      	console.log('history init firing event');
+      	var hash = document.location.hash;
+         // me.getMainController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
+//            me.getHistoryController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
+          	me.getHistoryController().fireEvent( 'tokenchangeinit', hash.replace( '#', '' ) );
+            
+      	
+      })
+      // add change handler for Ext.util.History; when a change in the token
+      // occurs, this will fire our controller's event to load the appropriate content
+
+      Ext.util.History.on( 'change', function( token ){
+      	console.log('history change firing event');
+         me.getHistoryController().fireEvent( 'tokenchange', token );
+      });
+
+  }    
+    
+    
+    
+});
+		
+ </script>
+
 
 
 

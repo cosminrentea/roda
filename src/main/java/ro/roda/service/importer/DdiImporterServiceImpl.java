@@ -421,6 +421,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		StudyPersonAssoc spAssoc = new StudyPersonAssoc();
 		spAssoc.setAsocName("authEntity");
 		spAssoc.setAsocDescription("authoring entity");
+		spAssoc.persist();
 
 		// associate persons to the study
 		if (persons != null && persons.size() > 0) {

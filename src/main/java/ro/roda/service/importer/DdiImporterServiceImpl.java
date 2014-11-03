@@ -432,6 +432,8 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				sp.setPersonId(p);
 				sp.setStudyId(s);
 				sp.setAssoctypeId(spAssoc);
+
+				sp.setId(new StudyPersonPK(p.getId(), s.getId(), spAssoc.getId()));
 				sp.persist();
 				studyPersons.add(sp);
 			}

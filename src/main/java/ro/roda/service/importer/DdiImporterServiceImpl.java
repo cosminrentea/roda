@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -27,6 +28,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.SchemaFactory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,33 +61,15 @@ import ro.roda.ddi.SubjectType;
 import ro.roda.ddi.SumDscrType;
 import ro.roda.ddi.TopcClasType;
 import ro.roda.ddi.VarType;
-import ro.roda.domain.Address;
-import ro.roda.domain.CatalogStudy;
-import ro.roda.domain.CatalogStudyPK;
-import ro.roda.domain.CmsFolder;
-import ro.roda.domain.Instance;
-import ro.roda.domain.Keyword;
-import ro.roda.domain.Lang;
-import ro.roda.domain.OtherStatistic;
-import ro.roda.domain.Person;
-import ro.roda.domain.Question;
-import ro.roda.domain.Study;
-import ro.roda.domain.StudyDescr;
-import ro.roda.domain.StudyDescrPK;
-import ro.roda.domain.StudyKeyword;
-import ro.roda.domain.StudyKeywordPK;
-import ro.roda.domain.TimeMeth;
-import ro.roda.domain.Topic;
-import ro.roda.domain.TranslatedTopic;
-import ro.roda.domain.UnitAnalysis;
-import ro.roda.domain.Users;
-import ro.roda.domain.Variable;
+import ro.roda.domain.*;
 import ro.roda.domainjson.AdminJson;
 import ro.roda.service.AdminJsonService;
 import ro.roda.service.CatalogService;
 import ro.roda.service.CityService;
 import ro.roda.service.CmsFileService;
 import ro.roda.service.CmsFolderService;
+import ro.roda.service.OrgService;
+import ro.roda.service.PersonService;
 import ro.roda.service.StudyService;
 import ro.roda.service.filestore.CmsFileStoreService;
 import au.com.bytecode.opencsv.CSVReader;
@@ -111,6 +95,12 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 	@Autowired
 	StudyService studyService;
+
+	@Autowired
+	PersonService personService;
+
+	@Autowired
+	OrgService orgService;
 
 	@Autowired
 	CityService cityService;
@@ -286,6 +276,9 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				sumDscrType = stdyInfoType.getSumDscr().get(0);
 			}
 		}
+
+		List<Person> persons = new ArrayList<Person>();
+
 		if (stdyDscrType.getCitation().size() > 0) {
 			citationType = stdyDscrType.getCitation().get(0);
 			RspStmtType rspStmtType = citationType.getRspStmt();
@@ -297,14 +290,20 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 						Person person = new Person();
 
 						// TODO split name
-						person.setFname(authEntyType.content.trim());
-						person.setLname(authEntyType.content.trim());
+						// person.setFname(authEntyType.content.trim());
+						// person.setLname(authEntyType.content.trim());
+						String[] personName = StringUtils.split(authEntyType.content.trim(), " ");
+						person.setFname(personName[0]);
+						person.setLname(personName[1]);
 
 						// TODO use affiliation to link Person with an Org
 						// (using abbreviation)
-						person.setMname(authEntyType.getAffiliation());
+						// person.setMname(authEntyType.getAffiliation());
 
-						person.persist();
+						persons.add(person);
+
+						// LV: temporarily commented
+						// person.persist();
 					}
 				}
 			}
@@ -418,6 +417,25 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		ua.setStudies(uas);
 
 		s.persist();
+
+		StudyPersonAssoc spAssoc = new StudyPersonAssoc();
+		spAssoc.setAsocName("authEntity");
+		spAssoc.setAsocDescription("authoring entity");
+
+		// associate persons to the study
+		if (persons != null && persons.size() > 0) {
+			Set<StudyPerson> studyPersons = new HashSet<StudyPerson>();
+			for (Person p : persons) {
+				p.persist();
+				StudyPerson sp = new StudyPerson();
+				sp.setPersonId(p);
+				sp.setStudyId(s);
+				sp.setAssoctypeId(spAssoc);
+				sp.persist();
+				studyPersons.add(sp);
+			}
+			s.setStudypeople(studyPersons);
+		}
 
 		StudyDescr sd = new StudyDescr();
 		// TODO obtain Romanian language, don't use directly ID = 1

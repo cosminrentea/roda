@@ -38,4 +38,5 @@ public class TopicServiceImpl implements TopicService {
 	public Topic updateTopic(Topic topic) {
 		return topic.merge();
 	}
+
 }

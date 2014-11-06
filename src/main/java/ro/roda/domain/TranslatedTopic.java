@@ -188,8 +188,8 @@ public class TranslatedTopic {
 	public static List<TranslatedTopic> findTranslatedTopicsByParent(String parentId) {
 		List<TranslatedTopic> topics;
 		if (parentId == null || "0".equalsIgnoreCase(parentId)) {
-			// parent is null or "root" (as sent by ExtJS) => first-level of
-			// topics
+			// parent is null or "root" (as sent by ExtJS)
+			// => first-level of topics
 			topics = entityManager()
 					.createQuery(
 							"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId.parentId IS NULL AND tt.langId.iso639 = :language",
@@ -203,13 +203,6 @@ public class TranslatedTopic {
 							TranslatedTopic.class).setParameter("parentId", Topic.findTopic(Integer.valueOf(parentId)))
 					.setParameter("language", LocaleContextHolder.getLocale().getLanguage()).getResultList();
 		}
-		// if (topics != null && topics.size() > 0) {
-		// Iterator<Topic> topicIterator = topics.iterator();
-		// while (topicIterator.hasNext()) {
-		// Topic topic = (Topic) topicIterator.next();
-		// result.add(findTopic(topic.getId()));
-		// }
-		// }
 
 		return topics;
 	}
@@ -217,6 +210,11 @@ public class TranslatedTopic {
 	public static String toJsonByParent(String parentId) {
 		return new JSONSerializer().include("translation", "indice", "leaf").exclude("*.*").rootName("topics")
 				.serialize(findTranslatedTopicsByParent(parentId));
+	}
+
+	public static String toJsonRelevantTree() {
+		// TODO Cosmin Auto-generated method stub
+		return null;
 	}
 
 	@EmbeddedId

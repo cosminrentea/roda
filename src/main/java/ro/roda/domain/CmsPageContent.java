@@ -104,7 +104,7 @@ public class CmsPageContent {
 			sid.addField("cmsPageContent.cmspageid_t", cmsPageContent.getCmsPageId());
 			sid.addField("cmsPageContent.name_s", cmsPageContent.getName());
 			sid.addField("cmsPageContent.contenttitle_s", cmsPageContent.getContentTitle());
-			sid.addField("cmsPageContent.contenttext_s", cmsPageContent.getContentText());
+			sid.addField("cmsPageContent.contenttext_t", cmsPageContent.getContentText());
 			sid.addField("cmsPageContent.orderinpage_i", cmsPageContent.getOrderInPage());
 			// Add summary field to allow searching documents for objects of
 			// this type

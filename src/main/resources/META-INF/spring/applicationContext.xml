@@ -134,7 +134,7 @@
 				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
 				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
 				<prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
-				<prop key="hibernate.hbm2ddl.import_files">import-${spring.profiles.active}.sql</prop>
+				<prop key="hibernate.hbm2ddl.import_files">import.sql,import-${spring.profiles.active}.sql</prop>
 				<prop key="org.hibernate.envers.default_schema">${org.hibernate.envers.default_schema}</prop>
 				<prop key="org.hibernate.envers.revision_listener">${org.hibernate.envers.revision_listener}</prop>
 				<prop key="org.hibernate.envers.revision_on_collection_change">${org.hibernate.envers.revision_on_collection_change}

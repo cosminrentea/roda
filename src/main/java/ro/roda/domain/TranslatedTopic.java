@@ -185,7 +185,7 @@ public class TranslatedTopic {
 		return translatedTopic;
 	}
 
-	public static List<TranslatedTopic> findTranslatedTopicsByParent(String parentId) {
+	public static String toJsonByParent(String parentId, String language) {
 		List<TranslatedTopic> topics;
 		if (parentId == null || "0".equalsIgnoreCase(parentId)) {
 			// parent is null or "root" (as sent by ExtJS)
@@ -193,28 +193,27 @@ public class TranslatedTopic {
 			topics = entityManager()
 					.createQuery(
 							"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId.parentId IS NULL AND tt.langId.iso639 = :language",
-							TranslatedTopic.class)
-					.setParameter("language", LocaleContextHolder.getLocale().getLanguage()).getResultList();
+							TranslatedTopic.class).setParameter("language", language).getResultList();
 		} else {
 			// we assume parentId is a regular number
 			topics = entityManager()
 					.createQuery(
 							"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId.parentId = :parentId AND tt.langId.iso639 = :language",
 							TranslatedTopic.class).setParameter("parentId", Topic.findTopic(Integer.valueOf(parentId)))
-					.setParameter("language", LocaleContextHolder.getLocale().getLanguage()).getResultList();
+					.setParameter("language", language).getResultList();
 		}
 
-		return topics;
-	}
-
-	public static String toJsonByParent(String parentId) {
 		return new JSONSerializer().include("translation", "indice", "leaf").exclude("*.*").rootName("topics")
-				.serialize(findTranslatedTopicsByParent(parentId));
+				.serialize(topics);
 	}
 
-	public static String toJsonRelevantTree() {
-		// TODO Cosmin Auto-generated method stub
-		return null;
+	public static String toJsonRelevantTree(String language) {
+		List<TranslatedTopic> usedTranslatedTopics = entityManager()
+				.createQuery(
+						"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId IN ( SELECT DISTINCT t FROM Topic t JOIN t.studies s ) AND tt.langId.iso639 = :language",
+						TranslatedTopic.class).setParameter("language", language).getResultList();
+		return new JSONSerializer().include("translation", "indice", "leaf").exclude("*.*").rootName("topics")
+				.deepSerialize(usedTranslatedTopics);
 	}
 
 	@EmbeddedId

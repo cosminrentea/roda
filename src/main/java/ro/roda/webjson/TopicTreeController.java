@@ -1,5 +1,7 @@
 package ro.roda.webjson;
 
+import java.util.Locale;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,20 +16,22 @@ import ro.roda.domain.TranslatedTopic;
 @Controller
 public class TopicTreeController {
 
-	@RequestMapping(value = "/tree", headers = "Accept=application/json")
+	@RequestMapping(value = "/tree-all", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> tree(@RequestParam(value = "node", required = false) String id) {
+	public ResponseEntity<String> tree(@RequestParam(value = "node", required = false) String id, Locale locale) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		return new ResponseEntity<String>(TranslatedTopic.toJsonByParent(id), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(TranslatedTopic.toJsonByParent(id, locale.getLanguage()), headers,
+				HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/tree-relevant", headers = "Accept=application/json")
+	@RequestMapping(value = "/tree", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> treeRelevant(@RequestParam(value = "node", required = false) String id) {
+	public ResponseEntity<String> treeRelevant(@RequestParam(value = "node", required = false) String id, Locale locale) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		return new ResponseEntity<String>(TranslatedTopic.toJsonRelevantTree(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(TranslatedTopic.toJsonRelevantTree(locale.getLanguage()), headers,
+				HttpStatus.OK);
 	}
 
 }

@@ -42,9 +42,6 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	XmlUtils xu;
 
 	@Autowired
-	SolrUtils su;
-
-	@Autowired
 	CmsImporterService importer;
 
 	@Autowired
@@ -61,10 +58,6 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 		if (event.getApplicationContext().getParent() == null) {
 			// root context
 			log.trace("event.getApplicationContext() = " + event.getApplicationContext());
-
-			// check if Solr is online and delete all its previous data
-			// su.pingSolr();
-			// su.deleteAll();
 
 			// import all data using the Importer service
 			try {

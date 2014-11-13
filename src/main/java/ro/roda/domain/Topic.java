@@ -205,6 +205,10 @@ public class Topic {
 	@OneToMany(mappedBy = "topicId")
 	private Set<TranslatedTopic> translations;
 
+	transient public Set<Topic> relevantTopics;
+
+	transient public boolean includesRelevantTopics;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -324,6 +328,14 @@ public class Topic {
 		this.synonimTopics = synonims;
 	}
 
+	public Set<TranslatedTopic> getTranslations() {
+		return translations;
+	}
+
+	public void setTranslations(Set<TranslatedTopic> translations) {
+		this.translations = translations;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader")
 				.include("translations.*").serialize(this);
@@ -363,13 +375,5 @@ public class Topic {
 
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
-	}
-
-	public Set<TranslatedTopic> getTranslations() {
-		return translations;
-	}
-
-	public void setTranslations(Set<TranslatedTopic> translations) {
-		this.translations = translations;
 	}
 }

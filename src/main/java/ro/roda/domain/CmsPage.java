@@ -46,8 +46,53 @@ import flexjson.JSONSerializer;
 @Audited
 public class CmsPage implements Comparable<CmsPage> {
 
-	public static long countCmsPages() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPage o", Long.class).getSingleResult();
+	public static final String SOLR_CMSPAGE = "cmspage";
+
+	public static final String SOLR_CMSPAGE_EN = "Page";
+
+	public static final String SOLR_CMSPAGE_RO = "Pagina";
+
+	public static void indexCmsPage(CmsPage cmsPage) {
+		List<CmsPage> cmspages = new ArrayList<CmsPage>();
+		cmspages.add(cmsPage);
+		indexCmsPages(cmspages);
+	}
+
+	@Async
+	public static void indexCmsPages(Collection<CmsPage> cmspages) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (CmsPage cmsPage : cmspages) {
+			if (cmsPage.searchable) {
+				SolrInputDocument sid = new SolrInputDocument();
+				sid.addField("id", SOLR_CMSPAGE + "_" + cmsPage.getId());
+				String language = cmsPage.getLangId().getIso639();
+				sid.addField("language_s", language);
+				String entity = null;
+				if ("ro".equalsIgnoreCase(language)) {
+					entity = SOLR_CMSPAGE_RO;
+				}
+				if ("en".equalsIgnoreCase(language)) {
+					entity = SOLR_CMSPAGE_EN;
+				}
+				sid.addField("entity_s", entity);
+				sid.addField("name_t", cmsPage.getName());
+				sid.addField("description_t", cmsPage.getCmsPageContents().iterator().next().getContentText());
+				sid.addField("url_s", cmsPage.getUrl());
+				sid.addField(
+						"summary_t",
+						new StringBuilder().append(cmsPage.getCmsLayoutId()).append(" ")
+								.append(cmsPage.getCmsPageTypeId()).append(" ").append(cmsPage.getName()).append(" ")
+								.append(cmsPage.getUrl()).append(" ").append(cmsPage.getId()));
+				documents.add(sid);
+			}
+			try {
+				SolrServer solrServer = solrServer();
+				solrServer.add(documents);
+				solrServer.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Async
@@ -67,6 +112,10 @@ public class CmsPage implements Comparable<CmsPage> {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
+	}
+
+	public static long countCmsPages() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPage o", Long.class).getSingleResult();
 	}
 
 	public static List<CmsPage> findAllCmsPages() {
@@ -178,40 +227,6 @@ public class CmsPage implements Comparable<CmsPage> {
 
 	public static CmsPage fromJsonToCmsPage(String json) {
 		return new JSONDeserializer<CmsPage>().use(null, CmsPage.class).deserialize(json);
-	}
-
-	public static void indexCmsPage(CmsPage cmsPage) {
-		List<CmsPage> cmspages = new ArrayList<CmsPage>();
-		cmspages.add(cmsPage);
-		indexCmsPages(cmspages);
-	}
-
-	@Async
-	public static void indexCmsPages(Collection<CmsPage> cmspages) {
-		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-		for (CmsPage cmsPage : cmspages) {
-			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "cmspage_" + cmsPage.getId());
-			sid.addField("cmsPage.cmslayoutid_t", cmsPage.getCmsLayoutId());
-			sid.addField("cmsPage.cmspagetypeid_t", cmsPage.getCmsPageTypeId());
-			sid.addField("cmsPage.name_s", cmsPage.getName());
-			sid.addField("cmsPage.url_s", cmsPage.getUrl());
-			sid.addField("cmsPage.id_i", cmsPage.getId());
-			// Add summary field to allow searching documents for objects of
-			// this type
-			sid.addField("cmspage_solrsummary_t",
-					new StringBuilder().append(cmsPage.getCmsLayoutId()).append(" ").append(cmsPage.getCmsPageTypeId())
-							.append(" ").append(cmsPage.getName()).append(" ").append(cmsPage.getUrl()).append(" ")
-							.append(cmsPage.getId()));
-			documents.add(sid);
-		}
-		try {
-			SolrServer solrServer = solrServer();
-			solrServer.add(documents);
-			solrServer.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static QueryResponse search(SolrQuery query) {

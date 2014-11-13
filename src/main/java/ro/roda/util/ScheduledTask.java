@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import ro.roda.service.solr.SolrService;
+
 @Component
 public class ScheduledTask {
 
@@ -13,7 +15,7 @@ public class ScheduledTask {
 	DatabaseUtils du;
 
 	@Autowired
-	SolrUtils su;
+	SolrService ss;
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -29,8 +31,7 @@ public class ScheduledTask {
 
 	@Scheduled(cron = "${scheduler.cron.ping-solr}")
 	public void pingSolr() {
-		// log.trace("pingSolr");
-		// su.pingSolr();
+		ss.ping();
 	}
 
 	@Scheduled(cron = "${scheduler.cron.vacuum}")

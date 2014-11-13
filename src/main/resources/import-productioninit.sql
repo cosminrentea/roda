@@ -9,12 +9,6 @@ insert into users(username,password,enabled) values ('user','d9a440f9f8fd4b3d8c2
 -- visitor password: V1s1t0r
 insert into users(username,password,enabled) values ('visitor','e61bda547b339685a93108103e97684a3081b5047621b2ec3bebe240d15cd8dc',true);
 
--- user_group
-insert into user_group(groupname,enabled,description) values ('ROLE_ADMIN',true,'group for administrators');
-insert into user_group(groupname,enabled,description) values ('ROLE_USER',true,'group for users');
-insert into user_group(groupname,enabled,description) values ('ROLE_VISITOR',true,'group for visitors');
-
-
 -- authorities
 insert into authorities(username,authority) values ('admin','ROLE_ADMIN');
 insert into authorities(username,authority) values ('admin','ROLE_USER');

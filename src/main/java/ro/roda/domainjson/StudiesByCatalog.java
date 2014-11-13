@@ -28,9 +28,6 @@ public class StudiesByCatalog extends JsonInfo {
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
 				"studies.geographicCoverage", "studies.unitAnalysis", "studies.universe");
 
-		// return "{\"data\":[{\"name\":\"RODA\",\"level\":0,\"data\":"
-		// + serializer.serialize(collection) + "}]}";
-
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 		serializer.transform(new FieldNameTransformer("nrStudies"), "studiesCount");
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "studies.geographicCoverage");
@@ -39,7 +36,7 @@ public class StudiesByCatalog extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
 		// TODO transform the fields name in variables and files
 
-		return "{\"data\":" + serializer.serialize(collection) + "}";
+		return serializer.rootName("data").serialize(collection);
 	}
 
 	public static List<StudiesByCatalog> findAllStudiesByCatalog() {
@@ -228,6 +225,6 @@ public class StudiesByCatalog extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
 		// TODO transform the fields name in variables and files
 
-		return "{\"data\":" + serializer.serialize(this) + "}";
+		return serializer.rootName("data").serialize(this);
 	}
 }

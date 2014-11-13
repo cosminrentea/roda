@@ -214,6 +214,12 @@ public class CmsImporterServiceImpl implements CmsImporterService {
 				Document document = builder.parse(file);
 
 				p = new CmsPage();
+				// page defaults (can be overriden in XMLs)
+				p.setVisible(true);
+				p.setNavigable(true);
+				p.setPublished(true);
+				p.setSearchable(true);
+
 				CmsPageContent pContent = null;
 				Lang lang = null;
 

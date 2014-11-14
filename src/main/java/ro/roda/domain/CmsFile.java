@@ -123,11 +123,13 @@ public class CmsFile {
 		for (CmsFile cmsFile : cmsfiles) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmsfile_" + cmsFile.getId());
-			sid.addField("cmsFile.cmsfolderid_t", cmsFile.getCmsFolderId());
+//			sid.addField("cmsFile.cmsfolderid_t", cmsFile.getCmsFolderId());
 			sid.addField("cmsFile.filename_s", cmsFile.getFilename());
-			sid.addField("cmsFile.label_s", cmsFile.getLabel());
-			sid.addField("cmsFile.filesize_l", cmsFile.getFilesize());
-			sid.addField("cmsFile.id_i", cmsFile.getId());
+//			sid.addField("cmsFile.label_s", cmsFile.getLabel());
+//			sid.addField("cmsFile.filesize_l", cmsFile.getFilesize());
+//			sid.addField("cmsFile.id_i", cmsFile.getId());
+			sid.addField("name", cmsFile.getFilename());
+			sid.addField("entity", "file");			
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(

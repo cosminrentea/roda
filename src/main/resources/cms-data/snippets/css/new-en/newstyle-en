@@ -414,3 +414,184 @@ h1, h2, h3, h4, h5, h6{
 h1{
 line-height:22px;
 }
+/* -- search window */
+
+a.boxclose{
+    float:right;
+    margin-top:2px;
+    cursor:pointer;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 30px;
+    background: #0F3E1E;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 0px;
+    padding: 11px 3px;       
+}
+
+.entity {
+float:left;
+width: 30px;
+}
+
+.result {
+width: 400px;
+float: right;
+}
+
+.restable td {
+	margin: 10px;
+	padding: 10px;
+
+}
+
+.src_nav{
+	color: #3A9E56;
+    float: left;
+    font-weight: bold;
+    margin: 5px 4px 0 5px;
+    cursor: pointer;
+}
+
+.nr_res{
+float:right;
+margin-right:15px;
+}
+
+.cpl{
+clear:both;
+font-size:0.1px;
+line-height:0.1px;
+width:100%;
+height:0px;
+}
+
+hr{
+border:0px;
+border-top:1px solid #ccc;
+margin:5px 0px 10px 0px;
+}
+
+#results{
+font-size:12px;
+background: url('[[FileURL:bg_sidebar]]') no-repeat scroll left bottom #f0ece0;
+border-radius: 10px;
+-webkit-box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.24);
+-moz-box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.24);
+box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.24);
+left:50%;
+margin-left:35px;
+top:85px;
+}
+
+#res_table{
+overflow:auto;
+height:355px;
+}
+
+#res_table table tr td{
+font-size:12px;
+border-bottom:1px solid #ccc;
+}
+
+#res_table table tr td p{
+margin-top:5px;
+}
+
+#res_table table tr td a{
+color:#17933D;
+text-decoration:none;
+}
+
+#res_table table tr:hover{
+background: white;
+}
+
+#res_table table tr td a:hover{
+color:#014217;
+}
+
+#header_res{
+background: #d5d1c6; 
+/* background:  url('[[FileURL:bg_sidebar]]') no-repeat scroll left bottom #f0ece0; */
+-webkit-box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.24);
+-moz-box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.24);
+box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.24);
+-webkit-box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.55);
+-moz-box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.55);
+box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.55);
+padding:10px;
+border:1px solid #ccc;
+border-radius: 10px 10px 0px 0px;
+}
+
+
+.loadmask {
+    z-index: 100;
+    position: absolute;
+    top:0;
+    left:0;
+    -moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity=50);
+    background-color: #CCC;
+    width: 100%;
+    height: 100%;
+    zoom: 1;
+}
+.loadmask-msg {
+    z-index: 20001;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border:1px solid #0F3E1E;
+    background: #19953f;
+    padding:2px;
+}
+.loadmask-msg div {
+    padding:15px 20px 15px 25px;
+    background:  url('[[FileURL:loading]]') no-repeat scroll 5px 12px #FBFBFB;
+    line-height: 16px;
+        border:1px solid #0F3E1E;
+    color:#222;
+    font:normal 11px tahoma, arial, helvetica, sans-serif;
+    cursor:wait;
+}
+.masked {
+    overflow: hidden !important;
+}
+.masked-relative {
+    position: relative !important;
+}
+.masked-hidden {
+    visibility: hidden !important;
+}
+
+td.tpage{
+background: url('[[FileURL:spage]]') no-repeat center center;
+width:50px;
+}
+
+td.tstudy{
+background: url('[[FileURL:spage]]') no-repeat center center;
+width:50px;
+}
+
+td.tcatalog{
+background: url('[[FileURL:spage]]') no-repeat center center;
+width:50px;
+}
+
+td.tquestion{
+background: url('[[FileURL:spage]]') no-repeat center center;
+width:50px;
+}
+
+td.tvariable{
+background: url('[[FileURL:spage]]') no-repeat center center;
+width:50px;
+}
+
+

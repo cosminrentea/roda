@@ -32,6 +32,8 @@ import org.apache.solr.common.SolrInputDocument;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -76,13 +78,13 @@ public class CmsPage implements Comparable<CmsPage> {
 				}
 				sid.addField("entity_s", entity);
 				sid.addField("name_t", cmsPage.getName());
-				sid.addField("description_t", cmsPage.getCmsPageContents().iterator().next().getContentText());
-				sid.addField("url_s", cmsPage.getUrl());
-				sid.addField(
-						"summary_t",
-						new StringBuilder().append(cmsPage.getCmsLayoutId()).append(" ")
-								.append(cmsPage.getCmsPageTypeId()).append(" ").append(cmsPage.getName()).append(" ")
-								.append(cmsPage.getUrl()).append(" ").append(cmsPage.getId()));
+				sid.addField("description_t",
+						Jsoup.clean(cmsPage.getCmsPageContents().iterator().next().getContentText(), Whitelist.none()));
+				sid.addField("url_s", language + "/" + cmsPage.getUrl());
+				// sid.addField(
+				// "summary_t",
+				// new StringBuilder().append(cmsPage.getName()).append(" ")
+				// .append(cmsPage.getCmsPageContents().iterator().next().getContentText()));
 				documents.add(sid);
 			}
 			try {
@@ -99,7 +101,7 @@ public class CmsPage implements Comparable<CmsPage> {
 	public static void deleteIndex(CmsPage cmsPage) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("cmspage_" + cmsPage.getId());
+			solrServer.deleteById(SOLR_CMSPAGE + "_" + cmsPage.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();

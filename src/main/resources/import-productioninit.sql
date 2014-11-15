@@ -24,4 +24,4 @@ insert into user_profile(user_id, firstname, middlename, lastname, title, saluta
 
 -- global settings 
 insert into setting(name, "value") values ('baseurl','/');
-insert into setting(name, "value") values ('defaultlanguage','en');
+insert into setting(name, "value") values ('solrqueryurl','http://localhost:8983/solr/');

@@ -354,12 +354,12 @@ public class CmsPageContent {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexCmsPageContent(this);
+		// indexCmsPageContent(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override

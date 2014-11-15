@@ -19,7 +19,7 @@
 		The located property files are parsed and their values can then be used within 
 		application context files in the form of ${propertyKey}. -->
 	<context:property-placeholder
-		location="classpath*:META-INF/spring/roda-${spring.profiles.active}.properties,classpath*:META-INF/spring/local-${spring.profiles.active}.properties" />
+		location="classpath*:META-INF/spring/default.properties,classpath*:META-INF/spring/roda-${spring.profiles.active}.properties,classpath*:META-INF/spring/local-${spring.profiles.active}.properties" />
 
 	<!-- Turn on AspectJ @Configurable support. As a result, any time you instantiate 
 		an object, Spring will attempt to perform dependency injection on that object. 

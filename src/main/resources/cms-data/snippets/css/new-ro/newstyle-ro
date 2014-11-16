@@ -591,3 +591,7 @@ background: url('[[FileURL:spage]]') no-repeat center center;
 width:50px;
 }
 
+.jsdatatable th {
+    padding-left: 20px;
+    text-align: left;
+}

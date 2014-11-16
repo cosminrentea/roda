@@ -68,7 +68,7 @@ function on_data(lang, data) {
 					entityclass = 'tempty';
 				}
 				
-        		rescont = rescont + '<tr><td valign="top" class="'+entityclass+'"></td><td valign="top">' + '<div class="restitle"><a href="http://www.google.com">'+ cleanTitle +'</a></div>' +'<p>' + cleanText + '</p></td></tr>';
+        		rescont = rescont + '<tr><td valign="top" class="'+entityclass+'"></td><td valign="top">' + '<div class="restitle"><a href="/'+item.url +'">'+ cleanTitle +'</a></div>' +'<p>' + cleanText + '</p></td></tr>';
     	});
 		rescont = rescont + '</table></div>';
     } else {
@@ -93,7 +93,7 @@ function on_data(lang, data) {
 			page=10;
 		}
         var langpar = 'on_recdata_' +lang;
-        var url='http://localhost:8983/solr/collection1/select/?q=description:'+query+'&version=2.2&hl=true&hl.fl=description&start='+start+'&rows='+page+'&indent=on&wt=json&callback=?&json.wrf='+ langpar;
+        var url='http://localhost:8983/solr/collection1/select/?q=language:'+lang+'AND description:'+query+'&version=2.2&hl=true&hl.fl=description&start='+start+'&rows='+page+'&indent=on&wt=json&callback=?&json.wrf='+ langpar;
 		$.getJSON(url);
 
       

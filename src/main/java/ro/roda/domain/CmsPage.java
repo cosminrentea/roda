@@ -68,7 +68,7 @@ public class CmsPage implements Comparable<CmsPage> {
 				SolrInputDocument sid = new SolrInputDocument();
 				sid.addField("id", SOLR_CMSPAGE + "_" + cmsPage.getId());
 				String language = cmsPage.getLangId().getIso639();
-				sid.addField("language_s", language);
+				sid.addField("language", language);
 				String entity = null;
 				if ("ro".equalsIgnoreCase(language)) {
 					entity = SOLR_CMSPAGE_RO;
@@ -76,11 +76,11 @@ public class CmsPage implements Comparable<CmsPage> {
 				if ("en".equalsIgnoreCase(language)) {
 					entity = SOLR_CMSPAGE_EN;
 				}
-				sid.addField("entity_s", entity);
-				sid.addField("name_t", cmsPage.getName());
-				sid.addField("description_t",
+				sid.addField("entity", entity);
+				sid.addField("name", cmsPage.getName());
+				sid.addField("description",
 						Jsoup.clean(cmsPage.getCmsPageContents().iterator().next().getContentText(), Whitelist.none()));
-				sid.addField("url_s", language + "/" + cmsPage.getUrl());
+				sid.addField("url", language + "/" + cmsPage.getUrl());
 				// sid.addField(
 				// "summary_t",
 				// new StringBuilder().append(cmsPage.getName()).append(" ")

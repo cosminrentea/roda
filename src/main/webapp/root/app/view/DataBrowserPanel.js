@@ -22,6 +22,7 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                     collapseDirection: 'left',
                     collapsible: true,
                     resizable:true,
+                    title: translations.selectgrouping,
                     activeTab: 0,
                 },
                 {

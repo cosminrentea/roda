@@ -21,9 +21,12 @@ translations = {
 		submit: "Confirmare",
 		logout: 'Logout',
 
+		
+
+		selectgrouping : 'Alegeti gruparea studiilor: ',		
 		catalogs : 'Cataloage',
 		years : 'Ani',
-		topics : 'Cuvinte cheie',
+		topics : 'Topic',
 		selectelement: 'Selectati un element din panoul din stanga',
 		studyview : 'Studiu',
 		seriesview : 'Serie',

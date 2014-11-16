@@ -65,7 +65,12 @@ Ext.define('databrowser.view.StudyView', {
                                         '<tr><th>'+ translations.stdgeounit +':</th><td> {geo_unit}</td></tr>',
                                         '<tr><th>'+ translations.stdrestype +':</th><td> {research_instrument}</td></tr>',
                                         '<tr><th>'+ translations.stdunitanalysis +':</th><td> {unit_analysis}</td></tr>',
-                                        '<tr><th>'+ translations.stdweighting +':</th><td> {weighting}</td></tr>', '</table>', '</div>'),
+                                        '<tr><th>'+ translations.stdweighting +':</th><td> {weighting}</td></tr>', '</table>', '</div>',
+                                        '<tpl for="persons">',
+                                        	'<b>cucu{fname}</b>',
+                                        '</tpl>'
+                
+                						),
             },
             {
                 autoScroll : true,
@@ -235,12 +240,12 @@ Ext.define('databrowser.view.StudyView', {
             // end gridpanel
 
             },
-            {
-                autoScroll : true,
-                layout : 'fit',
-                title : translations.stdate,
-                id : 'sdata'
-            },
+//            {
+//                autoScroll : true,
+//                layout : 'fit',
+//                title : translations.stdate,
+//                id : 'sdata'
+//            },
             {
                 autoScroll : true,
                 layout : 'fit',

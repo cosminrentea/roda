@@ -21,9 +21,10 @@ translations = {
 		submit: "Submit",
 		logout: 'Logout',
 
+		selectgrouping : 'Select study grouping:',		
 		catalogs : 'Catalogs',
 		years : 'Years',
-		topics : 'Keywords',
+		topics : 'Topics',
 		selectelement: 'Select an element from the left panel',
 		studyview: 'Study view',
 		seriesview: 'Series',

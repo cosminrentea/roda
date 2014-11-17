@@ -314,8 +314,8 @@ public class AclClass {
 				|| (class1 != null && class1.equalsIgnoreCase(((AclClass) obj).class1));
 	}
 
-	@JsonIgnore
 	@JSON(include = false)
+	@JsonIgnore
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}

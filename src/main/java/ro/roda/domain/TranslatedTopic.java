@@ -30,9 +30,10 @@ import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -327,7 +328,7 @@ public class TranslatedTopic {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public AuditReader getAuditReader() {
+	@JsonIgnore public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

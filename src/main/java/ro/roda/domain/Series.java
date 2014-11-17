@@ -35,6 +35,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -327,7 +329,7 @@ public class Series {
 				|| (catalog != null && catalog.equals(((Series) obj).catalog));
 	}
 
-	public AuditReader getAuditReader() {
+	@JsonIgnore public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

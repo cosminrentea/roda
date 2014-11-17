@@ -340,8 +340,8 @@ public class AclSid {
 				|| (sid != null && sid.equalsIgnoreCase(((AclSid) obj).sid));
 	}
 
-	@JsonIgnore
 	@JSON(include = false)
+	@JsonIgnore
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}

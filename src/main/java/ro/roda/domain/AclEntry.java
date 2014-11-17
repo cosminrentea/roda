@@ -313,8 +313,8 @@ public class AclEntry {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@JsonIgnore
 	@JSON(include = false)
+	@JsonIgnore
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}

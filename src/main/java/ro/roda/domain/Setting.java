@@ -10,8 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -34,9 +32,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.domainjson.AuditSimplifiedRevisionsByUsername;
 import ro.roda.transformer.FieldNameTransformer;
-
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -348,7 +344,7 @@ public class Setting {
 				|| ((name != null && name.equalsIgnoreCase(((Setting) obj).name)));
 	}
 
-	// public AuditReader getAuditReader() {
+	// @JsonIgnore public AuditReader getAuditReader() {
 	// return AuditReaderFactory.get(entityManager);
 	// }
 

@@ -11,8 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
@@ -20,7 +18,6 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.TypedQuery;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -36,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -343,7 +342,7 @@ public class UserSetting {
 				|| (name != null && name.equalsIgnoreCase(((UserSetting) obj).name));
 	}
 
-	public AuditReader getAuditReader() {
+	@JsonIgnore public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

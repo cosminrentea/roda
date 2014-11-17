@@ -20,8 +20,6 @@ import javax.persistence.Table;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -33,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -475,7 +475,7 @@ public class Lang {
 				|| (iso639 != null && iso639.equalsIgnoreCase(((Lang) obj).iso639));
 	}
 
-	public AuditReader getAuditReader() {
+	@JsonIgnore public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

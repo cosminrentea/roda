@@ -66,7 +66,7 @@ public class GeoData {
 		return em;
 	}
 
-	public static List<GeoData> findAllGeoDatas() {
+	public static List<GeoData> findAllGeoData() {
 		return entityManager().createQuery("SELECT o FROM GeoData o", GeoData.class).getResultList();
 	}
 

@@ -40,22 +40,14 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 
 	private static final String elsstPreferredTerms = "elsst/elsst_ro_pt.csv";
 
+	private static final String elsstUsedFor = "elsst/elsst_ro_uf.csv";
+
+	private static final String elsstScopeNotes = "elsst/elsst_ro_sn.csv";
+
 	private static final String elsstRels = "elsst/elsst_ro_rels.csv";
 
 	@PersistenceContext
 	transient EntityManager entityManager;
-
-	@Autowired
-	AdminJsonService adminJsonService;
-
-	@Autowired
-	CmsFileStoreService cmsFileStoreService;
-
-	@Autowired
-	CmsFolderService cmsFolderService;
-
-	@Autowired
-	CmsFileService cmsFileService;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new ElsstImporterServiceImpl().entityManager;
@@ -76,7 +68,7 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 		reader.close();
 
 		// an ad-hoc cache for the Topics
-		Map<String, Topic> enTopicsMap = new HashMap<String, Topic>();
+		Map<String, Topic> roTopicsMap = new HashMap<String, Topic>();
 
 		// used for translations & original
 		Lang roLang = Lang.findLang("ro");
@@ -84,12 +76,13 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 		Lang enLang = Lang.findLang("en");
 		Integer enLangId = enLang.getId();
 
+		Topic t;
 		TranslatedTopic tt;
 		Set<TranslatedTopic> ttSet;
 		String errorMessage;
 		for (String[] csvLine : csvLines) {
 
-			Topic t = new Topic();
+			t = new Topic();
 			t.setParentId(null);
 			t.persist();
 
@@ -142,9 +135,36 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 			ttSet.add(tt);
 			enLang.setTranslatedTopics(ttSet);
 
-			// put the current Topic (EN !) in the ad-hoc cache
-			enTopicsMap.put(csvLine[1], t);
+			// put the current Topic (RO !) in the ad-hoc cache
+			roTopicsMap.put(csvLine[0], t);
 
+		}
+
+		// TODO set multiple UFs for a single PreferredTerm
+		// reader = new CSVReader(new BufferedReader(new InputStreamReader(
+		// new ClassPathResource(elsstUsedFor).getInputStream(), "UTF8")));
+		// csvLines = reader.readAll();
+		// reader.close();
+
+		reader = new CSVReader(new BufferedReader(new InputStreamReader(
+				new ClassPathResource(elsstScopeNotes).getInputStream(), "UTF8")));
+		csvLines = reader.readAll();
+		reader.close();
+
+		for (String[] csvLine : csvLines) {
+
+			if (csvLine.length != 2) {
+				errorMessage = "ELSST Scope Notes is not correctly defined in CSV: number of items per line";
+				log.error(errorMessage);
+				continue;
+			}
+
+			t = roTopicsMap.get(csvLine[0]);
+			if (t != null) {
+				tt = TranslatedTopic.findTranslatedTopic(new TranslatedTopicPK(roLangId, t.getId()));
+				tt.setScopeNotes(csvLine[1]);
+				tt.merge();
+			}
 		}
 
 		reader = new CSVReader(new BufferedReader(new InputStreamReader(
@@ -161,12 +181,13 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 				continue;
 			}
 
-			Topic src = enTopicsMap.get(csvLine[0]);
-			Topic dst = enTopicsMap.get(csvLine[3]);
+			Topic src = roTopicsMap.get(csvLine[1]);
+			Topic dst = roTopicsMap.get(csvLine[4]);
 
 			if (src == null || dst == null) {
 				errorMessage = "ELSST Relationship is not correctly defined in CSV: some Terms do not exist: "
-						+ csvLine[0] + " ; " + csvLine[3];
+						+ csvLine[0] + " ; " + csvLine[1] + " ; " + csvLine[2] + " ; " + csvLine[3] + " ; "
+						+ csvLine[4];
 				log.error(errorMessage);
 
 				// TODO uncomment this exception-throwing
@@ -181,7 +202,7 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 			// set a parent - child relationship
 			// (type: NT = Narrower Term)
 			if ("NT".equals(csvLine[2].trim())) {
-				log.trace("ELSST Relationship: " + csvLine[0] + " -- " + csvLine[3]);
+				log.trace("ELSST Relationship: " + csvLine[1] + " -- " + csvLine[4]);
 				dst.setParentId(src);
 				Set<Topic> topicSet = src.getTopics();
 				if (topicSet == null) {

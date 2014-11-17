@@ -232,6 +232,9 @@ public class TranslatedTopic {
 	@NotNull
 	private String translation;
 
+	@Column(name = "scope_notes", columnDefinition = "text")
+	private String scopeNotes;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -266,6 +269,10 @@ public class TranslatedTopic {
 
 	public String getTranslation() {
 		return translation;
+	}
+
+	public String getScopeNotes() {
+		return scopeNotes;
 	}
 
 	public Boolean getLeaf() {
@@ -320,6 +327,10 @@ public class TranslatedTopic {
 		this.translation = translation;
 	}
 
+	public void setScopeNotes(String scopeNotes) {
+		this.scopeNotes = scopeNotes;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
@@ -328,7 +339,8 @@ public class TranslatedTopic {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

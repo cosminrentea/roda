@@ -125,13 +125,8 @@ public class CmsFile {
 		for (CmsFile cmsFile : cmsfiles) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmsfile_" + cmsFile.getId());
-//			sid.addField("cmsFile.cmsfolderid_t", cmsFile.getCmsFolderId());
-			sid.addField("cmsFile.filename_s", cmsFile.getFilename());
-//			sid.addField("cmsFile.label_s", cmsFile.getLabel());
-//			sid.addField("cmsFile.filesize_l", cmsFile.getFilesize());
-//			sid.addField("cmsFile.id_i", cmsFile.getId());
 			sid.addField("name", cmsFile.getFilename());
-			sid.addField("entity", "file");			
+			sid.addField("entity", "file");
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
@@ -398,12 +393,12 @@ public class CmsFile {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexCmsFile(this);
+		// indexCmsFile(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	// @Override
@@ -414,7 +409,8 @@ public class CmsFile {
 	// .equals(((CmsFile) obj).cmsFolderId)));
 	// }
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

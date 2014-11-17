@@ -71,18 +71,19 @@ public class CmsPage implements Comparable<CmsPage> {
 				sid.addField("id", SOLR_CMSPAGE + "_" + cmsPage.getId());
 				String language = cmsPage.getLangId().getIso639();
 				sid.addField("language", language);
-				String entity = null;
+				String entityName = null;
 				if ("ro".equalsIgnoreCase(language)) {
-					entity = SOLR_CMSPAGE_RO;
+					entityName = SOLR_CMSPAGE_RO;
 				}
 				if ("en".equalsIgnoreCase(language)) {
-					entity = SOLR_CMSPAGE_EN;
+					entityName = SOLR_CMSPAGE_EN;
 				}
-				sid.addField("entity", entity);
+				sid.addField("entity", SOLR_CMSPAGE);
+				sid.addField("entityname", entityName);
 				sid.addField("name", cmsPage.getName());
 				sid.addField("description",
 						Jsoup.clean(cmsPage.getCmsPageContents().iterator().next().getContentText(), Whitelist.none()));
-				sid.addField("url", language + "/" + cmsPage.getUrl());
+				sid.addField("url", language + "/" + cmsPage.generateFullRelativeUrl());
 				// sid.addField(
 				// "summary_t",
 				// new StringBuilder().append(cmsPage.getName()).append(" ")
@@ -705,6 +706,16 @@ public class CmsPage implements Comparable<CmsPage> {
 		}
 	}
 
+	public String generateFullRelativeUrl() {
+		String result = url;
+		CmsPage parentPage = this.getCmsPageId();
+		while (parentPage != null) {
+			result = parentPage.getUrl() + "/" + result;
+			parentPage = parentPage.getCmsPageId();
+		}
+		return "/" + result;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
@@ -746,7 +757,8 @@ public class CmsPage implements Comparable<CmsPage> {
 		return id.compareTo(cmsPage.getId());
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

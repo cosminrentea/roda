@@ -83,7 +83,7 @@ public class CmsPage implements Comparable<CmsPage> {
 				sid.addField("name", cmsPage.getName());
 				sid.addField("description",
 						Jsoup.clean(cmsPage.getCmsPageContents().iterator().next().getContentText(), Whitelist.none()));
-				sid.addField("url", language + "/" + cmsPage.generateFullRelativeUrl());
+				sid.addField("url", cmsPage.generateFullRelativeUrl());
 				// sid.addField(
 				// "summary_t",
 				// new StringBuilder().append(cmsPage.getName()).append(" ")
@@ -713,7 +713,7 @@ public class CmsPage implements Comparable<CmsPage> {
 			result = parentPage.getUrl() + "/" + result;
 			parentPage = parentPage.getCmsPageId();
 		}
-		return "/" + result;
+		return result;
 	}
 
 	public String toJson() {

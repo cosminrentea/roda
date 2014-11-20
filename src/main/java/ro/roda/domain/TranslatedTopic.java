@@ -239,6 +239,9 @@ public class TranslatedTopic {
 	@Column(name = "scope_notes", columnDefinition = "text")
 	private String scopeNotes;
 
+	@Column(name = "used_for", columnDefinition = "text")
+	private String usedFor;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -277,6 +280,10 @@ public class TranslatedTopic {
 
 	public String getScopeNotes() {
 		return scopeNotes;
+	}
+
+	public String getUsedFor() {
+		return usedFor;
 	}
 
 	public Boolean getLeaf() {
@@ -333,6 +340,10 @@ public class TranslatedTopic {
 
 	public void setScopeNotes(String scopeNotes) {
 		this.scopeNotes = scopeNotes;
+	}
+
+	public void setUsedFor(String usedFor) {
+		this.usedFor = usedFor;
 	}
 
 	public String toJson() {

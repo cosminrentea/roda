@@ -141,10 +141,27 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 		}
 
 		// TODO set multiple UFs for a single PreferredTerm
-		// reader = new CSVReader(new BufferedReader(new InputStreamReader(
-		// new ClassPathResource(elsstUsedFor).getInputStream(), "UTF8")));
-		// csvLines = reader.readAll();
-		// reader.close();
+		reader = new CSVReader(new BufferedReader(new InputStreamReader(
+				new ClassPathResource(elsstUsedFor).getInputStream(), "UTF8")));
+		csvLines = reader.readAll();
+		reader.close();
+
+		for (String[] csvLine : csvLines) {
+
+			if (csvLine.length != 2) {
+				errorMessage = "ELSST U.F. is not correctly defined in CSV: number of items per line";
+				log.error(errorMessage);
+				continue;
+			}
+
+			t = roTopicsMap.get(csvLine[0]);
+			if (t != null) {
+				tt = TranslatedTopic.findTranslatedTopic(new TranslatedTopicPK(roLangId, t.getId()));
+				tt.setScopeNotes(csvLine[1]);
+				tt.setUsedFor(csvLine[1]);
+				tt.merge();
+			}
+		}
 
 		reader = new CSVReader(new BufferedReader(new InputStreamReader(
 				new ClassPathResource(elsstScopeNotes).getInputStream(), "UTF8")));

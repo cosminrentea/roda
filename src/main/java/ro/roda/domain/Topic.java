@@ -365,7 +365,8 @@ public class Topic {
 		return new HashCodeBuilder().append(id).toHashCode();
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

@@ -35,6 +35,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -360,6 +362,7 @@ public class GeoVersion {
 		return true;
 	}
 
+	@JsonIgnore
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}

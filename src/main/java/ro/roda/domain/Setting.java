@@ -75,6 +75,15 @@ public class Setting {
 		return entityManager().find(Setting.class, id);
 	}
 
+	public static Setting findSetting(String settingName) {
+		Setting result = null;
+		if (settingName != null) {
+			result = entityManager().createQuery("SELECT o FROM Setting o WHERE name = ?1", Setting.class)
+					.setParameter(1, settingName).getSingleResult();
+		}
+		return result;
+	}
+
 	public static List<Setting> findSettingEntries(int firstResult, int maxResults) {
 		return entityManager().createQuery("SELECT o FROM Setting o", Setting.class).setFirstResult(firstResult)
 				.setMaxResults(maxResults).getResultList();
@@ -94,7 +103,8 @@ public class Setting {
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 
-		return "{\"success\": true, \"data\":" + serializer.exclude("classAuditReader", "auditReader").serialize(collection) + "}";
+		return "{\"success\": true, \"data\":"
+				+ serializer.exclude("classAuditReader", "auditReader").serialize(collection) + "}";
 	}
 
 	public static void indexSetting(Setting setting) {

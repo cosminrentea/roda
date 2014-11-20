@@ -208,11 +208,15 @@ public class TranslatedTopic {
 				.serialize(topics);
 	}
 
-	public static String toJsonRelevantTree(String language) {
-		List<TranslatedTopic> usedTranslatedTopics = entityManager()
+	public static List<TranslatedTopic> usedTranslatedTopics(String language) {
+		return entityManager()
 				.createQuery(
 						"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId IN ( SELECT DISTINCT t FROM Topic t JOIN t.studies s ) AND tt.langId.iso639 = :language",
 						TranslatedTopic.class).setParameter("language", language).getResultList();
+	}
+
+	public static String toJsonRelevantTree(String language) {
+		List<TranslatedTopic> usedTranslatedTopics = usedTranslatedTopics(language);
 		return new JSONSerializer().include("translation", "indice", "leaf").exclude("*.*").rootName("topics")
 				.deepSerialize(usedTranslatedTopics);
 	}
@@ -231,6 +235,12 @@ public class TranslatedTopic {
 	@Column(name = "translation", columnDefinition = "varchar", length = 50)
 	@NotNull
 	private String translation;
+
+	@Column(name = "scope_notes", columnDefinition = "text")
+	private String scopeNotes;
+
+	@Column(name = "used_for", columnDefinition = "text")
+	private String usedFor;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -266,6 +276,14 @@ public class TranslatedTopic {
 
 	public String getTranslation() {
 		return translation;
+	}
+
+	public String getScopeNotes() {
+		return scopeNotes;
+	}
+
+	public String getUsedFor() {
+		return usedFor;
 	}
 
 	public Boolean getLeaf() {
@@ -320,6 +338,14 @@ public class TranslatedTopic {
 		this.translation = translation;
 	}
 
+	public void setScopeNotes(String scopeNotes) {
+		this.scopeNotes = scopeNotes;
+	}
+
+	public void setUsedFor(String usedFor) {
+		this.usedFor = usedFor;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
@@ -328,7 +354,8 @@ public class TranslatedTopic {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

@@ -15,12 +15,12 @@ public class StudiesByTopic extends JsonInfo {
 	public static String toJsonArray(Collection<StudiesByTopic> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
-		serializer.exclude("studies.leaf", "studies.variables", "studies.files", "studies.persons", "studies.orgs");
-
 		serializer.include("id", "name", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
 				"studies.geographicCoverage", "studies.unitAnalysis", "studies.universe");
+
+		serializer.exclude("*.class");
+		serializer.exclude("*.*");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 		serializer.transform(new FieldNameTransformer("nrStudies"), "studiesCount");
@@ -33,13 +33,13 @@ public class StudiesByTopic extends JsonInfo {
 		return serializer.rootName("data").serialize(collection);
 	}
 
-	public Integer id;
+	private Integer id;
 
-	public String name;
+	private String name;
 
-	public Integer studiesCount;
+	private Integer studiesCount;
 
-	public Set<StudyInfo> studies;
+	private Set<StudyInfo> studies;
 
 	public StudiesByTopic(Integer id) {
 		this.id = id;
@@ -51,6 +51,13 @@ public class StudiesByTopic extends JsonInfo {
 		this.studies = studies;
 	}
 
+	public StudiesByTopic(Integer id, String name, Set<StudyInfo> studies) {
+		this.id = id;
+		this.name = name;
+		this.studies = studies;
+		this.studiesCount = studies.size();
+	}
+
 	public StudiesByTopic(Integer id, String name, Integer studiesCount, Set<StudyInfo> studies) {
 		this.id = id;
 		this.name = name;
@@ -58,15 +65,47 @@ public class StudiesByTopic extends JsonInfo {
 		this.studies = studies;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getStudiesCount() {
+		return studiesCount;
+	}
+
+	public void setStudiesCount(Integer studiesCount) {
+		this.studiesCount = studiesCount;
+	}
+
+	public Set<StudyInfo> getStudies() {
+		return studies;
+	}
+
+	public void setStudies(Set<StudyInfo> studies) {
+		this.studies = studies;
+	}
+
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
-
-		serializer.exclude("*.class");
-		serializer.exclude("studies.leaf", "studies.variables", "studies.files", "studies.persons", "studies.orgs");
 
 		serializer.include("id", "name", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
 				"studies.geographicCoverage", "studies.unitAnalysis", "studies.universe");
+
+		serializer.exclude("*.class");
+		serializer.exclude("*.*");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 		serializer.transform(new FieldNameTransformer("nrStudies"), "studiesCount");

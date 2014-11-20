@@ -23,17 +23,17 @@ public class StudiesByTopicController {
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> list() {
+	public ResponseEntity<String> listDirect() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<StudiesByTopic> result = studiesByTopicService.findAllStudiesByTopic();
+		List<StudiesByTopic> result = studiesByTopicService.findAllDirectStudiesByTopic();
 		return new ResponseEntity<String>(StudiesByTopic.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> show(@PathVariable("id") Integer id) {
-		StudiesByTopic studiesByTopic = studiesByTopicService.findStudiesByTopic(id);
+	public ResponseEntity<String> showDirect(@PathVariable("id") Integer id) {
+		StudiesByTopic studiesByTopic = studiesByTopicService.findDirectStudiesByTopic(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (studiesByTopic == null) {
@@ -42,19 +42,19 @@ public class StudiesByTopicController {
 		return new ResponseEntity<String>(studiesByTopic.toJson(), headers, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/direct", headers = "Accept=application/json")
+	@RequestMapping(value = "/all", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> listDirect() {
+	public ResponseEntity<String> list() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<StudiesByTopic> result = studiesByTopicService.findAllDirectStudiesByTopic();
+		List<StudiesByTopic> result = studiesByTopicService.findAllStudiesByTopic();
 		return new ResponseEntity<String>(StudiesByTopic.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/direct/{id}", headers = "Accept=application/json")
+	@RequestMapping(value = "/all/{id}", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> showDirect(@PathVariable("id") Integer id) {
-		StudiesByTopic studiesByTopic = studiesByTopicService.findDirectStudiesByTopic(id);
+	public ResponseEntity<String> show(@PathVariable("id") Integer id) {
+		StudiesByTopic studiesByTopic = studiesByTopicService.findStudiesByTopic(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (studiesByTopic == null) {

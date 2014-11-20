@@ -17,12 +17,13 @@ translations = {
         nrrecords: 'Inregistrari',
         detailsgridcolumn : 'Detalii',
         
-		cancel: "Renuntare",
+        ok : "Confirma",
+        cancel: "Renuntare",
 		submit: "Confirmare",
 		logout: 'Logout',
-
 		
-
+		results: 'resultate',
+		keywords : 'Cuvinte cheie',
 		selectgrouping : 'Alegeti gruparea studiilor: ',		
 		catalogs : 'Cataloage',
 		years : 'Ani',

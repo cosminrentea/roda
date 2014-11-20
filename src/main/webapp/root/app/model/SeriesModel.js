@@ -39,5 +39,26 @@ Ext.define('databrowser.model.SeriesModel', {
                  model: 'databrowser.model.StudyModel',
                  name: 'studies',
                  associationKey: 'studies'
-             }]
+             },
+	          {
+    				model: 'databrowser.model.StudyPersonModel',
+    				name: 'persons',
+    				associationKey: 'persons'
+	          },
+	          {
+    				model: 'databrowser.model.StudyOrgModel',
+    				name: 'orgs',
+    				associationKey: 'orgs'
+	          },
+	          {
+    				model: 'databrowser.model.StudyKeywordModel',
+    				name: 'keywords',
+    				associationKey: 'keywords'
+	          },
+	          {
+    				model: 'databrowser.model.StudyTopicModel',
+    				name: 'topics',
+    				associationKey: 'translatedTopics'
+	          }
+             ]
 });

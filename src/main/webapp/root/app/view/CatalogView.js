@@ -27,11 +27,6 @@ Ext.define('databrowser.view.CatalogView',
 					},
 					// store: 'CatalogStore',
 					loaddata : function(id) {
-
-						// asta e o varianta idioata determinata oarecum de
-						// incapacitatea autorilor extjs de a explica cum se fac
-						// rahaturile simple
-
 						// var dgrid = Ext.getCmp('DetailsGridView');
 						// var gridtab = Ext.getCmp('seriesstudies');
 						this.setLoading(translations.loading);
@@ -80,15 +75,11 @@ Ext.define('databrowser.view.CatalogView',
 														items : [
 																{
 																	xtype : 'textfield',
-																	id : 'LocalSearchTextField',
+																	itemId : 'searchbox',
+																	id : 'catalogSearch',
+																	enableKeyEvents : true,
 																	width : 190,
 																	emptyText : 'Cautare locala'
-																},
-																{
-																	xtype : 'button',
-																	id : 'AdvancedSearchButton',
-																	width : 156,
-																	text : 'Cautare avansata'
 																},
 																{
 																	xtype : 'tbseparator',
@@ -194,6 +185,10 @@ Ext.define('databrowser.view.CatalogView',
 														data, idx, record, orig) {
 													var headerCt = this.view.headerCt, colspan = headerCt.getColumnCount();
 													var body;
+													
+													
+													
+													
 													var catview = Ext.ComponentQuery.query('catalogview');
 													var cview = catview[0].getCurrentview();
 													if (cview == 'medium'|| cview == 'complex') {

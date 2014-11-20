@@ -23,6 +23,9 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                     collapsible: true,
                     resizable:true,
                     title: translations.selectgrouping,
+                    tools:[{
+                        id: 'search',
+                    }],
                     activeTab: 0,
                 },
                 {

@@ -17,10 +17,13 @@ translations = {
         nrrecords: 'records',
         detailsgridcolumn : 'details',
 		
+        ok : "OK",
 		cancel: "Cancel",
 		submit: "Submit",
 		logout: 'Logout',
 
+		results: 'results',
+		keywords : 'Keywords',
 		selectgrouping : 'Select study grouping:',		
 		catalogs : 'Catalogs',
 		years : 'Years',

@@ -44,8 +44,24 @@ Ext
 							callback : function(records, operation, success) {
 								if (success) {
 									var rec = sStore.first();
-									console.log(rec.studiesStore);
-									dtab.update(records[0].data);
+							        var templatedata = records[0].data;
+							        if (rec.personsStore) {
+							        	var personsdata = Ext.Array.pluck(rec.personsStore.data.items,'data');
+							        }
+							        if (rec.orgsStore) {
+							        	var orgsdata = Ext.Array.pluck(rec.orgsStore.data.items,'data');
+							        }
+							        if (rec.keywordsStore) {
+							        	var kwsdata = Ext.Array.pluck(rec.keywordsStore.data.items,'data');
+							        }
+							        if (rec.topicsStore) {
+							        	var topicsdata = Ext.Array.pluck(rec.topicsStore.data.items,'data');
+							        }
+							        templatedata.orgs = orgsdata;
+							        templatedata.persons = personsdata;
+							        templatedata.keywords = kwsdata;
+							        templatedata.topics = topicsdata;
+							        dtab.update(templatedata);
 									gridtab.getView().bindStore(
 											rec.studiesStore);
 								}
@@ -62,7 +78,37 @@ Ext
 								tpl : new Ext.XTemplate(
 										'<div style="padding:10px;">',
 										'<H2>{name}</H2>', '<H3>{author}</H3>',
-										'<p>{description}</p>', '</div>'),
+										'<p>{description}</p>', '</div>',
+                                        '<table width="100%" border="0" cellspacing="2" class="sdetailstbl"',
+                                        '<tr><th>'+ translations.stduniverse +'</th><td> {universe}</td></tr>',
+                                        '<tr><th>'+ translations.stdgeocover +'</th><td> {geo_coverage}</td></tr>',
+                                        '<tr><th>'+ translations.stdgeounit +':</th><td> {geo_unit}</td></tr>',
+                                        '<tr><th>'+ translations.topics +':</th><td>', 
+                                        '<tpl for="topics">',
+                                        '{translation}',
+                                        '</tpl>',
+                                        '</td></tr>',
+                                        '<tr><th>'+ translations.keywords +':</th><td>', 
+                                        '<tpl for="keywords">',
+                                        '{name}, ',
+                                        '</tpl>',
+                                        '</td></tr>', '</table>',
+                                        '</div>',
+                                        '<table width="100%" border="0" cellspacing="2" class="persorgcontainer">',
+                                        '<tr><td width="50%" valign="top"><div class="orgs"><table>',
+                                        '<tpl for="orgs">',
+                                       	'<tr><td class="orgic"></td><td>{fname} {lname}</td></tr>',
+                                        '</tpl>',
+                                        '</table></div></td>',
+                                        '<td width="50%" valign="top">',
+                						'<div class="persons"><table>',
+                                        '<tpl for="persons">',
+                                    		'<tr><td class="personic"></td><td>{fname} {lname}</td></tr>',
+                                        '</tpl></table></div>',
+                                        '</td>',
+                                        '</tr>',
+                						'</table>'
+								),
 							},
 							{
 								autoScroll : true,

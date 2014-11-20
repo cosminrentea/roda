@@ -55,15 +55,10 @@ Ext.define('databrowser.view.YearView', {
                     items: [
                         {
                             xtype: 'textfield',
-                            id: 'YearLocalSearchTextField',
+							itemId : 'searchbox',
+							id : 'yearSearch',
                             width: 190,
                             emptyText: 'Cautare locala'
-                        },
-                        {
-                            xtype: 'button',
-                            id: 'YearAdvancedSearchButton',
-                            width: 156,
-                            text: 'Cautare avansata'
                         },
                         {
                             xtype: 'tbseparator',
@@ -76,7 +71,6 @@ Ext.define('databrowser.view.YearView', {
                             xtype: 'buttongroup',
                             autoRender: false,
                             id: 'YearSMCButtonGroup',
-                            //width: 72,
                             header: false,
                             frame:false,
                             title: 'Buttons',
@@ -86,7 +80,6 @@ Ext.define('databrowser.view.YearView', {
                                     xtype: 'button',
                                     id: 'YSButton',
                                     enableToggle: true,
-//                                    text: 'S',
                                     icon: 'img/simple.png',
                                     toggleGroup: 'YearSMCButtonGroup',
                                     listeners: {

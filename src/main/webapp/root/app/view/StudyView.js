@@ -40,9 +40,16 @@ Ext.define('databrowser.view.StudyView', {
 	        	this.setLoading(false);
 	        	if (success) {
 			        var rec = sStore.first();
-			        console.log(rec.filesStore);
-			        console.log('study store loaded');
-			        dtab.update(records[0].data);
+			        var templatedata = records[0].data;
+			        var personsdata = Ext.Array.pluck(rec.personsStore.data.items,'data');
+		        	var orgsdata = Ext.Array.pluck(rec.orgsStore.data.items,'data');
+			        var kwsdata = Ext.Array.pluck(rec.keywordsStore.data.items,'data');
+			        var topicsdata = Ext.Array.pluck(rec.topicsStore.data.items,'data');
+			        templatedata.orgs = orgsdata;
+			        templatedata.persons = personsdata;
+			        templatedata.keywords = kwsdata;
+			        templatedata.topics = topicsdata;
+			        dtab.update(templatedata);
 			        variablesgrid.getView().bindStore(rec.variablesStore);
 			        console.log(variablesgrid.getStore());
 			        filestab.bindStore(rec.filesStore);
@@ -65,11 +72,32 @@ Ext.define('databrowser.view.StudyView', {
                                         '<tr><th>'+ translations.stdgeounit +':</th><td> {geo_unit}</td></tr>',
                                         '<tr><th>'+ translations.stdrestype +':</th><td> {research_instrument}</td></tr>',
                                         '<tr><th>'+ translations.stdunitanalysis +':</th><td> {unit_analysis}</td></tr>',
-                                        '<tr><th>'+ translations.stdweighting +':</th><td> {weighting}</td></tr>', '</table>', '</div>',
+                                        '<tr><th>'+ translations.stdweighting +':</th><td> {weighting}</td></tr>',
+                                        '<tr><th>'+ translations.topics +':</th><td>', 
+                                        '<tpl for="topics">',
+                                        '{translation}',
+                                        '</tpl>',
+                                        '</td></tr>',
+                                        '<tr><th>'+ translations.keywords +':</th><td>', 
+                                        '<tpl for="keywords">',
+                                        '{name}, ',
+                                        '</tpl>',
+                                        '</td></tr>', '</table>',
+                                        '</div>',
+                                        '<table width="100%" border="0" cellspacing="2" class="persorgcontainer">',
+                                        '<tr><td width="50%" valign="top"><div class="orgs"><table>',
+                                        '<tpl for="orgs">',
+                                       	'<tr><td class="orgic"></td><td>{fname} {lname}</td></tr>',
+                                        '</tpl>',
+                                        '</table></div></td>',
+                                        '<td width="50%" valign="top">',
+                						'<div class="persons"><table>',
                                         '<tpl for="persons">',
-                                        	'<b>cucu{fname}</b>',
-                                        '</tpl>'
-                
+                                    		'<tr><td class="personic"></td><td>{fname} {lname}</td></tr>',
+                                        '</tpl></table></div>',
+                                        '</td>',
+                                        '</tr>',
+                						'</table>'
                 						),
             },
             {

@@ -33,8 +33,12 @@ Ext.application({
         'SeriesModel',
         'VariableModel',
         'StudyFileModel',
+        'StudyPersonModel',        
         'YearModel',
         'FrequencyModel',
+		'StudyOrgModel',
+		'StudyKeywordModel',
+		'StudyTopicModel',		        
         'TopicTreeModel'
      ],
     stores: [
@@ -67,9 +71,11 @@ Ext.application({
         'VariableDetails',
         'StackedBarChart',
         'Alert',
-        'ScatterChart'
+        'ScatterChart',
+        'AdvancedSearch',
+        'CancelSave'
     ],
-	controllers : ['VariableView', 'DataBrowser', 'Browser', 'CatalogView', 'YearView', 'History'],
+	controllers : ['VariableView', 'DataBrowser', 'Browser', 'CatalogView', 'YearView', 'History', 'Abstract', 'Search'],
     autoCreateViewport: false,
     name: 'databrowser',
     appFolder:'[[Code: ContextPath]]/root/app',
@@ -195,6 +201,19 @@ body {
 	margin-left:auto;
 	margin-right: auto;
 }
+
+td.personic{
+background: url('[[FileURL:persoane]]') no-repeat center center;
+width:50px;
+height: 50px;
+}
+
+td.orgic{
+background: url('[[FileURL:organizatii]]') no-repeat center center;
+width:50px;
+height: 50px;
+}
+
 
 </style>
 

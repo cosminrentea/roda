@@ -107,6 +107,11 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return AdminJson.newsSave(id, langId, title, content, added);
 	}
 
+	public AdminJson newsDrop(Integer newsId) {
+		return AdminJson.newsDrop(newsId);
+	}
+	
+	
 	// CMS PAGE
 	public AdminJson cmsPageSave(boolean save, Integer cmsPageParentId, String name, String lang, String menutitle,
 			String synopsis, String target, String url, boolean defaultPage, String externalredirect,

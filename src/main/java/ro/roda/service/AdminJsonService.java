@@ -71,5 +71,7 @@ public interface AdminJsonService {
 	public abstract AdminJson cmsPageNav(boolean navigable, Integer cmsPageId);
 	
 	public abstract AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added);
+	
+	public abstract AdminJson newsDrop(Integer layoutId);
     
 }

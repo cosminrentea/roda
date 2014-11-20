@@ -93,6 +93,8 @@ public class CmsController {
 
 	}
 
+	
+	
 	@RequestMapping(value = "/layoutsave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String layoutSave(@RequestParam(value = "group") Integer groupId,
@@ -481,4 +483,17 @@ public class CmsController {
 
 	}
 
+	@RequestMapping(value = "/newsdrop", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String newsDrop(@RequestParam(value = "newsid") Integer newsId) {
+
+		AdminJson newsDrop = adminJsonService.newsDrop(newsId);
+
+		if (newsDrop == null) {
+			return null;
+		}
+		return newsDrop.toJson();
+	}
+	
+	
 }

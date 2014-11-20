@@ -604,6 +604,7 @@ public class AdminJson {
 		return new AdminJson(true, "News item saved");
 	}
 
+
 	// Cms Page Management Methods
 	public static AdminJson cmsPageSave(Boolean save, Integer cmsPageParentId, String name, String langName,
 			String menutitle, String synopsis, String target, String url, Boolean defaultPage, String externalredirect,
@@ -1093,6 +1094,20 @@ public class AdminJson {
 		return new AdminJson(true, "CMS File moved successfully");
 	}
 
+	
+	public static AdminJson newsDrop(Integer newsId) {
+		News news = News.findNews(newsId);
+		if (news == null)
+			return new AdminJson(false, "The newsitem does not exist");
+		try {
+			News.entityManager().remove(news);
+		} catch (Exception e) {
+			return new AdminJson(false, "News item not dropped: " + e.getMessage());
+		}
+		return new AdminJson(true, "News item dropped successfully");
+	}
+	
+	
 	public static AdminJson folderMove(Integer parentFolderId, Integer folderId) {
 
 		CmsFolder folder = null;

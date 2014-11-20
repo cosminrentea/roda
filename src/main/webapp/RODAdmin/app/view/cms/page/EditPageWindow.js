@@ -42,7 +42,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                    },
 			                    items : [
 			                            {
-			                                fieldLabel : 'Parent',
+			                                fieldLabel : translations.pg_parent,
 			                                xtype : 'displayfield',
 			                                name : 'parent',
 			                                anchor : '-18',
@@ -61,7 +61,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 //											itemId : 'groupid'
 										},
 			                            {
-			                                fieldLabel : 'Title',
+			                                fieldLabel : translations.ly_title,
 			                                xtype : 'textfield',
 			                                anchor : '-18',
 			                                name : 'title',
@@ -70,13 +70,13 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                                fieldLabel : 'URL',
 			                                xtype : 'textfield',
 			                                anchor : '-18',
-			                                name : 'url',
+			                                name : translations.ly_url,
 			                                itemId : 'pageurl',
 			                            }, {
 			                                fieldLabel : 'MenuTitle',
 			                                xtype : 'textfield',
 			                                anchor : '-18',
-			                                name : 'menutitle',
+			                                name : translations.pg_menutitle,
 			                                itemId : 'pagemenutitle',
 			                            }, {
 			                                xtype : 'panel',
@@ -98,7 +98,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                xtype : 'combo',
 				                                                labelWidth : 60,
 				                                                name : 'layout',
-				                                                fieldLabel : 'Layout',
+				                                                fieldLabel : translations.pg_layout,
 				                                                anchor : '100%',
 				                                                displayField: 'name',
 				                                            //    forceSelection : true,
@@ -116,7 +116,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                xtype : 'combo',
 				                                                labelWidth : 60,
 				                                                name: 'lang',
-				                                                fieldLabel : 'Language',
+				                                                fieldLabel : translations.lang,
 				                                                anchor : '100%',
 				                                                store : [
 				                                                        'en', 'ro'
@@ -132,7 +132,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                labelWidth : 60,
 				                                                name: 'published',
 //				                                                queryMode: 'local',
-				                                                fieldLabel : 'Published',
+				                                                fieldLabel :  translations.pg_published,
 				                                                displayField: 'name',
 				                                                valueField: 'published',
 				                                                anchor : '100%',
@@ -150,7 +150,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                labelWidth : 60,
 				                                                name: 'navigable',
 //				                                                queryMode: 'local',
-				                                                fieldLabel : 'Nav',
+				                                                fieldLabel : translations.pg_navigable,
 				                                                anchor : '100%',
 				                                            }
 			                                            ]
@@ -163,7 +163,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                                margin : '0 0 0 85px',
 			                                collapsible : true,
 			                                collapsed : true,
-			                                title : 'Other options',
+			                                title :translations.pg_otheroptions,
 			                                items : [
 			                                        {
 			                                            xtype : 'panel',
@@ -184,7 +184,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                            xtype : 'textfield',
 				                                                            labelWidth : 90,
 				                                                            name: 'externalredirect',
-				                                                            fieldLabel : 'External Redirect',
+				                                                            fieldLabel : translations.pg_externalredir,
 				                                                            anchor : '100%',
 				                                                        }
 			                                                        ]
@@ -196,7 +196,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                            xtype : 'textfield',
 				                                                            labelWidth : 90,
 				                                                            name : 'internalredirect',
-				                                                            fieldLabel : 'Internal Redirect',
+				                                                            fieldLabel :  translations.pg_internalredir,
 				                                                            anchor : '100%',
 				                                                        }
 			                                                        ]
@@ -220,7 +220,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                        {
 				                                                            xtype : 'combo',
 				                                                            labelWidth : 50,
-				                                                            fieldLabel : 'Default',
+				                                                            fieldLabel : translations.pg_default,
 				                                                            name: 'default',
 				                                                            anchor : '100%',
 				                                                            store : [
@@ -236,7 +236,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                            xtype : 'textfield',
 				                                                            name : 'cacheable',
 				                                                            labelWidth : 65,
-				                                                            fieldLabel : 'Cache',
+				                                                            fieldLabel :translations.pg_cacheable,
 				                                                            anchor : '100%',
 				                                                        }
 			                                                        ]
@@ -248,7 +248,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                            xtype : 'combo',
 				                                                            labelWidth : 65,
 				                                                            name : 'searchable',
-				                                                            fieldLabel : 'Search',
+				                                                            fieldLabel : translations.pg_searchable,
 				                                                            anchor : '100%',
 				                                                            store : [
 				                                                                    'Yes', 'No'
@@ -262,7 +262,8 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                        {
 				                                                            xtype : 'combo',
 				                                                            labelWidth : 50,
-				                                                            fieldLabel : 'Target',
+				                                                            name : 'target',
+				                                                            fieldLabel : translations.pg_target,
 				                                                            anchor : '100%',
 				                                                            store : [
 				                                                                    '_blonk', '_top'
@@ -279,7 +280,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			     				                                                xtype : 'combo',
 			     				                                                labelWidth : 60,
 			     				                                                name : 'pagetype',
-			     				                                                fieldLabel : 'Type',
+			     				                                                fieldLabel : translations.pg_pagetype,
 			     				                                                anchor : '100%',
 			     				                                                displayField: 'name',
 			     				                                            //    forceSelection : true,
@@ -307,14 +308,14 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                                        }
 			                                ]
 			                            }, {
-			                                fieldLabel : 'Synopsis',
+			                                fieldLabel : translations.pg_synopsis,
 			                                xtype : 'textarea',
 			                                anchor : '-18',
 			                                name : 'synopsis'
 			                            },
 			                            {
 									        xtype: 'codemirror',
-        									fieldLabel: 'Content',
+        									fieldLabel: translations.pg_content,
 			                                anchor : '-98 70%',
         									itemId: 'content',
         									name: 'content',

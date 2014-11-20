@@ -40,6 +40,7 @@ Ext.define('RODAdmin.view.cms.news.NewsDetails', {
 	                        {
 	                        	xtype : 'panel',
 	                        	itemId : 'newsdata',
+	                        	bodyPadding : '25px',
 	                        	tpl : ['<div class="lang_{data.langCode}">&nbsp;</div><H1>{data.title}</H1>',
 	                        	       '<div style="padding:10px;">',
 	                        	       '{data.content}',

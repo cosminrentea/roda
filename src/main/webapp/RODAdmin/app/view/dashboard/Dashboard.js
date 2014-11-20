@@ -9,7 +9,7 @@ Ext.define('RODAdmin.view.dashboard.Dashboard', {
             type: 'gear',
             handler: function(e, target, panelHeader, tool){
                 var portlet = panelHeader.ownerCt;
-                portlet.setLoading('Loading...');
+                portlet.setLoading(translations.loading);
                 Ext.defer(function() {
                     portlet.setLoading(false);
                 }, 2000);
@@ -26,13 +26,13 @@ Ext.define('RODAdmin.view.dashboard.Dashboard', {
                 items: [
                  {
                     id: 'portlet-1',
-                    title: 'Last added studies',
+                    title: translations.dash_lastadded,
                     tools: this.getTools(),
                     items: Ext.create('RODAdmin.view.dashboard.portlets.StudyPortlet')
                 },
                 {
                     id: 'portlet-2',
-                    title: 'Temporary studies',
+                    title: translations.dash_temporary,
                     tools: this.getTools(),
                     items: Ext.create('RODAdmin.view.dashboard.portlets.TempStudyPortlet')
                 },
@@ -42,13 +42,13 @@ Ext.define('RODAdmin.view.dashboard.Dashboard', {
                 items: [
                 {
                     id: 'portlet-3',
-                    title: 'Trafic',
+                    title: translations.dash_traffic,
                     tools: this.getTools(),
                     items: Ext.create('RODAdmin.view.dashboard.portlets.TraficPortlet')
                 },
                 {
                     id: 'browser',
-                    title: 'Browser',
+                    title: translations.dash_browser,
                     tools: this.getTools(),
                     items: Ext.create('RODAdmin.view.dashboard.portlets.BrowserPortlet')
                 }

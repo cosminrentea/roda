@@ -1,7 +1,9 @@
 Ext.define('RODAdmin.proxy.MainAjax', {
     extend: 'Ext.data.proxy.Ajax',
     alias: 'proxy.mainajax',
-    
+    extraParams : {
+		lang : localStorage ? (localStorage.getItem('user-lang') || 'en') : 'en'
+    },
     reader: {
         type: 'json',
         messageProperty: 'msg',

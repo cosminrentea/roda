@@ -5,7 +5,7 @@ Ext.define('RODAdmin.view.cms.page.details.PageCode', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.pagecode',
     itemId : 'pagecode',
-    title : 'Page Code',
+    title : translations.pg_code,
     layout: 'fit',
     // id: 'fileproperties',
     collapsible : true,

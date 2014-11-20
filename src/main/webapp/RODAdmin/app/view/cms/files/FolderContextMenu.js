@@ -16,26 +16,26 @@ initComponent: function() {
             {
                 xtype: 'menuitem',
                 id: 'NewFolder',
-                text: 'New Folder',
-                tooltip: 'Adds a new folder underneath this folder'
+                text: translations.fl_newfolder,
+                tooltip: translations.fl_addfoldertooltip
             },
             {
                 xtype: 'menuitem',
                 id: 'AddFile',
-                text: 'Add File',
-                tooltip: 'Add a new file in this folder'
+                text: translations.fl_addfile,
+                tooltip: translations.fl_addfiletootltip
             },
             {
                 xtype: 'menuitem',
                 id: 'EmptyFolder',
-                text: 'Empty Folder',
-                tooltip: 'Deletes all the files from this folder'
+                text: translations.fl_emptyfolder,
+                tooltip: translations.fl_emptyfoldertooltip
             },
             {
                 xtype: 'menuitem',
                 id: 'DeleteFolder',
-                text: 'Delete Folder',
-                tooltip: 'Deletes the folder and all it\'s content'
+                text: translations.fl_deletefolder,
+                tooltip: translations.fl_delfoldertooltip
            	}
         ]
     });

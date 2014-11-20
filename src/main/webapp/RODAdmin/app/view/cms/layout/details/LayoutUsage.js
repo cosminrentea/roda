@@ -10,34 +10,34 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutUsage', {
 	collapsible: true,
 	   columns: [
         {
-            text: 'Page Id',
+            text: translations.ly_pageid,
             width: 100,
             dataIndex: 'id'
         },
         {
-            text: 'Title',
+            text: translations.ly_title,
             flex: 1,
             dataIndex: 'name'
         },
         {
-            text: 'Url',
+            text: translations.ly_url,
             flex: 1,
             dataIndex: 'url'
         },
         {
-            text: 'Language',
+            text: translations.ly_lang,
             xtype: 'templatecolumn',            
             flex: 1,
 			tpl: '<div class="lang_{lang}">&nbsp;</div>',
             dataIndex: 'lang'
         },
         {
-            text: 'Visible',
+            text: translations.ly_visible,
             flex: 1,
             dataIndex: 'visible'
         },
         {
-            text: 'Page Type',
+            text: translations.ly_pagetype,
             flex: 1,
             dataIndex: 'pagetype'
         }

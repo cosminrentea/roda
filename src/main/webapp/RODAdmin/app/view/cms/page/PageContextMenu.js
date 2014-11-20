@@ -16,25 +16,25 @@ initComponent: function() {
             {
                 xtype: 'menuitem',
                 itemId: 'deletepage',
-                text: 'Delete Tree',
+                text: translations.pg_deletetree,
                 tooltip: 'Deletes the current page'
             },
             {
                 xtype: 'menuitem',
                 itemId: 'editpage',
-                text: 'Edit Page',
+                text: translations.pg_editpage,
                 tooltip: 'Allows modifications of the page'
             },
             {
                 xtype: 'menuitem',
                 itemId: 'addpage',
-                text: 'Add Page',
+                text: translations.pg_addpage,
                 tooltip: 'Adds a page'
             },
             {
                 xtype: 'menuitem',
                 itemId: 'clearcache',
-                text: 'Clear cache',
+                text: translations.pg_clearcache,
                 tooltip: 'Clears page cache'
             }
 

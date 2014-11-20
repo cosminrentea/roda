@@ -78,19 +78,15 @@ Ext.define('RODAdmin.controller.cms.news.NewsList', {
    	 * Triggered at grid selection change.
    	 */
 	onIconViewSelectionChange : function(component, selected, event) {
-		console.log('selection change');	
-		
 		var record = selected[0];
+		if (!record) {
+			component.select(0);
+			var record = component.getLastSelected();
+		}
 		var details = this.getNdetails();
-		console.log(details);
-//		var sncontent = this.getSncontent();
-//	    var snenvelope = this.getSnenvelope();
-//		var snusage = this.getSnusagepanel();
+
 		details.setTitle(record.data.title);
-//		snusage.expand();
-//		snenvelope.expand();
 		var newsitemstore = this.getCmsNewsNewsItemStore();
-//		
 		newsitemstore.load({
 			id : record.data.id, //set the id here
 			scope : this,
@@ -98,7 +94,6 @@ Ext.define('RODAdmin.controller.cms.news.NewsList', {
 				if (success) {
 					var item = newsitemstore.first();
 					console.log(item);
-//					details.update(item.data.content);
 					details.update(item);
 				}
 			}
@@ -127,7 +122,6 @@ Ext.define('RODAdmin.controller.cms.news.NewsList', {
 	onDeleteNewsClick : function(component, event) {
 	    var currentNode = this.getIconview().getSelectionModel().getLastSelected();
 	    var me = this;
-//	    var store = Ext.StoreManager.get('cms.snippet.Snippet');
 	    Ext.Msg.confirm('Delete Requirement', 'Are you sure you want to delete the news item ' + currentNode.data.title
 	            + '?', function(id, value) {
 		    if (id === 'yes') {

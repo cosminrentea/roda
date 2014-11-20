@@ -37,12 +37,12 @@ Ext.define('RODAdmin.view.cms.layout.Layouts', {
 	                            	xtype : 'button',
 	                                itemId : 'tree-view',
 	                                iconCls : 'file-tree-view',
-	                                text : 'tree'
+	                                text : translations.treeview,
 	                            }, {
 	                            	xtype : 'button',
 	                                itemId : 'icon-view',
 	                                iconCls : 'file-icon-view',
-	                                text : 'icon'
+	                                text : translations.iconview
 	                            }
 	                    ]
 	                }

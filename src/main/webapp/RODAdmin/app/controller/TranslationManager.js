@@ -19,12 +19,9 @@ Ext.define('RODAdmin.controller.TranslationManager', {
    	 */
     onMenuitemClick: function(item, e, options) {
         var menu = this.getTranslation();
-
         menu.setIconCls(item.iconCls);
         menu.setText(item.text);
-
         localStorage.setItem("user-lang", item.iconCls);
-
         window.location.reload();
     },
    	/**
@@ -38,6 +35,8 @@ Ext.define('RODAdmin.controller.TranslationManager', {
             abstractcomponent.text = 'English';
         } else if (lang == 'es'){
             abstractcomponent.text = 'Español';
+        } else if (lang == 'ro'){
+            abstractcomponent.text = 'Romana';
         } else {
             abstractcomponent.text = 'Português';
         }

@@ -30,11 +30,11 @@ Ext.define('RODAdmin.view.cms.page.Pages', {
 											}, {
 												xtype : 'button',
 												itemId : 'tree-view',
-												text : 'tree'
+												text : translations.treeview,
 											}, {
 												xtype : 'button',
 												itemId : 'icon-view',
-												text : 'icon'
+												text : translations.iconview
 											}]
 								}],
 						items : [{
@@ -46,7 +46,7 @@ Ext.define('RODAdmin.view.cms.page.Pages', {
 						width : '50%',
 						xtype : 'panel',
 						itemId : 'pgdetailscontainer',
-						title : 'Page details',
+						title : translations.pg_details,
 						layout : {
 							type : 'fit'
 							// padding:'5',

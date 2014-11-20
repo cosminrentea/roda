@@ -16,13 +16,13 @@ initComponent: function() {
             {
                 xtype: 'menuitem',
                 id: 'deletefile',
-                text: 'Delete File',
+                text: translations.fl_deletefile,
                 tooltip: 'Deletes the file from the database and from the filesystem'
             },
             {
                 xtype: 'menuitem',
                 id: 'EditFile',
-                text: 'Edit File',
+                text: translations.fl_editfile,
                 tooltip: 'Allows modifications of the file properties and of the file itself'
             }
         ]

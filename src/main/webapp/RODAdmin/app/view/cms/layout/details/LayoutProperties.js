@@ -21,17 +21,17 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutProperties', {
 	                }, {
 	                    xtype : 'button',
 	                    itemId : 'editlayout',
-	                    text : 'Edit',
+	                    text : translations.tedit,
 	                    tooltip : 'Edit this layout'
 	                }, {
 	                    xtype : 'button',
 	                    itemId : 'deletelayout',
-	                    text : 'Delete',
+	                    text : translations.tdelete,
 	                    tooltip : 'Deletes the layout'
 	                }, {
 	                    xtype : 'button',
 	                    itemId : 'getlayoutaudit',
-	                    text : 'Layout History',
+	                    text : translations.thistory,
 	                    tooltip : 'Get Layout History'
 	                }
 	        ]

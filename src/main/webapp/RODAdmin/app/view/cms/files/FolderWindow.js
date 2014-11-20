@@ -43,16 +43,16 @@ Ext.define('RODAdmin.view.cms.files.FolderWindow', {
 											{
 												xtype : 'hiddenfield',
 												fieldLabel : 'parent',
-												name : 'parent',
+												name : translations.fl_parent,
 												value: '0'
 											},
 											{
 												fieldLabel : 'Folder name',
-												name : 'foldername'
+												name : translations.fl_foldername,
 											}, {
 												xtype : 'textarea',
 												fieldLabel : 'Description',
-												name : 'description',
+												name : translations.fl_description,
 												allowBlank : true,
 											}]
 								}

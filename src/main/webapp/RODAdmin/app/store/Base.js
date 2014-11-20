@@ -6,6 +6,10 @@ Ext.define('RODAdmin.store.Base', {
 
 	listeners: {
 		beforeload: function(store, operation, options){
+			console.log('base url globals' + RODAdmin.util.Globals.baseurl);
+			store.getProxy().extraParams = {
+				lang : localStorage ? (localStorage.getItem('user-lang') || 'en') : 'en'
+			};
 			var purl = store.getProxy().url;
 			var baseurlreg = new RegExp('^'+RODAdmin.util.Globals.baseurl, '');
 			if (purl.match(/^http:/i)) {

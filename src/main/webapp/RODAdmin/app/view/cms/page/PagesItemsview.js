@@ -108,15 +108,15 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 //												itemId : 'clearfilterdata'
 //											},
 											{
-												text : 'Reload Tree',
+												text : translations.ly_reloadtree,
 												xtype : 'button',
 												itemId : 'reloadtree'
 											}, {
-												text : 'Collapse Tree',
+												text : translations.ly_collapsetree,
 												xtype : 'button',
 												itemId : 'collapsetree'
 											}, {
-												text : 'Expand Tree',
+												text : translations.ly_expandtree,
 												xtype : 'button',
 												itemId : 'expandtree'
 											}]
@@ -147,7 +147,7 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 						columns : [{
 									xtype : 'treecolumn',
 									itemId : 'ft',
-									text : 'Pages',
+									text : translations.pg_pages,
 									flex : 2,
 									sortable : false,
 									dataIndex : 'title',
@@ -159,33 +159,33 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 									}
 								}, {
 									xtype: 'templatecolumn',
-									text: 'lang',
+									text: translations.lang,
 									tpl: '<div class="lang_{lang}">&nbsp;</div>',
 									flex : 1,
 									sortable : false,
 									filterable : false,
 									width:'20'
 								},{
-									text : 'url',
+									text : translations.ly_url,
 									flex : 2,
 									dataIndex : 'url',
 									sortable : false,
 									filterable : true
 								},{
-									text : 'layout',
+									text : translations.cms_layouts,
 									flex : 1,
 									dataIndex : 'layout',
 									sortable : false,
 									filterable : true
 								},{
-									text : 'cacheable',
+									text : translations.pg_cacheable,
 									flex : 1,
 									dataIndex : 'cacheable',
 									sortable : false,
 									filterable : true
 								},{
 					            	xtype: 'booleancolumn',	
-									text : 'searchable',
+									text : translations.pg_searchable,
 						            trueText: 'Yes',
 						            falseText: 'No', 
 									flex : 1,
@@ -194,16 +194,14 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 									filterable : true
 								},{
 									xtype: "checkcolumn",
-								    columnHeaderCheckbox: true,//this setting is necessary for what you want
-								    text: 'navigable',
+								    columnHeaderCheckbox: true,
+								    text: translations.pg_navigable,
 								    store: 'cms.page.PageList',
 								    sortable: false,
 								    hideable: false,
 								    menuDisabled: true,
 								    dataIndex: "navigable",
 								}
-								
-								
 								]
 					}]
 		});

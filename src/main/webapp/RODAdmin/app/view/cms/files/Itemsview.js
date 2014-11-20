@@ -22,13 +22,13 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 								})],
 						columns : [{
 									itemId : 'ft',
-									text : 'File',
+									text : translations.fl_file,
 									flex : 2,
 									sortable : true,
 									dataIndex : 'name',
 									filterable : true
 								}, {
-									text : 'alias',
+									text :  translations.fl_alias,
 									flex : 1,
 									dataIndex : 'alias',
 									sortable : true,
@@ -36,19 +36,19 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 										type : 'string'
 									}
 								}, {
-									text : 'type',
+									text : translations.fl_type,
 									flex : 1,
 									dataIndex : 'filetype',
 									sortable : true,
 									filterable : true
 								}, {
-									text : 'size',
+									text : translations.fl_size,
 									flex : 1,
 									dataIndex : 'filesize',
 									sortable : true,
 									filterable : true
 								}, {
-									text : 'Directory',
+									text : translations.fl_directory,
 									flex : 1,
 									dataIndex : 'directory',
 									sortable : true,
@@ -63,10 +63,10 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 											}, {
 												xtype : 'button',
 												itemId : 'showfilterdata',
-												text : 'All Filter Data',
+												text : translations.allfilter,
 												tooltip : 'Get Filter Data for Grid'
 											}, {
-												text : 'Clear Filter Data',
+												text : translations.clearfilter,
 												xtype : 'button',
 												itemId : 'clearfilterdata'
 											}]
@@ -91,24 +91,24 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 											{
 												xtype : 'button',
 												itemId : 'showfilterdata',
-												text : 'All Filter Data',
+												text : translations.allfilter,
 												tooltip : 'Get Filter Data for Grid'
 											}, {
-												text : 'Clear Filter Data',
+												text : translations.clearfilter,
 												xtype : 'button',
 												itemId : 'clearfilterdata'
 											},
 
 											{
-												text : 'Reload Tree',
+												text : translations.reloadgrid,
 												xtype : 'button',
 												itemId : 'reloadtree'
 											}, {
-												text : 'Collapse Tree',
+												text : translations.ly_collapsetree,
 												xtype : 'button',
 												itemId : 'collapsetree'
 											}, {
-												text : 'Expand Tree',
+												text : translations.ly_expandtree,
 												xtype : 'button',
 												itemId : 'expandtree'
 											}]
@@ -139,7 +139,7 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 						columns : [{
 									xtype : 'treecolumn',
 									itemId : 'ft',
-									text : 'Files',
+									text : translations.fl_file,
 									flex : 2,
 									sortable : false,
 									dataIndex : 'name',
@@ -155,19 +155,19 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 									dataIndex : 'indice',
 									sortable : false
 								}, {
-									text : 'type',
+									text :  translations.fl_type,
 									flex : 1,
 									dataIndex : 'filetype',
 									sortable : false,
 									filterable : true
 								}, {
-									text : 'alias',
+									text : translations.fl_alias,
 									flex : 1,
 									dataIndex : 'alias',
 									sortable : false,
 									filterable : true
 								}, {
-									text : 'size',
+									text :  translations.fl_size,
 									flex : 1,
 									dataIndex : 'filesize',
 									sortable : false,

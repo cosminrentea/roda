@@ -60,21 +60,22 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 									items : [{
 												xtype : 'tbfill'
 											},{
-												text : 'Reload Grid',
+												text : translations.ly_reloadtree,
 												xtype : 'button',
 												itemId : 'reloadgrid'
 											}, 
-											
-											{
-												xtype : 'button',
-												itemId : 'showfilterdata',
-												text : 'All Filter Data',
-												tooltip : 'Get Filter Data for Grid'
-											}, {
-												text : 'Clear Filter Data',
-												xtype : 'button',
-												itemId : 'clearfilterdata'
-											}]
+//											
+//											{
+//												xtype : 'button',
+//												itemId : 'showfilterdata',
+//												text : 'All Filter Data',
+//												tooltip : 'Get Filter Data for Grid'
+//											}, {
+//												text : 'Clear Filter Data',
+//												xtype : 'button',
+//												itemId : 'clearfilterdata'
+//											}
+											]
 								}]
 					}, {
 						store : 'cms.layout.LayoutTree',
@@ -107,20 +108,20 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 //												itemId : 'clearfilterdata'
 //											},
 											{
-												text : 'Add root folder',
+												text : translations.ly_addrootfolder,
 												xtype : 'button',
 												itemId : 'addroot'
 											},
 											{
-												text : 'Reload Tree',
+												text : translations.ly_reloadtree,
 												xtype : 'button',
 												itemId : 'reloadtree'
 											}, {
-												text : 'Collapse Tree',
+												text : translations.ly_collapsetree,
 												xtype : 'button',
 												itemId : 'collapsetree'
 											}, {
-												text : 'Expand Tree',
+												text : translations.ly_expandtree,
 												xtype : 'button',
 												itemId : 'expandtree'
 											}]

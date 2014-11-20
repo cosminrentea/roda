@@ -16,15 +16,13 @@ Ext.define('RODAdmin.view.cms.page.PageDetails', {
 		           		                xtype : 'tbfill'
 		           	                }, {
 		           	                    xtype : 'button',
-		           	                    // id: 'editfile',
 		           	                    itemId : 'editpage',
-		           	                    text : 'Edit',
+		           	                    text : translations.tedit,
 		           	                    tooltip : 'Edit this page'
 		           	                }, {
 		           	                    xtype : 'button',
-		           	                    // id: 'deletefile',
 		           	                    itemId : 'deletepage',
-		           	                    text : 'Delete',
+		           	                    text : translations.tdelete,
 		           	                    tooltip : 'Deletes the page'
 		           	                }
 //		           	                , {
@@ -38,12 +36,12 @@ Ext.define('RODAdmin.view.cms.page.PageDetails', {
 		               ],
 			items : [
 			{
-				title: 'Page properties',	
+				title: translations.pg_properties,	
 				xtype: 'pageproperties',
 				height: '100%',
 			},
 			{
-				title: 'Page code',	
+				title: translations.pg_code,	
 				xtype: 'pagecode',
 				height: '100%',
 			},

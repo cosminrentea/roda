@@ -34,5 +34,6 @@ public class RodaPageConstants {
 	public static String PAGE_BREADCRUMBS_CODE = "[[Code: PageBreadcrumbs('";
 	public static String GETNEWS_CODE = "[[Code: GetNews";
 	public static String GETNEWSID_CODE = "[[Code: GetNewsId";
+	public static String SETTING_CODE = "[[Setting('";
 
 }

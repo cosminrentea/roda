@@ -34,18 +34,18 @@ public class DashboardController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		String mockResult = "{ \n" + "    \"success\": true,\n" + "    \"data\" : [\n" + "        {\n"
-				+ "            \"day\" : \"12-09-2014\",\n" + "            \"visits\" : 112,\n"
-				+ "            \"visitors\" : 96,\n" + "            \"views\" : 124,\n" + "        },\n"
-				+ "        {\n" + "            \"day\" : \"13-09-2014\",\n" + "            \"visits\" : 128,\n"
-				+ "            \"visitors\" : 100,\n" + "            \"views\" : 168,\n" + "        },\n"
-				+ "        {\n" + "            \"day\" : \"14-09-2014\",\n" + "            \"visits\" : 145,\n"
-				+ "            \"visitors\" : 112,\n" + "            \"views\" : 183,\n" + "        },\n"
-				+ "        {\n" + "            \"day\" : \"15-09-2014\",\n" + "            \"visits\" : 110,\n"
-				+ "            \"visitors\" : 99,\n" + "            \"views\" : 172,\n" + "        },\n"
-				+ "        {\n" + "            \"day\" : \"16-09-2014\",\n" + "            \"visits\" : 101,\n"
-				+ "            \"visitors\" : 88,\n" + "            \"views\" : 189,\n" + "        },\n"
-				+ "        {\n" + "            \"day\" : \"17-09-2014\",\n" + "            \"visits\" : 98,\n"
-				+ "            \"visitors\" : 72,\n" + "            \"views\" : 111,\n" + "        }   \n"
+				+ "            \"day\" : \"23-11-2014\",\n" + "            \"visits\" : 72,\n"
+				+ "            \"visitors\" : 6,\n" + "            \"views\" : 124,\n" + "        },\n" + "        {\n"
+				+ "            \"day\" : \"24-11-2014\",\n" + "            \"visits\" : 76,\n"
+				+ "            \"visitors\" : 8,\n" + "            \"views\" : 168,\n" + "        },\n" + "        {\n"
+				+ "            \"day\" : \"25-11-2014\",\n" + "            \"visits\" : 85,\n"
+				+ "            \"visitors\" : 9,\n" + "            \"views\" : 183,\n" + "        },\n" + "        {\n"
+				+ "            \"day\" : \"26-11-2014\",\n" + "            \"visits\" : 98,\n"
+				+ "            \"visitors\" : 10,\n" + "            \"views\" : 197,\n" + "        },\n"
+				+ "        {\n" + "            \"day\" : \"27-11-2014\",\n" + "            \"visits\" : 127,\n"
+				+ "            \"visitors\" : 8,\n" + "            \"views\" : 289,\n" + "        },\n" + "        {\n"
+				+ "            \"day\" : \"28-11-2014\",\n" + "            \"visits\" : 40,\n"
+				+ "            \"visitors\" : 15,\n" + "            \"views\" : 126,\n" + "        }   \n"
 				+ "        ]\n" + "}";
 		return new ResponseEntity<String>(mockResult, headers, HttpStatus.OK);
 	}
@@ -56,9 +56,9 @@ public class DashboardController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		String mockResult = "{ \n" + "    \"success\": true,\n" + "    \"data\" : [\n" + "        {\n"
-				+ "            \"started\" : \"11-09-2014\",\n" + "            \"startedby\" : \"Irina Cristescu\",\n"
-				+ "            \"title\" : \"Studiul meu\"\n" + "        },\n" + "        {\n"
-				+ "            \"started\" : \"12-09-2014\",\n"
+				+ "            \"started\" : \"08-11-2014\",\n"
+				+ "            \"startedby\" : \"Alexandra Gheondea\",\n" + "            \"title\" : \"Studiu nou\"\n"
+				+ "        },\n" + "        {\n" + "            \"started\" : \"09-11-2014\",\n"
 				+ "            \"startedby\" : \"Alexandra Ciritel\",\n"
 				+ "            \"title\" : \"Studiul temporar\"\n" + "        }\n" + "        ]\n" + "}";
 		return new ResponseEntity<String>(mockResult, headers, HttpStatus.OK);

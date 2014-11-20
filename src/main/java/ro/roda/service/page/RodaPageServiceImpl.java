@@ -18,6 +18,7 @@ import static ro.roda.service.page.RodaPageConstants.PAGE_TITLE_CODE;
 import static ro.roda.service.page.RodaPageConstants.PAGE_TREE_BY_URL_CODE;
 import static ro.roda.service.page.RodaPageConstants.PAGE_URL_LINK_CODE;
 import static ro.roda.service.page.RodaPageConstants.SNIPPET_CODE;
+import static ro.roda.service.page.RodaPageConstants.SETTING_CODE;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,6 +49,7 @@ import ro.roda.domain.CmsPageType;
 import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.Lang;
 import ro.roda.domain.News;
+import ro.roda.domain.Setting;
 
 @Service
 @Transactional
@@ -228,6 +230,7 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 
 		layoutContent = replacePageLinkByUrl(layoutContent, cmsPage);
 		layoutContent = replacePageBreadcrumbs(layoutContent, cmsPage);
+		layoutContent = replaceSetting(layoutContent, cmsPage);
 		layoutContent = replacePageTreeByUrl(layoutContent, cmsPage);
 		layoutContent = replacePageUrlLink(layoutContent, cmsPage);
 		layoutContent = replaceFileUrl(layoutContent, url);
@@ -236,15 +239,22 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 		return layoutContent;
 	}
 
+	/**
+	 * This method is to be invoked mainly from the page preview generator.
+	 * 
+	 * @param cmsPage
+	 * @param layoutContent
+	 * @param url
+	 * @return
+	 */
 	private String getLayout(CmsPage cmsPage, String layoutContent, String url) {
-		// This method is to be invoked mainly from the page preview generator.
-
 		String resultLayoutContent = layoutContent;
 		resultLayoutContent = replaceSnippets(resultLayoutContent);
 		resultLayoutContent = replacePageTitle(resultLayoutContent, cmsPage.getMenuTitle());
 		resultLayoutContent = replaceContextPath(resultLayoutContent);
 		resultLayoutContent = replacePageLinkByUrl(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageBreadcrumbs(resultLayoutContent, cmsPage);
+		resultLayoutContent = replaceSetting(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageTreeByUrl(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageUrlLink(resultLayoutContent, cmsPage);
 
@@ -333,20 +343,28 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 		return content;
 	}
 
+	private String replaceSetting(String content, CmsPage cmsPage) {
+		int fromIndex = content.indexOf(SETTING_CODE, 0);
+		while (fromIndex > -1) {
+			String settingName = content.substring(fromIndex + SETTING_CODE.length(),
+					content.indexOf("')]]", fromIndex + SETTING_CODE.length()));
+			log.trace("Setting name: " + settingName);
+			content = StringUtils.replace(content, SETTING_CODE + settingName + "')]]", generateSetting(settingName));
+			fromIndex = content.indexOf(SETTING_CODE, fromIndex + SETTING_CODE.length());
+		}
+		return content;
+	}
+
 	private String replacePageBreadcrumbs(String content, CmsPage cmsPage) {
 		int fromIndex = content.indexOf(PAGE_BREADCRUMBS_CODE, 0);
 		while (fromIndex > -1) {
 			String sep = content.substring(fromIndex + PAGE_BREADCRUMBS_CODE.length(),
 					content.indexOf("')]]", fromIndex + PAGE_BREADCRUMBS_CODE.length()));
-
 			log.trace("Breadcrumbs separator = " + sep);
-
 			content = StringUtils.replace(content, PAGE_BREADCRUMBS_CODE + sep + "')]]",
 					generatePageBreadcrumbs(cmsPage, sep));
-
 			fromIndex = content.indexOf(PAGE_BREADCRUMBS_CODE, fromIndex + PAGE_BREADCRUMBS_CODE.length());
 		}
-
 		return content;
 	}
 
@@ -408,7 +426,7 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 					result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()));
 			CmsFile cmsFile = CmsFile.findCmsFile(alias);
 
-			log.trace("The URL in replaceImgLink is: " + url);
+			log.trace("replaceImgLink URL: " + url);
 
 			StringBuilder relativePath = new StringBuilder();
 
@@ -633,6 +651,11 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 		}
 		// log.trace("Breadcrumbs = " + result);
 		return result.toString();
+	}
+
+	private String generateSetting(String settingName) {
+		Setting s = Setting.findSetting(settingName);
+		return (s == null) ? "" : s.getValue();
 	}
 
 	private String generatePageTreeMenu(CmsPage cmsPage, Integer depth) {

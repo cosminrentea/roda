@@ -208,11 +208,15 @@ public class TranslatedTopic {
 				.serialize(topics);
 	}
 
-	public static String toJsonRelevantTree(String language) {
-		List<TranslatedTopic> usedTranslatedTopics = entityManager()
+	public static List<TranslatedTopic> usedTranslatedTopics(String language) {
+		return entityManager()
 				.createQuery(
 						"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId IN ( SELECT DISTINCT t FROM Topic t JOIN t.studies s ) AND tt.langId.iso639 = :language",
 						TranslatedTopic.class).setParameter("language", language).getResultList();
+	}
+
+	public static String toJsonRelevantTree(String language) {
+		List<TranslatedTopic> usedTranslatedTopics = usedTranslatedTopics(language);
 		return new JSONSerializer().include("translation", "indice", "leaf").exclude("*.*").rootName("topics")
 				.deepSerialize(usedTranslatedTopics);
 	}

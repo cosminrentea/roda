@@ -22,67 +22,48 @@ import ro.roda.domainjson.StudyInfo;
 @Transactional
 public class StudiesByTopicServiceImpl implements StudiesByTopicService {
 
-	public StudiesByTopic findStudiesByTopic(Integer topicId) {
-		Topic topic = Topic.findTopic(topicId);
-		Set<StudyInfo> topicSubstudies = new HashSet<StudyInfo>();
-
-		Set<Topic> topics = new HashSet<Topic>();
-		topics.add(topic);
-
-		while (topics.size() > 0) {
-			Set<Topic> subtopics = new HashSet<Topic>();
-
-			Iterator<Topic> topicsIterator = topics.iterator();
-			while (topicsIterator.hasNext()) {
-				Topic currentTopic = topicsIterator.next();
-
-				Set<Study> topicStudies = currentTopic.getStudies();
+	public List<StudiesByTopic> findAllDirectStudiesByTopic() {
+		List<StudiesByTopic> result = new ArrayList<StudiesByTopic>();
+		String language = LocaleContextHolder.getLocale().getLanguage();
+		List<TranslatedTopic> ttl = TranslatedTopic.usedTranslatedTopics(language);
+		if (ttl != null && ttl.size() > 0) {
+			Set<StudyInfo> studiesByTopicSet = null;
+			Iterator<TranslatedTopic> topicIterator = ttl.iterator();
+			while (topicIterator.hasNext()) {
+				TranslatedTopic tt = (TranslatedTopic) topicIterator.next();
+				Topic t = tt.getTopicId();
+				Set<Study> topicStudies = t.getStudies();
 				if (topicStudies != null && topicStudies.size() > 0) {
-
+					studiesByTopicSet = new HashSet<StudyInfo>();
 					Iterator<Study> topicStudiesIterator = topicStudies.iterator();
 					while (topicStudiesIterator.hasNext()) {
-						topicSubstudies.add(new StudyInfo(topicStudiesIterator.next()));
+						studiesByTopicSet.add(new StudyInfo(topicStudiesIterator.next()));
 					}
-				}
-
-				Set<Topic> topicTopics = currentTopic.getTopics();
-				if (topicTopics != null && topicTopics.size() > 0) {
-					subtopics.addAll(topicTopics);
+					result.add(new StudiesByTopic(t.getId(), tt.getTranslation(), studiesByTopicSet.size(),
+							studiesByTopicSet));
 				}
 			}
-
-			topics.clear();
-			topics.addAll(subtopics);
 		}
-
-		// TODO refactor !!!
-		String topicgetName = "foo";
-		// topicgetName = topic.getName();
-		return new StudiesByTopic(topic.getId(), topicgetName, topicSubstudies.size(), topicSubstudies);
+		return result;
 	}
 
+	/**
+	 * Return direct studies "having" the given Topic ID.
+	 */
 	public StudiesByTopic findDirectStudiesByTopic(Integer topicId) {
 		StudiesByTopic result = null;
 		Topic topic = Topic.findTopic(topicId);
-
 		if (topic != null) {
-			Set<StudyInfo> studiesByTopicSet = null;
-
 			Set<Study> topicStudies = topic.getStudies();
-
-			// direct studies under topic
 			if (topicStudies != null && topicStudies.size() > 0) {
-				studiesByTopicSet = new HashSet<StudyInfo>();
-
+				Set<StudyInfo> studyInfoSet = new HashSet<StudyInfo>();
 				Iterator<Study> topicStudiesIterator = topicStudies.iterator();
 				while (topicStudiesIterator.hasNext()) {
-					studiesByTopicSet.add(new StudyInfo(topicStudiesIterator.next()));
+					studyInfoSet.add(new StudyInfo(topicStudiesIterator.next()));
 				}
-
-				// TODO refactor !!!
-				String topicgetName = "foo";
-				// topicgetName = topic.getName();
-				result = new StudiesByTopic(topic.getId(), topicgetName, studiesByTopicSet.size(), studiesByTopicSet);
+				result = new StudiesByTopic(topicId, TranslatedTopic.findTranslatedTopic(
+						new TranslatedTopicPK(Lang.findLang(LocaleContextHolder.getLocale().getLanguage()).getId(),
+								topicId)).getTranslation(), studyInfoSet);
 			}
 		}
 		return result;
@@ -91,46 +72,44 @@ public class StudiesByTopicServiceImpl implements StudiesByTopicService {
 	public List<StudiesByTopic> findAllStudiesByTopic() {
 		List<StudiesByTopic> result = new ArrayList<StudiesByTopic>();
 		List<Topic> topics = Topic.findAllTopics();
-
 		if (topics != null && topics.size() > 0) {
-
 			Iterator<Topic> topicsIterator = topics.iterator();
 			while (topicsIterator.hasNext()) {
 				Topic topic = (Topic) topicsIterator.next();
 				result.add(findDirectStudiesByTopic(topic.getId()));
 			}
 		}
-
 		return result;
 	}
 
-	public List<StudiesByTopic> findAllDirectStudiesByTopic() {
-		List<StudiesByTopic> result = new ArrayList<StudiesByTopic>();
-		List<Topic> topics = Topic.findAllTopics();
-
-		if (topics != null && topics.size() > 0) {
-			Set<StudyInfo> studiesByTopicSet = null;
-			Iterator<Topic> topicIterator = topics.iterator();
-
-			while (topicIterator.hasNext()) {
-				Topic topic = (Topic) topicIterator.next();
-				Set<Study> topicStudies = topic.getStudies();
-
+	public StudiesByTopic findStudiesByTopic(Integer topicId) {
+		Topic topic = Topic.findTopic(topicId);
+		Set<StudyInfo> topicSubstudies = new HashSet<StudyInfo>();
+		Set<Topic> topics = new HashSet<Topic>();
+		topics.add(topic);
+		while (topics.size() > 0) {
+			Set<Topic> subtopics = new HashSet<Topic>();
+			Iterator<Topic> topicsIterator = topics.iterator();
+			while (topicsIterator.hasNext()) {
+				Topic currentTopic = topicsIterator.next();
+				Set<Study> topicStudies = currentTopic.getStudies();
 				if (topicStudies != null && topicStudies.size() > 0) {
-					studiesByTopicSet = new HashSet<StudyInfo>();
-
 					Iterator<Study> topicStudiesIterator = topicStudies.iterator();
 					while (topicStudiesIterator.hasNext()) {
-						studiesByTopicSet.add(new StudyInfo(topicStudiesIterator.next()));
+						topicSubstudies.add(new StudyInfo(topicStudiesIterator.next()));
 					}
-
-					result.add(new StudiesByTopic(topic.getId(), TranslatedTopic.findTranslatedTopic(
-							new TranslatedTopicPK(Lang.findLang(LocaleContextHolder.getLocale().getLanguage()).getId(),
-									topic.getId())).getTranslation(), studiesByTopicSet.size(), studiesByTopicSet));
+				}
+				Set<Topic> topicTopics = currentTopic.getTopics();
+				if (topicTopics != null && topicTopics.size() > 0) {
+					subtopics.addAll(topicTopics);
 				}
 			}
+			topics.clear();
+			topics.addAll(subtopics);
 		}
-		return result;
+		return new StudiesByTopic(topic.getId(), TranslatedTopic.findTranslatedTopic(
+				new TranslatedTopicPK(Lang.findLang(LocaleContextHolder.getLocale().getLanguage()).getId(), topicId))
+				.getTranslation(), topicSubstudies);
 	}
 
 }

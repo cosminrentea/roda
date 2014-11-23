@@ -9,6 +9,7 @@
    <field name="itemid" type="string" indexed="true" stored="true"/>
    <field name="language" type="string" indexed="true" stored="true"/>
    <field name="entity" type="string" indexed="true" stored="true"/>
+   <field name="entityname" type="string" indexed="true" stored="true"/>
    <field name="name" type="text_general" indexed="true" stored="true"/>
    <field name="description" type="text_general" indexed="true" stored="true"/>
    <field name="url" type="string" indexed="true" stored="true"/>

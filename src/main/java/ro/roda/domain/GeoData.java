@@ -108,6 +108,7 @@ public class GeoData {
 			sid.addField("geoData.geographyid_t", geoData.getGeographyId());
 			sid.addField("geoData.datestart_dt", geoData.getStartdate());
 			sid.addField("geoData.dateend_dt", geoData.getEnddate());
+			sid.addField("geoData.value_l", geoData.getValue());
 			sid.addField("geoData.id_t", geoData.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
@@ -177,6 +178,9 @@ public class GeoData {
 	@JoinColumn(name = "geography_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Geography geographyId;
 
+	@Column(name = "value", columnDefinition = "numeric", scale = 10, precision = 5)
+	private Long value;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -215,6 +219,10 @@ public class GeoData {
 
 	public Geography getGeographyId() {
 		return geographyId;
+	}
+
+	public Long getValue() {
+		return value;
 	}
 
 	@Transactional
@@ -263,6 +271,10 @@ public class GeoData {
 
 	public void setGeographyId(Geography geographyId) {
 		this.geographyId = geographyId;
+	}
+
+	public void setValue(Long value) {
+		this.value = value;
 	}
 
 	public String toJson() {

@@ -79,6 +79,12 @@ public class GeoDraw {
 				.setMaxResults(maxResults).getResultList();
 	}
 
+	public static List<GeoDraw> findAllGeoDrawsForGeography(Geography geography) {
+		return entityManager()
+				.createQuery("SELECT o FROM GeoDraw o WHERE geographyId = " + geography.getId() + " ORDER BY pozitie",
+						GeoDraw.class).getResultList();
+	}
+
 	public static Collection<GeoDraw> fromJsonArrayToGeoDraws(String json) {
 		return new JSONDeserializer<List<GeoDraw>>().use(null, ArrayList.class).use("values", GeoDraw.class)
 				.deserialize(json);

@@ -109,7 +109,7 @@ public class StudyDescr {
 			sid.addField("table", "study_descr");
 			// this number/ID is different from the "id" Solr field
 			// (which is using the STUDY ID)
-			sid.addField("tableid", studyDescr.getId());
+			sid.addField("tableid", studyDescr.getId().getStudyId() + "," + studyDescr.getId().getLangId());
 			sid.addField("language", language);
 			sid.addField("entity", SOLR_STUDY);
 			sid.addField("entityname", entityName);
@@ -117,9 +117,9 @@ public class StudyDescr {
 			sid.addField("url", studyDescr.buildUrl(language));
 			sid.addField(
 					"description",
-					new StringBuilder().append(studyDescr.getAbstract1()).append(" ")
-							.append(studyDescr.getGrantDetails()).append(" ").append(studyDescr.getTitle()).append(" ")
-							.append(studyDescr.getNotes()).append(" ").append(studyDescr.getWeighting()).append(" ")
+					new StringBuilder().append(studyDescr.getTitle()).append(" ").append(studyDescr.getGrantDetails())
+							.append(" ").append(studyDescr.getAbstract1()).append(" ").append(studyDescr.getNotes())
+							.append(" ").append(studyDescr.getWeighting()).append(" ")
 							.append(studyDescr.getResearchInstrument()).append(" ").append(studyDescr.getScope())
 							.append(" ").append(studyDescr.getUniverse()).append(" ").append(studyDescr.getSubtitle())
 							.append(" ").append(studyDescr.getAlternativeTitle()).append(" ")
@@ -139,7 +139,8 @@ public class StudyDescr {
 	public static void deleteIndex(StudyDescr studyDescr) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById(SOLR_STUDY + "_" + studyDescr.getId() + "_" + studyDescr.getLangId().getIso639());
+			solrServer.deleteById(SOLR_STUDY + "_" + studyDescr.getStudyId().getId() + "_"
+					+ studyDescr.getLangId().getIso639());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();

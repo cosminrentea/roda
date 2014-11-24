@@ -49,7 +49,7 @@ public class SolrServiceImpl implements SolrService, SmartLifecycle, Application
 		if (ping()) {
 			UpdateResponse ur = null;
 			try {
-				ur = solrServer.deleteByQuery("*:*", 0);
+				ur = solrServer.deleteById("*");
 			} catch (SolrServerException e) {
 				log.error("Solr threw exception", e);
 			} catch (IOException e) {

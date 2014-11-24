@@ -519,7 +519,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 					log.trace("Topic of imported study: " + topicContent);
 					String[] topicNames = topicContent.split(";|,|\\.");
 					for (String topicName : topicNames) {
-						TranslatedTopic translatedTopic = TranslatedTopic.findOrCreateTranslatedTopic(topicName,
+						TranslatedTopic translatedTopic = TranslatedTopic.findOrCreateTranslatedTopic(topicName.trim(),
 								roLangId);
 						Topic topic = translatedTopic.getTopicId();
 

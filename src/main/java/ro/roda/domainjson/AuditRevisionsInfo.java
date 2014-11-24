@@ -80,37 +80,43 @@ public class AuditRevisionsInfo extends AuditRevisions {
 
 	public AuditRevisionsInfo(RodaRevisionEntity revision, boolean forAll) {
 
-		int nrObj;
 		Set<AuditObject> objects = null;
+		String[] auditedClasses = null;
 
 		if (forAll) {
-			nrObj = revision.getModifiedEntityNames().size();
-		} else {
-			objects = new TreeSet<AuditObject>();
+			Set<String> modifiedEntityNames = revision.getModifiedEntityNames();
 
-			String[] auditedClasses = findAuditedClasses("ro.roda.domain");
-
-			for (int i = 0; i < auditedClasses.length; i++) {
-				String auditedClassName = auditedClasses[i];
-
-				try {
-					Class<?> auditedClass = Class.forName(auditedClassName);
-
-					Set<AuditRow> rows = findModifiedEntities(auditedClass, revision);
-
-					if (rows.size() > 0) {
-						objects.add(new AuditObject(auditedClassName, rows.size(), rows));
-					}
-				} catch (Exception e) {
-					// TODO
-					System.out.println("Exception thrown when getting revision info. " + e.getMessage());
-					// e.printStackTrace();
-				}
-
+			if (modifiedEntityNames != null && modifiedEntityNames.size() > 0) {
+				auditedClasses = new String[modifiedEntityNames.size()];
+				modifiedEntityNames.toArray(auditedClasses);
 			}
-			nrObj = objects.size();
-			onConstructRevisions(revision.getId(), revision.getRevisionDate(), revision.getUsername(),
-					revision.getUserid(), nrObj, objects);
+
+		} else {
+			auditedClasses = findAuditedClasses("ro.roda.domain");
+			// onConstructRevisions(revision.getId(),
+			// revision.getRevisionDate(), revision.getUsername(),
+			// revision.getUserid(), nrObj, objects);
+		}
+
+		objects = new TreeSet<AuditObject>();
+
+		for (int i = 0; i < auditedClasses.length; i++) {
+			String auditedClassName = auditedClasses[i];
+
+			try {
+				Class<?> auditedClass = Class.forName(auditedClassName);
+
+				Set<AuditRow> rows = findModifiedEntities(auditedClass, revision);
+
+				if (rows.size() > 0) {
+					objects.add(new AuditObject(auditedClassName, rows.size(), rows));
+				}
+			} catch (Exception e) {
+				// TODO
+				System.out.println("Exception thrown when getting revision info. " + e.getMessage());
+				// e.printStackTrace();
+			}
+
 		}
 
 		onConstructRevisions(revision.getId(), revision.getRevisionDate(), revision.getUsername(),

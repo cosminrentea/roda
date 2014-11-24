@@ -15,7 +15,7 @@ public class StudiesByTopic extends JsonInfo {
 	public static String toJsonArray(Collection<StudiesByTopic> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.include("id", "name", "studiesCount");
+		serializer.include("id", "type", "name", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
 				"studies.geographicCoverage", "studies.unitAnalysis", "studies.universe");
 
@@ -100,7 +100,7 @@ public class StudiesByTopic extends JsonInfo {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.include("id", "name", "studiesCount");
+		serializer.include("id", "type", "name", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
 				"studies.geographicCoverage", "studies.unitAnalysis", "studies.universe");
 

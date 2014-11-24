@@ -18,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.CatalogStudy;
-import ro.roda.domain.File;
+import ro.roda.domain.CmsFile;
 import ro.roda.domain.Instance;
 import ro.roda.domain.Keyword;
 import ro.roda.domain.Org;
@@ -76,7 +76,7 @@ public class StudyFullInfo extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
 		// serializer.transform(new FieldNameTransformer("series"), "seriesId");
 
-		return "{\"data\":" + serializer.serialize(collection) + "}";
+		return serializer.rootName("data").serialize(collection);
 	}
 
 	public static List<StudyFullInfo> findAllStudyInfos() {
@@ -126,7 +126,7 @@ public class StudyFullInfo extends JsonInfo {
 
 	private Set<Variable> variables;
 
-	private Set<File> files;
+	private Set<CmsFile> cmsFiles;
 
 	private Set<Person> persons;
 
@@ -189,7 +189,7 @@ public class StudyFullInfo extends JsonInfo {
 
 		// set the files
 		if (hasFiles) {
-			this.setFiles(study.getFiles1());
+			this.setCmsFiles(study.getCmsFiles());
 		}
 
 		// set the variables
@@ -330,12 +330,12 @@ public class StudyFullInfo extends JsonInfo {
 		this.leaf = leaf;
 	}
 
-	public Set<File> getFiles() {
-		return files;
+	public Set<CmsFile> getCmsFiles() {
+		return cmsFiles;
 	}
 
-	public void setFiles(Set<File> files) {
-		this.files = files;
+	public void setCmsFiles(Set<CmsFile> files) {
+		this.cmsFiles = files;
 	}
 
 	public Set<Variable> getVariables() {
@@ -400,9 +400,7 @@ public class StudyFullInfo extends JsonInfo {
 				"variables.questionId", "variables.otherStatistics", "variables.selectionVariable", "variables.skips",
 				"variables.skips1", "variables.type", "variables.vargroups", "variables.variableType",
 				"variables.auditReader", "variables.classAuditReader");
-		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
-				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables",
-				"files.auditReader", "files.classAuditReader");
+		serializer.exclude("cmsFiles.*");
 		serializer.exclude("persons.forms", "persons.instancepeople", "persons.personAddresses",
 				"persons.personEmails", "persons.personInternets", "persons.personLinkss", "persons.personOrgs",
 				"persons.personPhones", "persons.prefixId", "persons.studypeople", "persons.suffixId",
@@ -429,6 +427,6 @@ public class StudyFullInfo extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
 		// serializer.transform(new FieldNameTransformer("series"), "seriesId");
 
-		return "{\"data\":" + serializer.serialize(this) + "}";
+		return serializer.rootName("data").serialize(this);
 	}
 }

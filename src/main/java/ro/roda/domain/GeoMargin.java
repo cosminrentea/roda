@@ -281,12 +281,12 @@ public class GeoMargin {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexGeoMargin(this);
+		// indexGeoMargin(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override

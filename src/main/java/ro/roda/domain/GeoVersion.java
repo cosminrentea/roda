@@ -317,12 +317,12 @@ public class GeoVersion {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexGeoVersion(this);
+		// indexGeoVersion(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override

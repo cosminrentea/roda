@@ -246,7 +246,7 @@ public class Instance {
 	// private Set<Question> questions;
 
 	@ManyToMany(mappedBy = "instances", fetch = FetchType.LAZY)
-	private Set<File> files;
+	private Set<CmsFile> cmsFiles;
 
 	@OneToMany(mappedBy = "instanceId")
 	private Set<InstanceDescr> instanceDescrs;
@@ -295,8 +295,8 @@ public class Instance {
 		return disseminatorIdentifier;
 	}
 
-	public Set<File> getFiles() {
-		return files;
+	public Set<CmsFile> getCmsFiles() {
+		return cmsFiles;
 	}
 
 	public Set<Question> getQuestions() {
@@ -375,8 +375,8 @@ public class Instance {
 		this.disseminatorIdentifier = disseminatorIdentifier;
 	}
 
-	public void setFiles(Set<File> files) {
-		this.files = files;
+	public void setCmsFiles(Set<CmsFile> files) {
+		this.cmsFiles = files;
 	}
 
 	public void setQuestions(Set<Question> questions) {
@@ -427,12 +427,12 @@ public class Instance {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexInstance(this);
+		// indexInstance(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
@@ -480,7 +480,8 @@ public class Instance {
 	// return id != null && id.equals(((Instance) obj).id);
 	// }
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

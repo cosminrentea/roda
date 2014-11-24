@@ -5,5 +5,5 @@ insert into user_group(groupname,enabled,description) values ('ROLE_VISITOR',tru
 
 -- global settings, profile-independent
 insert into setting(name, "value") values ('defaultlanguage','en');
-insert into setting(name, "value") values ('databrowser_en_url','/en/data-catalog');
-insert into setting(name, "value") values ('databrowser_ro_url','/ro/catalogul-de-date');
+insert into setting(name, "value") values ('en_databrowser_url','en/data-catalog');
+insert into setting(name, "value") values ('ro_databrowser_url','ro/catalogul-de-date');

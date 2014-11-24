@@ -169,4 +169,5 @@ public class SolrServiceImpl implements SolrService, SmartLifecycle, Application
 			}
 		}
 	}
+
 }

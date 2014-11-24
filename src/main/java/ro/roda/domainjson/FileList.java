@@ -23,8 +23,6 @@ public class FileList extends JsonInfo {
 	@Autowired
 	CmsFileStoreService cmsFileStoreService;
 
-	private final static String urlDownload = "cmsfilecontent/";
-
 	public class NameValuePair {
 		public String name;
 		public String value;
@@ -74,7 +72,6 @@ public class FileList extends JsonInfo {
 
 	public static FileList findFileList(Integer id) {
 		CmsFile file = CmsFile.findCmsFile(id);
-
 		if (file != null) {
 			return new FileList(file);
 		}
@@ -111,8 +108,6 @@ public class FileList extends JsonInfo {
 
 	private String createdby;
 
-	private String url;
-
 	private Set<NameValuePair> filepropertiesset;
 
 	private Integer folderid;
@@ -128,7 +123,6 @@ public class FileList extends JsonInfo {
 		this.id = id;
 		this.name = name;
 		this.alias = alias;
-		this.url = urlDownload + id;
 		this.directory = directory;
 		this.filesize = filesize;
 		this.filetype = filetype;
@@ -209,11 +203,7 @@ public class FileList extends JsonInfo {
 	}
 
 	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
+		return cmsFileStoreService.getDownloadBaseUrl() + id;
 	}
 
 	public String getFiletype() {

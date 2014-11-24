@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.AdminJson;
 import ro.roda.service.UserManagementService;
 
-@RequestMapping("/admin")
+@RequestMapping("/adminjson")
 @Controller
 public class UserManagementController {
 
@@ -25,8 +25,9 @@ public class UserManagementController {
 
 	@RequestMapping(value = "/usersave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String userSave(@RequestParam(value = "id") Integer id, @RequestParam(value = "username") String username,
-			@RequestParam(value = "password") String password, @RequestParam(value = "password2") String passwordCheck,
+	public String userSave(@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(value = "username") String username, @RequestParam(value = "password") String password,
+			@RequestParam(value = "passwordcheck") String passwordCheck,
 			@RequestParam(value = "email", defaultValue = "") String email,
 			@RequestParam(value = "enabled", defaultValue = "true") Boolean enabled) {
 		AdminJson response = umService.userSave(id, username, password, passwordCheck, email, enabled);
@@ -38,9 +39,10 @@ public class UserManagementController {
 
 	@RequestMapping(value = "/groupsave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String groupSave(@RequestParam(value = "id") Integer id, @RequestParam(value = "name") String name,
+	public String groupSave(@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(value = "name") String name,
 			@RequestParam(value = "description", defaultValue = "") String description,
-			@RequestParam(value = "enabled") Boolean enabled) {
+			@RequestParam(value = "enabled", defaultValue = "true") Boolean enabled) {
 		AdminJson response = umService.groupSave(id, name, description, enabled);
 		if (response == null) {
 			return null;
@@ -127,8 +129,8 @@ public class UserManagementController {
 	@ResponseBody
 	public String userChangePassword(@RequestParam(value = "userid") Integer userId,
 			@RequestParam(value = "password") String password,
-			@RequestParam(value = "controlpassword") String controlPassword) {
-		AdminJson response = umService.userChangePassword(userId, password, controlPassword);
+			@RequestParam(value = "passwordcheck") String passwordCheck) {
+		AdminJson response = umService.userChangePassword(userId, password, passwordCheck);
 		if (response == null) {
 			return null;
 		}

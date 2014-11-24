@@ -54,4 +54,24 @@ public class CmsFileContentController {
 		return null;
 	}
 
+	@RequestMapping(value = "/alias/{alias}")
+	public String fileContentByAlias(@PathVariable("alias") String alias, HttpServletResponse response) {
+		try {
+			CmsFile cmsFile = CmsFile.findCmsFile(alias);
+			if (cmsFile != null) {
+				InputStream is = cmsFileStoreService.fileLoad(cmsFile);
+				if (is != null) {
+					OutputStream out = response.getOutputStream();
+					response.setHeader("Content-Disposition", "inline;filename=\"" + cmsFile.getFilename() + "\"");
+					response.setContentType(cmsFile.getContentType());
+					IOUtils.copy(is, out);
+					out.flush();
+				}
+			}
+		} catch (IOException e) {
+			log.error("Exception when returning file content", e);
+		}
+		return null;
+	}
+
 }

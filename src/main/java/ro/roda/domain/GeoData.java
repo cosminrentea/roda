@@ -293,11 +293,11 @@ public class GeoData {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexGeoData(this);
+		// indexGeoData(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 }

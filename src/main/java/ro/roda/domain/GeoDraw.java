@@ -266,11 +266,11 @@ public class GeoDraw {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexGeoDraw(this);
+		// indexGeoDraw(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 }

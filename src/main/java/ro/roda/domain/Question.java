@@ -457,12 +457,12 @@ public class Question {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexQuestion(this);
+		// indexQuestion(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
@@ -485,7 +485,8 @@ public class Question {
 		return new HashCodeBuilder().append(id).toHashCode();
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

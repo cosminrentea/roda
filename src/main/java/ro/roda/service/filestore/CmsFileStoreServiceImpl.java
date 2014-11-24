@@ -22,6 +22,7 @@ import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.io.input.AutoCloseInputStream;
 import org.apache.commons.logging.Log;
@@ -41,6 +42,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domain.CmsFile;
@@ -48,9 +50,11 @@ import ro.roda.domain.CmsFolder;
 
 @Service
 @Transactional
-public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecycle {
+public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecycle, ServletContextAware {
 
 	private final Log log = LogFactory.getLog(this.getClass());
+
+	private String downloadBaseUrl;
 
 	@Value("${jackrabbit.config}")
 	private String jackrabbitConfigFile = null;
@@ -477,4 +481,15 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 		// Regular shutdown will continue.
 		callback.run();
 	}
+
+	@Override
+	public void setServletContext(ServletContext arg) {
+		downloadBaseUrl = arg.getContextPath() + "/cmsfilecontent/";
+	}
+
+	@Override
+	public String getDownloadBaseUrl() {
+		return downloadBaseUrl;
+	}
+
 }

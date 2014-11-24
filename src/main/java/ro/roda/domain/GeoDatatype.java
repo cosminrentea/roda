@@ -296,12 +296,12 @@ public class GeoDatatype {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexGeoDatatype(this);
+		// indexGeoDatatype(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override

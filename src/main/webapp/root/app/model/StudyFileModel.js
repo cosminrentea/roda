@@ -8,21 +8,11 @@ Ext.define('databrowser.model.StudyFileModel', {
             type: 'string',
         },
         {
-            name: 'filetype',
-            type: 'string',
-                convert : function(v, r) {
-        				var str = r.get('contentType');
-        				var tstr = str.trim();
-        				var regex = /application\//;
-        				return tstr.replace(regex, "");
-        			}
-        },
-        {
-            name: 'fileurl',
+            name: 'url',
             type: 'string'
         },
         {
-            name: 'filedescription',
+            name: 'description',
             type: 'string'
         },
         {

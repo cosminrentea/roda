@@ -42,19 +42,14 @@ import flexjson.JSONSerializer;
 @Audited
 public class StudyDescr {
 
+	public static final String SOLR_STUDY = "study";
+
+	public static final String SOLR_STUDY_RO = "Studiu";
+
+	public static final String SOLR_STUDY_EN = "Study";
+
 	public static long countStudyDescrs() {
 		return entityManager().createQuery("SELECT COUNT(o) FROM StudyDescr o", Long.class).getSingleResult();
-	}
-
-	@Async
-	public static void deleteIndex(StudyDescr studyDescr) {
-		SolrServer solrServer = solrServer();
-		try {
-			solrServer.deleteById("studydescr_" + studyDescr.getId());
-			solrServer.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static final EntityManager entityManager() {
@@ -99,28 +94,26 @@ public class StudyDescr {
 	public static void indexStudyDescrs(Collection<StudyDescr> studydescrs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (StudyDescr studyDescr : studydescrs) {
+			Lang lang = studyDescr.getLangId();
+			String language = lang.getIso639();
+			String entityName = null;
+			if ("ro".equalsIgnoreCase(language)) {
+				entityName = SOLR_STUDY_RO;
+			}
+			if ("en".equalsIgnoreCase(language)) {
+				entityName = SOLR_STUDY_EN;
+			}
+
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "studydescr_" + studyDescr.getId());
-			sid.addField("studyDescr.langid_t", studyDescr.getLangId());
-			sid.addField("studyDescr.studyid_t", studyDescr.getStudyId());
-			sid.addField("studyDescr.abstract1_s", studyDescr.getAbstract1());
-			sid.addField("studyDescr.grantdetails_s", studyDescr.getGrantDetails());
-			sid.addField("studyDescr.title_s", studyDescr.getTitle());
-			sid.addField("studyDescr.notes_s", studyDescr.getNotes());
-			sid.addField("studyDescr.weighting_s", studyDescr.getWeighting());
-			sid.addField("studyDescr.researchinstrument_s", studyDescr.getResearchInstrument());
-			sid.addField("studyDescr.scope_s", studyDescr.getScope());
-			sid.addField("studyDescr.universe_s", studyDescr.getUniverse());
-			sid.addField("studyDescr.subtitle_s", studyDescr.getSubtitle());
-			sid.addField("studyDescr.alternativetitle_s", studyDescr.getAlternativeTitle());
-			sid.addField("studyDescr.timecovered_s", studyDescr.getTimeCovered());
-			sid.addField("studyDescr.geographiccoverage_s", studyDescr.getGeographicCoverage());
-			// Add summary field to allow searching documents for objects of
-			// this type
+			sid.addField("id", SOLR_STUDY + "_" + studyDescr.getStudyId().getId() + "_" + language);
+			sid.addField("language", language);
+			sid.addField("entity", SOLR_STUDY);
+			sid.addField("entityname", entityName);
+			sid.addField("url", studyDescr.buildUrl(language));
+			sid.addField("name", studyDescr.getTitle());
 			sid.addField(
-					"studydescr_solrsummary_t",
-					new StringBuilder().append(studyDescr.getLangId()).append(" ").append(studyDescr.getStudyId())
-							.append(" ").append(studyDescr.getAbstract1()).append(" ")
+					"description",
+					new StringBuilder().append(studyDescr.getAbstract1()).append(" ")
 							.append(studyDescr.getGrantDetails()).append(" ").append(studyDescr.getTitle()).append(" ")
 							.append(studyDescr.getNotes()).append(" ").append(studyDescr.getWeighting()).append(" ")
 							.append(studyDescr.getResearchInstrument()).append(" ").append(studyDescr.getScope())
@@ -132,6 +125,17 @@ public class StudyDescr {
 		try {
 			SolrServer solrServer = solrServer();
 			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Async
+	public static void deleteIndex(StudyDescr studyDescr) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById(SOLR_STUDY + "_" + studyDescr.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -462,6 +466,12 @@ public class StudyDescr {
 		this.weighting = weighting;
 	}
 
+	public String buildUrl(String language) {
+		return Setting.findSetting("baseurl").getValue()
+				+ Setting.findSetting(language + "_databrowser_url").getValue() + "#" + SOLR_STUDY + ":"
+				+ getStudyId().getId();
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
@@ -470,7 +480,8 @@ public class StudyDescr {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

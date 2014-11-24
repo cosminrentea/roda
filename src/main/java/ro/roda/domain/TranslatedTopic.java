@@ -362,11 +362,11 @@ public class TranslatedTopic {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexTranslatedTopic(this);
+		// indexTranslatedTopic(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 }

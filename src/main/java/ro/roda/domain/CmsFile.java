@@ -3,15 +3,20 @@ package ro.roda.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -238,6 +243,12 @@ public class CmsFile {
 		return AuditReaderFactory.get(entityManager());
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	// , columnDefinition = "serial")
+	private Integer id;
+
 	@ManyToOne
 	@JoinColumn(name = "cms_folder_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private CmsFolder cmsFolderId;
@@ -255,20 +266,25 @@ public class CmsFile {
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
-	// @Column(name = "full_path", columnDefinition = "text")
-	// private String fullPath;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	// , columnDefinition = "serial")
-	private Integer id;
-
-	@Column(name = "label", columnDefinition = "varchar", length = 100)
+	@Column(name = "label", columnDefinition = "varchar", length = 100, unique = true)
 	private String label;
 
 	@Column(name = "url", columnDefinition = "varchar", length = 200)
 	private String url;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "study_cms_file", joinColumns = { @JoinColumn(name = "cms_file_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
+	private Set<Study> studies;
+
+	@ManyToMany
+	@JoinTable(name = "instance_cms_file", joinColumns = { @JoinColumn(name = "cms_file_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "instance_id", nullable = false) })
+	private Set<Instance> instances;
+
+	@OneToMany(mappedBy = "cmsFileId")
+	private Set<Variable> variables;
+
+	@OneToMany(mappedBy = "responseCardCmsFileId")
+	private Set<SelectionVariableItem> selectionVariableItems;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -320,6 +336,22 @@ public class CmsFile {
 
 	public String getUrl() {
 		return url;
+	}
+
+	public Set<Instance> getInstances() {
+		return instances;
+	}
+
+	public Set<SelectionVariableItem> getSelectionVariableItems() {
+		return selectionVariableItems;
+	}
+
+	public Set<Study> getStudies() {
+		return studies;
+	}
+
+	public Set<Variable> getVariables() {
+		return variables;
 	}
 
 	@Transactional
@@ -380,6 +412,22 @@ public class CmsFile {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public void setInstances(Set<Instance> instances) {
+		this.instances = instances;
+	}
+
+	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
+		this.selectionVariableItems = selectionVariableItems;
+	}
+
+	public void setStudies(Set<Study> studies1) {
+		this.studies = studies1;
+	}
+
+	public void setVariables(Set<Variable> variables) {
+		this.variables = variables;
 	}
 
 	public String toJson() {

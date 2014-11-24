@@ -41,6 +41,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import ro.roda.service.solr.SolrService;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import flexjson.JSON;
@@ -53,19 +55,14 @@ import flexjson.JSONSerializer;
 @Audited
 public class Variable implements Comparable {
 
+	public static final String SOLR_VARIABLE = "variable";
+
+	public static final String SOLR_VARIABLE_EN = "Variable";
+
+	public static final String SOLR_VARIABLE_RO = "Variabila";
+
 	public static long countVariables() {
 		return entityManager().createQuery("SELECT COUNT(o) FROM Variable o", Long.class).getSingleResult();
-	}
-
-	@Async
-	public static void deleteIndex(Variable variable) {
-		SolrServer solrServer = solrServer();
-		try {
-			solrServer.deleteById("variable_" + variable.getId());
-			solrServer.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static final EntityManager entityManager() {
@@ -124,25 +121,53 @@ public class Variable implements Comparable {
 	public static void indexVariables(Collection<Variable> variables) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (Variable variable : variables) {
+
+			Question q = variable.getQuestionId();
+			Lang lang = q.getLangId();
+			String language = lang.getIso639();
+			Study s = q.getInstances().iterator().next().getStudyId();
+			StudyDescr sd = StudyDescr.findStudyDescr(new StudyDescrPK(lang.getId(), s.getId()));
+
+			String entityName = null;
+			if ("ro".equalsIgnoreCase(language)) {
+				entityName = SOLR_VARIABLE_RO;
+			}
+			if ("en".equalsIgnoreCase(language)) {
+				entityName = SOLR_VARIABLE_EN;
+			}
+
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "variable_" + variable.getId());
-			sid.addField("variable.selectionvariable_t", variable.getSelectionVariable());
-			sid.addField("variable.fileid_t", variable.getFileId());
-			sid.addField("variable.label_s", variable.getLabel());
-			sid.addField("variable.operatorinstructions_s", variable.getOperatorInstructions());
-			sid.addField("variable.variabletype_t", variable.getVariableType());
-			// Add summary field to allow searching documents for objects of
-			// this type
+			sid.addField("id", SOLR_VARIABLE + "_" + variable.getId() + "_" + language);
+			sid.addField("language", "ro");
+			sid.addField("entity", SOLR_VARIABLE);
+			sid.addField("entityname", entityName);
+			sid.addField("url", variable.buildUrl(language));
+			sid.addField("name", variable.getName());
 			sid.addField(
-					"variable_solrsummary_t",
-					new StringBuilder().append(variable.getSelectionVariable()).append(" ")
-							.append(variable.getFileId()).append(" ").append(variable.getLabel()).append(" ")
-							.append(variable.getOperatorInstructions()).append(" ").append(variable.getVariableType()));
+					"description",
+					new StringBuilder().append(variable.getName()).append(" ").append(variable.getLabel()).append(" ")
+							.append(q.getName()).append(" ").append(q.getPreamble()).append(" ")
+							.append(q.getStatement()).append(" ").append(variable.getOperatorInstructions())
+							.append(" ").append(variable.getCategories()));
+			sid.addField("parentid", StudyDescr.SOLR_STUDY + "_" + s.getId() + "_" + language);
+			sid.addField("parentname", sd.getTitle());
+			sid.addField("parenturl", sd.buildUrl(language));
 			documents.add(sid);
 		}
 		try {
 			SolrServer solrServer = solrServer();
 			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Async
+	public static void deleteIndex(Variable variable) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById(SOLR_VARIABLE + "_" + variable.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -188,7 +213,7 @@ public class Variable implements Comparable {
 
 		return new JSONSerializer()
 				.exclude("*.class")
-				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "fileId",
+				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "cmsFileId",
 						"classAuditReader", "auditReader", "orderInQuestion", "otherStatistics.auditReader",
 						"otherStatistics.classAuditReader", "otherStatistics.variableId.classAuditReader",
 						"otherStatistics.variableId.auditReader", "skips", "skips1", "vargroups", "concepts",
@@ -232,7 +257,7 @@ public class Variable implements Comparable {
 	 * @return
 	 */
 	public static Variable checkVariable(Long id, String label, Question questionId, Integer order, Short type,
-			String operatorInstructions, File fileId) {
+			String operatorInstructions, CmsFile fileId) {
 		Variable object = null;
 
 		if (id != null) {
@@ -251,7 +276,7 @@ public class Variable implements Comparable {
 		object.questionId = questionId;
 		object.orderInQuestion = order;
 		object.operatorInstructions = operatorInstructions;
-		object.fileId = fileId;
+		object.cmsFileId = fileId;
 		object.persist();
 
 		return object;
@@ -269,8 +294,8 @@ public class Variable implements Comparable {
 	private Question questionId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "file_id", columnDefinition = "integer", referencedColumnName = "id")
-	private File fileId;
+	@JoinColumn(name = "cms_file_id", columnDefinition = "integer", referencedColumnName = "id")
+	private CmsFile cmsFileId;
 
 	@OneToMany(mappedBy = "variableId", fetch = FetchType.LAZY)
 	private Set<FormEditedNumberVar> formEditedNumberVars;
@@ -335,6 +360,14 @@ public class Variable implements Comparable {
 	@Autowired(required = false)
 	transient SolrServer solrServer;
 
+	@Autowired
+	transient SolrService solrService;
+
+	public String buildUrl(String language) {
+		return Setting.findSetting("baseurl").getValue()
+				+ Setting.findSetting(language + "_databrowser_url").getValue() + "#" + SOLR_VARIABLE + ":" + getId();
+	}
+
 	@Transactional
 	public void clear() {
 		if (this.entityManager == null)
@@ -353,8 +386,8 @@ public class Variable implements Comparable {
 		return concepts;
 	}
 
-	public File getFileId() {
-		return fileId;
+	public CmsFile getCmsFileId() {
+		return cmsFileId;
 	}
 
 	public Set<FormEditedNumberVar> getFormEditedNumberVars() {
@@ -457,8 +490,8 @@ public class Variable implements Comparable {
 		this.concepts = concepts;
 	}
 
-	public void setFileId(File fileId) {
-		this.fileId = fileId;
+	public void setCmsFileId(CmsFile fileId) {
+		this.cmsFileId = fileId;
 	}
 
 	public void setFormEditedNumberVars(Set<FormEditedNumberVar> formEditedNumberVars) {
@@ -535,7 +568,7 @@ public class Variable implements Comparable {
 						"selectionVariable.classAuditReader", "skips.auditReader", "skips.classAuditReader",
 						"skips1.auditReader", "skips1.classAuditReader", "vargroups.auditReader",
 						"questionId.auditReader", "questionId.classAuditReader", "vargroups.classAuditReader",
-						"concepts", "formEditedNumberVars", "formEditedTextVars", "fileId")
+						"concepts", "formEditedNumberVars", "formEditedTextVars", "cmsFileId")
 				.include("questionId.id", "questionId.statement").serialize(this);
 	}
 
@@ -544,7 +577,7 @@ public class Variable implements Comparable {
 		l.add(this);
 		return new JSONSerializer()
 				.exclude("*.class")
-				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "fileId",
+				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "cmsFileId",
 						"classAuditReader", "auditReader", "orderInQuestion", "otherStatistics.auditReader",
 						"otherStatistics.classAuditReader", "otherStatistics.variableId.classAuditReader",
 						"otherStatistics.variableId.auditReader", "skips", "skips1", "vargroups", "concepts",
@@ -570,14 +603,12 @@ public class Variable implements Comparable {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		// TODO temporarily disabled
-		// indexVariable(this);
+		indexVariable(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		// TODO temporarily disabled
-		// deleteIndex(this);
+		deleteIndex(this);
 	}
 
 	@Override
@@ -606,7 +637,8 @@ public class Variable implements Comparable {
 		return new CompareToBuilder().append(this.id, other.id).toComparison();
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

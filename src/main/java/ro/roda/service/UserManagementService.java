@@ -39,7 +39,7 @@ public interface UserManagementService {
 
 	public abstract AdminJson userDrop(Integer userId);
 
-	public abstract AdminJson userChangePassword(Integer userId, String password, String controlPassword);
+	public abstract AdminJson userChangePassword(Integer userId, String password, String passwordCheck);
 
 	public abstract AdminJson userMessage(Integer userId, String subject, String message);
 

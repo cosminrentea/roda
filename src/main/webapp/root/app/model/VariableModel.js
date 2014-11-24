@@ -18,10 +18,6 @@ Ext.define('databrowser.model.VariableModel', {
         {
             name: 'indice',
             type: 'integer'
-        },
-        {
-            name: 'nrfreq',
-            type: 'integer'
         }
     ],
     hasMany: [{

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import ro.roda.domain.CatalogStudy;
-import ro.roda.domain.File;
+import ro.roda.domain.CmsFile;
 import ro.roda.domain.Instance;
 import ro.roda.domain.Keyword;
 import ro.roda.domain.Lang;
@@ -137,7 +137,7 @@ public class StudyInfo extends JsonInfo {
 
 	private List<Variable> variables;
 
-	private Set<File> files;
+	private Set<CmsFile> files;
 
 	private Set<Person> persons;
 
@@ -274,7 +274,7 @@ public class StudyInfo extends JsonInfo {
 
 		// set the files
 		if (hasFiles) {
-			this.setFiles(study.getFiles1());
+			this.setFiles(study.getCmsFiles());
 		}
 
 		// set the persons and organizations
@@ -383,11 +383,11 @@ public class StudyInfo extends JsonInfo {
 		this.leaf = leaf;
 	}
 
-	public Set<File> getFiles() {
+	public Set<CmsFile> getFiles() {
 		return files;
 	}
 
-	public void setFiles(Set<File> files) {
+	public void setFiles(Set<CmsFile> files) {
 		this.files = files;
 	}
 
@@ -480,7 +480,7 @@ public class StudyInfo extends JsonInfo {
 				"geographicUnit", "researchInstrument", "weighting", "seriesId");
 		serializer.include("variables.id", "variables.name", "variables.label", "variables.questionId.id",
 				"variables.questionId.statement");
-		serializer.include("files.name", "files.contentType", "files.url", "files.description");
+		serializer.include("files.filename", "files.contentType", "files.url", "files.description");
 		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
 		serializer.include("orgs.id", "orgs.fullName");
 		serializer.include("keywords.id", "keywords.name");
@@ -498,7 +498,8 @@ public class StudyInfo extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");
 		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
-
-		return serializer.rootName("data").serialize(this);
+		String result = serializer.rootName("data").serialize(this);
+		// log.trace(result);
+		return result;
 	}
 }

@@ -152,7 +152,7 @@ public class Study {
 	public static String toJsonArray(Collection<Study> collection) {
 		return new JSONSerializer()
 				.exclude("*.class")
-				.include("studyDescrs", "catalogStudies", "collectionModelTypes", "dataSourceTypes", "files1",
+				.include("studyDescrs", "catalogStudies", "collectionModelTypes", "dataSourceTypes", "cmsFiles",
 						"instances", "samplingProcedures", "sources", "studyKeywords", "studyOrgs", "studypeople",
 						"topics").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
@@ -298,8 +298,8 @@ public class Study {
 	@NotNull
 	private boolean digitizable;
 
-	@ManyToMany(mappedBy = "studies1", fetch = FetchType.LAZY)
-	private Set<File> files1;
+	@ManyToMany(mappedBy = "studies", fetch = FetchType.LAZY)
+	private Set<CmsFile> cmsFiles;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -407,8 +407,8 @@ public class Study {
 		return dateStart;
 	}
 
-	public Set<File> getFiles1() {
-		return files1;
+	public Set<CmsFile> getCmsFiles() {
+		return cmsFiles;
 	}
 
 	public Integer getId() {
@@ -555,8 +555,8 @@ public class Study {
 		this.digitizable = digitizable;
 	}
 
-	public void setFiles1(Set<File> files1) {
-		this.files1 = files1;
+	public void setCmsFiles(Set<CmsFile> files) {
+		this.cmsFiles = files;
 	}
 
 	public void setId(Integer id) {
@@ -727,7 +727,8 @@ public class Study {
 		return true;
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

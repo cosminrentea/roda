@@ -469,12 +469,12 @@ public class Geography {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexGeography(this);
+		// indexGeography(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override

@@ -13,14 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.domainjson.FileList;
 import ro.roda.service.FileListService;
-import ro.roda.service.filestore.CmsFileStoreService;
 
 @RequestMapping("/adminjson/cmsfilelist")
 @Controller
-public class FileListController {
-
-	@Autowired
-	CmsFileStoreService cmsFileStoreService;
+public class CmsFileListController {
 
 	@Autowired
 	FileListService fileListService;
@@ -38,15 +34,11 @@ public class FileListController {
 	@ResponseBody
 	public ResponseEntity<String> showFileDetails(@PathVariable("id") Integer id) {
 		FileList fileList = fileListService.findFileList(id);
-		// fileList.setFileproperties(cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id)));
-
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (fileList == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		// return new ResponseEntity<String>(fileList.toJson(), headers,
-		// HttpStatus.OK);
 		return new ResponseEntity<String>(fileList.toJsonDetailed(), headers, HttpStatus.OK);
 	}
 
@@ -63,15 +55,11 @@ public class FileListController {
 	@ResponseBody
 	public ResponseEntity<String> showJsonDetails(@PathVariable("id") Integer id) {
 		FileList fileList = fileListService.findFileList(id);
-		// fileList.setFileproperties(cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id)));
-
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (fileList == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		// return new ResponseEntity<String>(fileList.toJson(), headers,
-		// HttpStatus.OK);
 		return new ResponseEntity<String>(fileList.toJsonDetailed(), headers, HttpStatus.OK);
 	}
 

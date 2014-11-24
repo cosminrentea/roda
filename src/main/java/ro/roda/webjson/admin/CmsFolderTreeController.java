@@ -11,35 +11,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.domainjson.FolderInfo;
-import ro.roda.service.FolderInfoService;
+import ro.roda.domainjson.FolderTree;
+import ro.roda.service.FolderTreeService;
 
-@RequestMapping("/adminjson/cmsfolderinfo")
+@RequestMapping("/adminjson/cmsfoldertree")
 @Controller
-public class FolderInfoController {
+public class CmsFolderTreeController {
 
 	@Autowired
-	FolderInfoService folderInfoService;
+	FolderTreeService folderTreeService;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> listJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<FolderInfo> result = folderInfoService.findAllFolderInfos();
-		return new ResponseEntity<String>(FolderInfo.toJsonArr(result), headers, HttpStatus.OK);
+		List<FolderTree> result = folderTreeService.findAllFolderTrees();
+		return new ResponseEntity<String>(FolderTree.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-		FolderInfo folderInfo = folderInfoService.findFolderInfo(id);
+		FolderTree folderTree = folderTreeService.findFolderTree(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		if (folderInfo == null) {
+		if (folderTree == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(folderInfo.toJson(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(folderTree.toJson(), headers, HttpStatus.OK);
 	}
 
 }

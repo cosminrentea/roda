@@ -105,7 +105,7 @@ public class SelectionVariableItem {
 		for (SelectionVariableItem selectionVariableItem : selectionvariableitems) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "selectionvariableitem_" + selectionVariableItem.getId());
-			sid.addField("selectionVariableItem.responsecardfileid_t", selectionVariableItem.getResponseCardFileId());
+			sid.addField("selectionVariableItem.responsecardfileid_t", selectionVariableItem.getResponseCardCmsFileId());
 			sid.addField("selectionVariableItem.itemid_t", selectionVariableItem.getItemId());
 			sid.addField("selectionVariableItem.variableid_t", selectionVariableItem.getVariableId());
 			sid.addField("selectionVariableItem.orderofiteminvariable_i",
@@ -116,7 +116,7 @@ public class SelectionVariableItem {
 			// this type
 			sid.addField(
 					"selectionvariableitem_solrsummary_t",
-					new StringBuilder().append(selectionVariableItem.getResponseCardFileId()).append(" ")
+					new StringBuilder().append(selectionVariableItem.getResponseCardCmsFileId()).append(" ")
 							.append(selectionVariableItem.getItemId()).append(" ")
 							.append(selectionVariableItem.getVariableId()).append(" ")
 							.append(selectionVariableItem.getOrderOfItemInVariable()).append(" ")
@@ -181,8 +181,8 @@ public class SelectionVariableItem {
 	private Integer orderOfItemInVariable;
 
 	@ManyToOne
-	@JoinColumn(name = "response_card_file_id", columnDefinition = "integer", referencedColumnName = "id")
-	private File responseCardFileId;
+	@JoinColumn(name = "response_card_cms_file_id", columnDefinition = "integer", referencedColumnName = "id")
+	private CmsFile responseCardCmsFileId;
 
 	@ManyToOne
 	@JoinColumn(name = "variable_id", columnDefinition = "bigint", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false)
@@ -228,8 +228,8 @@ public class SelectionVariableItem {
 		return orderOfItemInVariable;
 	}
 
-	public File getResponseCardFileId() {
-		return responseCardFileId;
+	public CmsFile getResponseCardCmsFileId() {
+		return responseCardCmsFileId;
 	}
 
 	public SelectionVariable getVariableId() {
@@ -284,8 +284,8 @@ public class SelectionVariableItem {
 		this.orderOfItemInVariable = orderOfItemInVariable;
 	}
 
-	public void setResponseCardFileId(File responseCardFileId) {
-		this.responseCardFileId = responseCardFileId;
+	public void setResponseCardCmsFileId(CmsFile responseCardFileId) {
+		this.responseCardCmsFileId = responseCardFileId;
 	}
 
 	public void setVariableId(SelectionVariable variableId) {
@@ -300,7 +300,8 @@ public class SelectionVariableItem {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

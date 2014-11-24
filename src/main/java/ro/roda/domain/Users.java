@@ -32,6 +32,7 @@ import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -250,9 +251,9 @@ public class Users implements Serializable {
 		}
 
 		object = new Users();
-		object.username = username;
-		object.password = password;
-		object.enabled = enabled;
+		object.setUsername(username);
+		object.setPassword(password);
+		object.setEnabled(enabled);
 		object.persist();
 
 		return object;
@@ -284,6 +285,7 @@ public class Users implements Serializable {
 	@Column(name = "password", columnDefinition = "varchar", length = 64)
 	@NotNull
 	@JSON(include = false)
+	@JsonIgnore
 	private String password;
 
 	@OneToMany(mappedBy = "userId")
@@ -459,8 +461,14 @@ public class Users implements Serializable {
 		this.instances = instances;
 	}
 
+	/**
+	 * Encode first SHA-256 (!) and then set the provided password (which should
+	 * be plaintext).
+	 * 
+	 * @param password
+	 */
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = new ShaPasswordEncoder(256).encodePassword(password, null);
 	}
 
 	public void setPersonLinkss(Set<PersonLinks> personLinkss) {
@@ -533,7 +541,8 @@ public class Users implements Serializable {
 				|| (username != null && username.equalsIgnoreCase(((Users) obj).username));
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

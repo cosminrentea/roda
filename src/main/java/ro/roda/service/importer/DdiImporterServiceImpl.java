@@ -470,6 +470,9 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 		sd.persist();
 
+		Lang roLang = Lang.findLang("ro");
+		Integer roLangId = roLang.getId();
+
 		if (stdyInfoType != null) {
 			SubjectType subjectType = stdyInfoType.getSubject();
 			if (subjectType != null) {
@@ -488,8 +491,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				}
 
 				// Topics / ELSST
-				Lang roLang = Lang.findLang("ro");
-				Integer roLangId = roLang.getId();
 				List<TopcClasType> topcClasTypeList = subjectType.getTopcClas();
 				Set<Topic> tSet = new HashSet<Topic>();
 				for (TopcClasType topcClasType : topcClasTypeList) {
@@ -563,6 +564,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 					// files)
 					q.setName(variable.getName());
 					q.setStatement(varType.getQstn().get(0).getQstnLitType().get(0).content);
+					q.setLangId(roLang);
 
 					q.setOrderInMainInstance(counterQstn++);
 
@@ -649,33 +651,30 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		}
 
 		// Add the imported DDI File to current Study's Files
-		// (in the OLD deprecated File-Store)
-
-		// ro.roda.domain.File domainFile = new ro.roda.domain.File();
-		// fileService.saveFile(domainFile, multipartFileDdi, false);
-		//
-		// HashSet<Study> sStudy = new HashSet<Study>();
-		// sStudy.add(s);
-		// domainFile.setStudies1(sStudy);
-		// domainFile.setContentType("application/xml");
-		//
-		// HashSet<ro.roda.domain.File> sFile = new
-		// HashSet<ro.roda.domain.File>();
-		// sFile.add(domainFile);
-		// s.setFiles1(sFile);
-		//
-		// domainFile.persist();
-
-		// Add the imported DDI File to current Study's Files
 		// (in CMS-File-Store)
-		AdminJson ret = adminJsonService.folderSave(CmsFolder.importedCmsFolderName, null,
+		AdminJson adminJsonImportedFolder = adminJsonService.folderSave(CmsFolder.importedCmsFolderName, null,
 				"Folder for imported DDI files and related files");
 
-		// 1. create sub-folder for each imported study
-		AdminJson retDdi = adminJsonService.folderSave(s.getId().toString(), ret.getId(), null);
+		// create sub-folder for each imported study
+		AdminJson adminJsonStudyFolder = adminJsonService.folderSave(s.getId().toString(),
+				adminJsonImportedFolder.getId(), null);
 
-		// 2. save the DDI XML file
-		adminJsonService.fileSave(retDdi.getId(), multipartFileDdi, null, null, null);
+		// save the DDI XML file in the folder
+		AdminJson adminJsonDdi = adminJsonService.fileSave(adminJsonStudyFolder.getId(), multipartFileDdi, null, null,
+				null);
+
+		// prepare attachement of File(s)
+		Set<CmsFile> studyFiles = s.getCmsFiles();
+		if (studyFiles == null) {
+			studyFiles = new HashSet<CmsFile>();
+		}
+
+		// 4. associate the DDI File to the Study
+		CmsFile cmsFile = CmsFile.findCmsFile(adminJsonDdi.getId());
+		Set<Study> currentStudySet = new HashSet<Study>();
+		currentStudySet.add(s);
+		cmsFile.setStudies(currentStudySet);
+		studyFiles.add(cmsFile);
 
 		// save the data/CSV file, if any
 		// if (multipartFileCsv != null) {
@@ -745,8 +744,12 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 		if (multipartFileCsv != null) {
 
-			// save the DDI CSV file
-			adminJsonService.fileSave(retDdi.getId(), multipartFileCsv, null, null, null);
+			// save & attach the DDI CSV file
+			AdminJson adminJsonCsv = adminJsonService.fileSave(adminJsonStudyFolder.getId(), multipartFileCsv, null,
+					null, null);
+			cmsFile = CmsFile.findCmsFile(adminJsonCsv.getId());
+			cmsFile.setStudies(currentStudySet);
+			studyFiles.add(cmsFile);
 
 			List<String[]> csvLines;
 			CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(
@@ -780,8 +783,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			}
 		}
 
-		// s.flush();
-
 		// serialization of DDI XML as JSON - only if requested
 		if ("yes".equalsIgnoreCase(rodaDataDdiSaveJson)) {
 			String ddiJson = new JSONSerializer().exclude("*.class").prettyPrint(true).deepSerialize(cb);
@@ -794,10 +795,22 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			MockMultipartFile mmfJson = new MockMultipartFile(multipartFileDdi.getName().concat(".json"),
 					multipartFileDdi.getName().concat(".json"), "application/json", fisJson);
 
-			// save the JSON in FileStore, inside the study's folder
-			adminJsonService.fileSave(retDdi.getId(), mmfJson, null, null, null);
+			// save & attach the JSON in FileStore, in the study folder
+			AdminJson adminJsonJson = adminJsonService
+					.fileSave(adminJsonStudyFolder.getId(), mmfJson, null, null, null);
+			cmsFile = CmsFile.findCmsFile(adminJsonJson.getId());
+			cmsFile.setStudies(currentStudySet);
+			studyFiles.add(cmsFile);
+
 			fisJson.close();
 		}
 
+		// all possible files were already attached to the study
+		// (DDI / CSV / JSON) -> now "set" these attached files
+		s.setCmsFiles(studyFiles);
+
+		// Merge & Flush the study (+related data)
+		s.merge();
+		s.flush();
 	}
 }

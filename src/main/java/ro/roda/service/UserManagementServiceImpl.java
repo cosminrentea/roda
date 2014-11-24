@@ -143,8 +143,8 @@ public class UserManagementServiceImpl implements UserManagementService {
 		return new AdminJson(true, "User deleted");
 	}
 
-	public AdminJson userChangePassword(Integer userId, String password, String controlPassword) {
-		if (password == null || password.equals(controlPassword)) {
+	public AdminJson userChangePassword(Integer userId, String password, String passwordCheck) {
+		if (password == null || !password.equals(passwordCheck)) {
 			return new AdminJson(false, "Passwords do not match");
 		}
 		Users u = Users.findUsers(userId);

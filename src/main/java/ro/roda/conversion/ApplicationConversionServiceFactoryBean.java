@@ -106,9 +106,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	EmailService emailService;
 
 	@Autowired
-	FileService fileService;
-
-	@Autowired
 	FormService formService;
 
 	@Autowired
@@ -859,31 +856,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.Email>() {
 			public ro.roda.domain.Email convert(String id) {
 				return getObject().convert(getObject().convert(id, Integer.class), Email.class);
-			}
-		};
-	}
-
-	public Converter<File, String> getFileToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.File, java.lang.String>() {
-			public String convert(File file) {
-				return new StringBuilder().append(file.getTitle()).append(' ').append(file.getDescription())
-						.append(' ').append(file.getName()).append(' ').append(file.getSize()).toString();
-			}
-		};
-	}
-
-	public Converter<Integer, File> getIdToFileConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.Integer, ro.roda.domain.File>() {
-			public ro.roda.domain.File convert(java.lang.Integer id) {
-				return fileService.findFile(id);
-			}
-		};
-	}
-
-	public Converter<String, File> getStringToFileConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.File>() {
-			public ro.roda.domain.File convert(String id) {
-				return getObject().convert(getObject().convert(id, Integer.class), File.class);
 			}
 		};
 	}
@@ -2909,9 +2881,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getEmailToStringConverter());
 		registry.addConverter(getIdToEmailConverter());
 		registry.addConverter(getStringToEmailConverter());
-		registry.addConverter(getFileToStringConverter());
-		registry.addConverter(getIdToFileConverter());
-		registry.addConverter(getStringToFileConverter());
 		registry.addConverter(getFormToStringConverter());
 		registry.addConverter(getIdToFormConverter());
 		registry.addConverter(getStringToFormConverter());

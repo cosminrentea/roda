@@ -18,7 +18,7 @@
 	<default_page>0</default_page>
 	<external_redirect></external_redirect>
 	<internal_redirect></internal_redirect>
-	<navigable>false</navigable>
+	<navigable>true</navigable>
 	<published>true</published>
 	<target></target>
 	<visible>true</visible>

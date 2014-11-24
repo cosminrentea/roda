@@ -67,10 +67,8 @@ public class CmsPage implements Comparable<CmsPage> {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (CmsPage cmsPage : cmspages) {
 			if (cmsPage.searchable) {
-				SolrInputDocument sid = new SolrInputDocument();
-				sid.addField("id", SOLR_CMSPAGE + "_" + cmsPage.getId());
+				CmsPageContent cmsPageContent = cmsPage.getCmsPageContents().iterator().next();
 				String language = cmsPage.getLangId().getIso639();
-				sid.addField("language", language);
 				String entityName = null;
 				if ("ro".equalsIgnoreCase(language)) {
 					entityName = SOLR_CMSPAGE_RO;
@@ -78,16 +76,17 @@ public class CmsPage implements Comparable<CmsPage> {
 				if ("en".equalsIgnoreCase(language)) {
 					entityName = SOLR_CMSPAGE_EN;
 				}
+
+				SolrInputDocument sid = new SolrInputDocument();
+				sid.addField("id", SOLR_CMSPAGE + "_" + cmsPage.getId());
+				sid.addField("table", "cms_page");
+				sid.addField("tableid", cmsPage.getId());
+				sid.addField("language", language);
 				sid.addField("entity", SOLR_CMSPAGE);
 				sid.addField("entityname", entityName);
 				sid.addField("name", cmsPage.getName());
-				sid.addField("description",
-						Jsoup.clean(cmsPage.getCmsPageContents().iterator().next().getContentText(), Whitelist.none()));
-				sid.addField("url", cmsPage.generateFullRelativeUrl());
-				// sid.addField(
-				// "summary_t",
-				// new StringBuilder().append(cmsPage.getName()).append(" ")
-				// .append(cmsPage.getCmsPageContents().iterator().next().getContentText()));
+				sid.addField("url", cmsPage.buildUrl());
+				sid.addField("description", Jsoup.clean(cmsPageContent.getContentText(), Whitelist.none()));
 				documents.add(sid);
 			}
 			try {
@@ -706,14 +705,14 @@ public class CmsPage implements Comparable<CmsPage> {
 		}
 	}
 
-	public String generateFullRelativeUrl() {
-		String result = url;
+	public String buildUrl() {
+		String relUrl = url;
 		CmsPage parentPage = this.getCmsPageId();
 		while (parentPage != null) {
-			result = parentPage.getUrl() + "/" + result;
+			relUrl = parentPage.getUrl() + "/" + relUrl;
 			parentPage = parentPage.getCmsPageId();
 		}
-		return result;
+		return Setting.findSetting("baseurl").getValue() + relUrl;
 	}
 
 	public String toJson() {

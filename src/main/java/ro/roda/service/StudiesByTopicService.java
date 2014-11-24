@@ -6,7 +6,7 @@ import ro.roda.domainjson.StudiesByTopic;
 
 public interface StudiesByTopicService {
 
-	public abstract List<StudiesByTopic> findAllDirectStudiesByTopic();
+	// public abstract List<StudiesByTopic> findAllDirectStudiesByTopic();
 
 	public abstract StudiesByTopic findDirectStudiesByTopic(Integer topicId);
 

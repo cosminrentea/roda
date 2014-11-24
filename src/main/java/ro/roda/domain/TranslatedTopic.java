@@ -187,17 +187,17 @@ public class TranslatedTopic {
 	}
 
 	public static String toJsonByParent(String parentId, String language) {
-		List<TranslatedTopic> topics;
-		if (parentId == null || "0".equalsIgnoreCase(parentId)) {
+		List<TranslatedTopic> results;
+		if (parentId == null || parentId.length() == 0 || "0".equalsIgnoreCase(parentId)) {
 			// parent is null or "root" (as sent by ExtJS)
 			// => first-level of topics
-			topics = entityManager()
+			results = entityManager()
 					.createQuery(
 							"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId.parentId IS NULL AND tt.langId.iso639 = :language",
 							TranslatedTopic.class).setParameter("language", language).getResultList();
 		} else {
 			// we assume parentId is a regular number
-			topics = entityManager()
+			results = entityManager()
 					.createQuery(
 							"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId.parentId = :parentId AND tt.langId.iso639 = :language",
 							TranslatedTopic.class).setParameter("parentId", Topic.findTopic(Integer.valueOf(parentId)))
@@ -205,18 +205,28 @@ public class TranslatedTopic {
 		}
 
 		return new JSONSerializer().include("translation", "indice", "leaf").exclude("*.*").rootName("topics")
-				.serialize(topics);
+				.serialize(results);
 	}
 
-	public static List<TranslatedTopic> usedTranslatedTopics(String language) {
-		return entityManager()
-				.createQuery(
-						"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId IN ( SELECT DISTINCT t FROM Topic t JOIN t.studies s ) AND tt.langId.iso639 = :language",
-						TranslatedTopic.class).setParameter("language", language).getResultList();
+	public static List<TranslatedTopic> usedTranslatedTopics(String parentTopicId, String language) {
+		List<TranslatedTopic> results;
+		if (parentTopicId == null || parentTopicId.length() == 0 || "0".equalsIgnoreCase(parentTopicId)) {
+			results = entityManager()
+					.createQuery(
+							"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId IN ( SELECT DISTINCT t FROM Topic t JOIN t.studies s WHERE t.parentId IS NULL ) AND tt.langId.iso639 = :language",
+							TranslatedTopic.class).setParameter("language", language).getResultList();
+		} else {
+			results = entityManager()
+					.createQuery(
+							"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId IN ( SELECT DISTINCT t FROM Topic t JOIN t.studies s WHERE t.parentId = :parentId ) AND tt.langId.iso639 = :language",
+							TranslatedTopic.class).setParameter("language", language)
+					.setParameter("parentId", Topic.findTopic(Integer.valueOf(parentTopicId))).getResultList();
+		}
+		return results;
 	}
 
-	public static String toJsonRelevantTree(String language) {
-		List<TranslatedTopic> usedTranslatedTopics = usedTranslatedTopics(language);
+	public static String toJsonRelevantTree(String parentTopicId, String language) {
+		List<TranslatedTopic> usedTranslatedTopics = usedTranslatedTopics(parentTopicId, language);
 		return new JSONSerializer().include("translation", "indice", "leaf").exclude("*.*").rootName("topics")
 				.deepSerialize(usedTranslatedTopics);
 	}

@@ -22,30 +22,32 @@ import ro.roda.domainjson.StudyInfo;
 @Transactional
 public class StudiesByTopicServiceImpl implements StudiesByTopicService {
 
-	public List<StudiesByTopic> findAllDirectStudiesByTopic() {
-		List<StudiesByTopic> result = new ArrayList<StudiesByTopic>();
-		String language = LocaleContextHolder.getLocale().getLanguage();
-		List<TranslatedTopic> ttl = TranslatedTopic.usedTranslatedTopics(language);
-		if (ttl != null && ttl.size() > 0) {
-			Set<StudyInfo> studiesByTopicSet = null;
-			Iterator<TranslatedTopic> topicIterator = ttl.iterator();
-			while (topicIterator.hasNext()) {
-				TranslatedTopic tt = (TranslatedTopic) topicIterator.next();
-				Topic t = tt.getTopicId();
-				Set<Study> topicStudies = t.getStudies();
-				if (topicStudies != null && topicStudies.size() > 0) {
-					studiesByTopicSet = new HashSet<StudyInfo>();
-					Iterator<Study> topicStudiesIterator = topicStudies.iterator();
-					while (topicStudiesIterator.hasNext()) {
-						studiesByTopicSet.add(new StudyInfo(topicStudiesIterator.next()));
-					}
-					result.add(new StudiesByTopic(t.getId(), tt.getTranslation(), studiesByTopicSet.size(),
-							studiesByTopicSet));
-				}
-			}
-		}
-		return result;
-	}
+	// public List<StudiesByTopic> findAllDirectStudiesByTopic() {
+	// List<StudiesByTopic> results = new ArrayList<StudiesByTopic>();
+	// String language = LocaleContextHolder.getLocale().getLanguage();
+	// List<TranslatedTopic> ttl =
+	// TranslatedTopic.usedTranslatedTopics(language);
+	// if (ttl != null && ttl.size() > 0) {
+	// Set<StudyInfo> studiesByTopicSet = null;
+	// Iterator<TranslatedTopic> topicIterator = ttl.iterator();
+	// while (topicIterator.hasNext()) {
+	// TranslatedTopic tt = (TranslatedTopic) topicIterator.next();
+	// Topic t = tt.getTopicId();
+	// Set<Study> topicStudies = t.getStudies();
+	// if (topicStudies != null && topicStudies.size() > 0) {
+	// studiesByTopicSet = new HashSet<StudyInfo>();
+	// Iterator<Study> topicStudiesIterator = topicStudies.iterator();
+	// while (topicStudiesIterator.hasNext()) {
+	// studiesByTopicSet.add(new StudyInfo(topicStudiesIterator.next()));
+	// }
+	// results.add(new StudiesByTopic(t.getId(), tt.getTranslation(),
+	// studiesByTopicSet.size(),
+	// studiesByTopicSet));
+	// }
+	// }
+	// }
+	// return results;
+	// }
 
 	/**
 	 * Return direct studies "having" the given Topic ID.

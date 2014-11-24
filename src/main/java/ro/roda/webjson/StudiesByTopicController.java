@@ -21,14 +21,16 @@ public class StudiesByTopicController {
 	@Autowired
 	StudiesByTopicService studiesByTopicService;
 
-	@RequestMapping(headers = "Accept=application/json")
-	@ResponseBody
-	public ResponseEntity<String> listDirect() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<StudiesByTopic> result = studiesByTopicService.findAllDirectStudiesByTopic();
-		return new ResponseEntity<String>(StudiesByTopic.toJsonArray(result), headers, HttpStatus.OK);
-	}
+	// @RequestMapping(headers = "Accept=application/json")
+	// @ResponseBody
+	// public ResponseEntity<String> listDirect() {
+	// HttpHeaders headers = new HttpHeaders();
+	// headers.add("Content-Type", "application/json; charset=utf-8");
+	// List<StudiesByTopic> result =
+	// studiesByTopicService.findAllDirectStudiesByTopic();
+	// return new ResponseEntity<String>(StudiesByTopic.toJsonArray(result),
+	// headers, HttpStatus.OK);
+	// }
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody

@@ -138,17 +138,20 @@ public class Variable implements Comparable {
 
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", SOLR_VARIABLE + "_" + variable.getId() + "_" + language);
+			sid.addField("table", "variable");
+			sid.addField("tableid", variable.getId());
 			sid.addField("language", "ro");
 			sid.addField("entity", SOLR_VARIABLE);
 			sid.addField("entityname", entityName);
-			sid.addField("url", variable.buildUrl(language));
 			sid.addField("name", variable.getName());
+			sid.addField("url", variable.buildUrl(language));
 			sid.addField(
 					"description",
 					new StringBuilder().append(variable.getName()).append(" ").append(variable.getLabel()).append(" ")
 							.append(q.getName()).append(" ").append(q.getPreamble()).append(" ")
 							.append(q.getStatement()).append(" ").append(variable.getOperatorInstructions())
 							.append(" ").append(variable.getCategories()));
+			// using Study's ID (not StudyDescr ID ) is correct here
 			sid.addField("parentid", StudyDescr.SOLR_STUDY + "_" + s.getId() + "_" + language);
 			sid.addField("parentname", sd.getTitle());
 			sid.addField("parenturl", sd.buildUrl(language));

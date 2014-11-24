@@ -640,12 +640,12 @@ public class Study {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexStudy(this);
+		// indexStudy(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override

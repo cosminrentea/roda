@@ -384,8 +384,8 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		s.setInsertionStatus(0);
 		s.setImportedFilename(multipartFileDdi.getName());
 
-		// TODO replace user = admin ?
-		Users u = Users.findUsers(1);
+		Integer userId = 1;
+		Users u = Users.findUsers(userId);
 		s.setAddedBy(u);
 		Set<Study> su = u.getStudies();
 		if (su == null) {
@@ -440,9 +440,20 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			s.setStudypeople(studyPersons);
 		}
 
+		Lang roLang = Lang.findLang("ro");
+		Integer roLangId = roLang.getId();
+
 		StudyDescr sd = new StudyDescr();
-		// TODO obtain Romanian language, don't use directly ID = 1
-		sd.setId(new StudyDescrPK(new Integer(1), s.getId()));
+		sd.setId(new StudyDescrPK(roLangId, s.getId()));
+		sd.setStudyId(s);
+		sd.setLangId(roLang);
+		Set<StudyDescr> studyDescrs = roLang.getStudyDescrs();
+		if (studyDescrs == null) {
+			studyDescrs = new HashSet<StudyDescr>();
+		}
+		studyDescrs.add(sd);
+		roLang.setStudyDescrs(studyDescrs);
+
 		sd.setTitle(title);
 		sd.setOriginalTitleLanguage(true);
 
@@ -470,9 +481,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 		sd.persist();
 
-		Lang roLang = Lang.findLang("ro");
-		Integer roLangId = roLang.getId();
-
 		if (stdyInfoType != null) {
 			SubjectType subjectType = stdyInfoType.getSubject();
 			if (subjectType != null) {
@@ -480,11 +488,19 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				// Keywords
 				List<KeywordType> keywordTypeList = subjectType.getKeyword();
 				for (KeywordType keywordType : keywordTypeList) {
-					log.trace("Keyword = " + keywordType.content);
-					Keyword keyword = Keyword.checkKeyword(null, keywordType.content);
+					String keywordContent = keywordType.content;
+					if (keywordContent == null)
+						continue;
+					keywordContent = keywordContent.trim().toUpperCase();
+					if (keywordContent.length() == 0)
+						continue;
+
+					// after the previous "keyword-cleanup",
+					// attach it to the study
+					log.trace("Keyword: " + keywordContent);
+					Keyword keyword = Keyword.checkKeyword(null, keywordContent);
 					StudyKeyword sk = new StudyKeyword();
-					// TODO replace user id = 1
-					sk.setId(new StudyKeywordPK(s.getId(), keyword.getId(), 1));
+					sk.setId(new StudyKeywordPK(s.getId(), keyword.getId(), userId));
 					sk.setAddedBy(u);
 					sk.setAdded(new GregorianCalendar());
 					sk.persist();
@@ -494,14 +510,17 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				List<TopcClasType> topcClasTypeList = subjectType.getTopcClas();
 				Set<Topic> tSet = new HashSet<Topic>();
 				for (TopcClasType topcClasType : topcClasTypeList) {
-					if (topcClasType.content == null)
+					String topicContent = topcClasType.content;
+					if (topicContent == null)
 						continue;
-					log.trace("Topic of imported study: " + topcClasType.content);
-
-					String[] topicNames = topcClasType.content.split(";|,|\\.");
+					topicContent = topicContent.trim().toUpperCase();
+					if (topicContent.length() == 0)
+						continue;
+					log.trace("Topic of imported study: " + topicContent);
+					String[] topicNames = topicContent.split(";|,|\\.");
 					for (String topicName : topicNames) {
-						TranslatedTopic translatedTopic = TranslatedTopic.findOrCreateTranslatedTopic(
-								topicName.toUpperCase(), roLangId);
+						TranslatedTopic translatedTopic = TranslatedTopic.findOrCreateTranslatedTopic(topicName,
+								roLangId);
 						Topic topic = translatedTopic.getTopicId();
 
 						// add the associated Study for this Topic
@@ -518,25 +537,15 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			}
 		}
 
-		// add Study to an existing Catalog ("root" catalog)
-
-		// TODO don't use directly ID='1' for Catalog
-		// CatalogStudy cs = new CatalogStudy();
-		// CatalogStudyPK csid = new CatalogStudyPK(1, s.getId());
-		// cs.setId(csid);
-		// cs.persist();
-
 		// create a new Instance / Dataset for this import
 		Instance instance = new Instance();
 		instance.setStudyId(s);
 		instance.setMain(true);
-		// TODO replace user id = 1
-		instance.setAddedBy(Users.findUsers(1));
+		instance.setAddedBy(Users.findUsers(userId));
 		instance.setAdded(new GregorianCalendar());
 		instance.persist();
 
 		// import Variables
-		// Set<Variable> variableSet = new HashSet<Variable>();
 		if (dataDscrType != null) {
 			List<VarType> varTypeList = dataDscrType.getVar();
 
@@ -560,8 +569,8 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 					// .getQstnLitType().get(0).content);
 					q = new Question();
 
-					// label = the variable's label (due to RODA's data
-					// files)
+					// label = the variable's label
+					// (due to RODA's data files)
 					q.setName(variable.getName());
 					q.setStatement(varType.getQstn().get(0).getQstnLitType().get(0).content);
 					q.setLangId(roLang);

@@ -106,11 +106,15 @@ public class StudyDescr {
 
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", SOLR_STUDY + "_" + studyDescr.getStudyId().getId() + "_" + language);
+			sid.addField("table", "study_descr");
+			// this number/ID is different from the "id" Solr field
+			// (which is using the STUDY ID)
+			sid.addField("tableid", studyDescr.getId());
 			sid.addField("language", language);
 			sid.addField("entity", SOLR_STUDY);
 			sid.addField("entityname", entityName);
-			sid.addField("url", studyDescr.buildUrl(language));
 			sid.addField("name", studyDescr.getTitle());
+			sid.addField("url", studyDescr.buildUrl(language));
 			sid.addField(
 					"description",
 					new StringBuilder().append(studyDescr.getAbstract1()).append(" ")
@@ -135,7 +139,7 @@ public class StudyDescr {
 	public static void deleteIndex(StudyDescr studyDescr) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById(SOLR_STUDY + "_" + studyDescr.getId());
+			solrServer.deleteById(SOLR_STUDY + "_" + studyDescr.getId() + "_" + studyDescr.getLangId().getIso639());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();

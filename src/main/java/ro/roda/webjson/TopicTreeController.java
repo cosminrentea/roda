@@ -27,11 +27,12 @@ public class TopicTreeController {
 
 	@RequestMapping(value = "/tree", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> treeRelevant(@RequestParam(value = "node", required = false) String id, Locale locale) {
+	public ResponseEntity<String> treeRelevant(@RequestParam(value = "node", required = false) String parentTopicId,
+			Locale locale) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		return new ResponseEntity<String>(TranslatedTopic.toJsonRelevantTree(locale.getLanguage()), headers,
-				HttpStatus.OK);
+		return new ResponseEntity<String>(TranslatedTopic.toJsonRelevantTree(parentTopicId, locale.getLanguage()),
+				headers, HttpStatus.OK);
 	}
 
 }

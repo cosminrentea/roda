@@ -232,6 +232,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 							console.log('callback in fileview');
 							if (success) {
 								var fileitem = fileitemstore.first();
+								fileitem.baseurl = RODAdmin.util.Globals.baseurl;
 								fileprop.update(fileitem);
 								filespecificprop.bindStore(fileitem.filepropertiesStore);
 								if (fileitem.fileusage()) {

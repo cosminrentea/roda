@@ -11,6 +11,6 @@ Ext.define('RODAdmin.store.user.UserInfo', {
 
     model: 'RODAdmin.model.user.UserInfo',
     autoLoad: false,    
-    proxy: {type: 'main', url: 'userinfo/'},      
+    proxy: {type: 'main', url: 'adminjson/userinfo/'},      
 
 });

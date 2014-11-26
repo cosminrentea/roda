@@ -50,9 +50,9 @@ Ext.define('databrowser.view.Browser', {
 	        	        	store: 'TopicTreeStore',
 	        	        	layout:'fit',                            
 	        	        	title: translations.topics,
-	        	        	displayField: 'translation',
+	        	        	displayField: 'name',
 	        	        	viewConfig: {
-	        	        		rootVisible: true
+	        	        		rootVisible: false
 	        	        	},
 
 	        	        }

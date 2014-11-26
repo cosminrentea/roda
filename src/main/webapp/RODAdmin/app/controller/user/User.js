@@ -34,7 +34,16 @@ Ext.define('RODAdmin.controller.user.User', {
             {
     	    	ref: 'detailscontainer',
     	    	selector: 'users panel#udetailscontainer'
-    	    }
+    	    },
+            {
+    	    	ref: 'usersview',
+    	    	selector: 'useritemsview grid#usersgrid'
+    	    },
+            {
+    	    	ref: 'itemsview',
+    	    	selector: 'useritemsview'
+    	    },
+    	    
 
     ],
     init : function(application) {
@@ -62,10 +71,31 @@ Ext.define('RODAdmin.controller.user.User', {
 	        "userdetails panel#userinfo toolbar button#useredit" :{
 	        	click : this.onUserEditClick
 	        },
+	        "userdetails panel#userinfo toolbar button#useradd" :{
+	        	click : this.onUserAddClick
+	        },
 	        "userdetails panel#userprofile toolbar button#editprofile" :{
 	        	click : this.onProfileEditClick
 	        },
-
+	        "useredit button#save" : {
+	            /**
+				 * @listener sngroupadd-button-save triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.GroupWindow GroupWindow}
+				 *           button#save
+				 *           {@link #onGroupSaveClick}
+				 */	
+		        click : this.onUserSaveClick
+	        },
+	        "profileedit button#save" : {
+	            /**
+				 * @listener sngroupadd-button-save triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.GroupWindow GroupWindow}
+				 *           button#save
+				 *           {@link #onGroupSaveClick}
+				 */	
+		        click : this.onProfileSaveClick
+	        },
+	        
 	        
 	    });
     	this.listen({
@@ -85,9 +115,117 @@ Ext.define('RODAdmin.controller.user.User', {
 	 */
     initView : function() {
     	console.log('Init View, baby');	
-    	 this.getUsersgrid().store.load();
-    	 this.getGroupsgrid().store.load();
+       	Ext.History.add('menu-users');
+    	this.getUsersgrid().store.load();
+     	this.getGroupsgrid().store.load();
     },
+
+    
+    
+    onProfileSaveClick : function(button, e, options) {
+    	console.log('profilesave');
+	    var win = button.up('window');
+	    var formPanel = win.down('form');
+	    var currentNode = this.getUsersview().getSelectionModel().getLastSelected();
+	    var me = this;
+	    if (formPanel.getForm().isValid()) {
+		    formPanel.getForm().submit({
+		        clientValidation : true,
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/userprofilesave',
+
+		        success : function(form, action) {
+			        var result = action.result;
+			        if (result.success) {
+				        RODAdmin.util.Alert.msg('Success!', 'User profile saved.');
+				        win.close();
+				        var active = me.getItemsview().layout.getActiveItem();
+				        if (active.itemId == 'usersgrid') {
+					        me.getController('RODAdmin.controller.cms.user.UsersList').onReloadGridClick();
+				        }
+				        else if (active.itemId == 'usergrups') {
+					        me.getController('RODAdmin.controller.cms.user.GroupList').onReloadGridClick();
+				        }
+			        }
+			        else {
+				        RODAdmin.util.Util.showErrorMsg(result.msg);
+			        }
+		        },
+		        failure : function(form, action) {
+			        console.log(action.failureType);
+			        console.log(action);
+			        switch (action.failureType) {
+			        case Ext.form.action.Action.CLIENT_INVALID:
+				        Ext.Msg.alert('Failure', 'Form fields may mot be submitted with invalid values');
+				        break;
+
+			        case Ext.form.action.Action.CONNECT_FAILURE:
+
+				        // Ext.Msg.alert('Failure', action.result.msg);
+				        Ext.Msg.alert('Failure', 'doesn\'t work');
+				        break;
+
+			        case Ext.form.action.Action.SERVER.INVALID:
+				        Ext.Msg.alert('Failure', action.result.msg);
+				        break;
+			        }
+		        }
+		    });
+	    }
+    },    	
+
+    
+    
+    
+    onUserSaveClick : function(button, e, options) {
+    	console.log('usersave');
+	    var win = button.up('window');
+	    var formPanel = win.down('form');
+	    var currentNode = this.getUsersview().getSelectionModel().getLastSelected();
+	    var me = this;
+	    if (formPanel.getForm().isValid()) {
+		    formPanel.getForm().submit({
+		        clientValidation : true,
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/usersave',
+
+		        success : function(form, action) {
+			        var result = action.result;
+			        if (result.success) {
+				        RODAdmin.util.Alert.msg('Success!', 'User saved.');
+				        win.close();
+				        var active = me.getItemsview().layout.getActiveItem();
+				        if (active.itemId == 'usersgrid') {
+					        me.getController('RODAdmin.controller.cms.user.UsersList').onReloadGridClick();
+				        }
+				        else if (active.itemId == 'usergrups') {
+					        me.getController('RODAdmin.controller.cms.user.GroupList').onReloadGridClick();
+				        }
+			        }
+			        else {
+				        RODAdmin.util.Util.showErrorMsg(result.msg);
+			        }
+		        },
+		        failure : function(form, action) {
+			        console.log(action.failureType);
+			        console.log(action);
+			        switch (action.failureType) {
+			        case Ext.form.action.Action.CLIENT_INVALID:
+				        Ext.Msg.alert('Failure', 'Form fields may mot be submitted with invalid values');
+				        break;
+
+			        case Ext.form.action.Action.CONNECT_FAILURE:
+
+				        // Ext.Msg.alert('Failure', action.result.msg);
+				        Ext.Msg.alert('Failure', 'doesn\'t work');
+				        break;
+
+			        case Ext.form.action.Action.SERVER.INVALID:
+				        Ext.Msg.alert('Failure', action.result.msg);
+				        break;
+			        }
+		        }
+		    });
+	    }
+    },    	
     /**
 	 * @method
 	 */
@@ -99,6 +237,18 @@ Ext.define('RODAdmin.controller.user.User', {
 	    // var store = Ext.StoreManager.get('cms.layout.Layout');
 	    // store.load();
     },
+    
+    onUserAddClick : function(button, e, options) {
+    	console.log('user add');
+    	win = Ext.WindowMgr.get('useradd');
+   	   console.log(win);
+   	   if (!win) {
+   		   win = Ext.create('RODAdmin.view.user.UserAdd');
+   	   }
+   	   win.setTitle('Add User');
+   	   win.show();	
+    },
+    
     onUserEditClick : function(button, e, options) {
     	console.log('user edit');
    	 var currentNode = this.getUsersgrid().getSelectionModel().getLastSelected();

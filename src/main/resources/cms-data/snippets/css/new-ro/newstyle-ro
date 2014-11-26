@@ -566,28 +566,28 @@ border-radius: 10px 10px 0px 0px;
     visibility: hidden !important;
 }
 
-td.tpage{
+td.spage{
 background: url('[[FileURL:spage]]') no-repeat center center;
 width:50px;
 }
 
-td.tstudy{
+td.sstudy{
+background: url('[[FileURL:sstudy]]') no-repeat center center;
+width:50px;
+}
+
+td.scatalog{
+background: url('[[FileURL:scatalog]]') no-repeat center center;
+width:50px;
+}
+
+td.squestion{
 background: url('[[FileURL:spage]]') no-repeat center center;
 width:50px;
 }
 
-td.tcatalog{
-background: url('[[FileURL:spage]]') no-repeat center center;
-width:50px;
-}
-
-td.tquestion{
-background: url('[[FileURL:spage]]') no-repeat center center;
-width:50px;
-}
-
-td.tvariable{
-background: url('[[FileURL:spage]]') no-repeat center center;
+td.svariable{
+background: url('[[FileURL:svariable]]') no-repeat center center;
 width:50px;
 }
 

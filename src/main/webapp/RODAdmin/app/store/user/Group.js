@@ -10,5 +10,5 @@ Ext.define('RODAdmin.store.user.Group', {
 
     model: 'RODAdmin.model.user.Group',
     autoLoad: false,  
-    proxy: {type: 'main', url: 'grouplist/'},     
+    proxy: {type: 'main', url: 'adminjson/grouplist/'},     
 });

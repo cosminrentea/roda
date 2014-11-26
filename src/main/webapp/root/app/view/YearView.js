@@ -80,7 +80,7 @@ Ext.define('databrowser.view.YearView', {
                                     xtype: 'button',
                                     id: 'YSButton',
                                     enableToggle: true,
-                                    icon: 'img/simple.png',
+                                    icon: databrowser.util.Globals['contextPath'] + '/resources/root/img/simple.png',
                                     toggleGroup: 'YearSMCButtonGroup',
                                     listeners: {
                                         click: {
@@ -93,7 +93,7 @@ Ext.define('databrowser.view.YearView', {
                                     xtype: 'button',
                                     id: 'YMButton',
                                     enableToggle: true,
-                                    icon: 'img/mediu.png',
+                                    icon: databrowser.util.Globals['contextPath'] + '/resources/root/img/middle.png',
                                     toggleGroup: 'YearSMCButtonGroup',
                                     listeners: {
                                         click: {
@@ -106,7 +106,7 @@ Ext.define('databrowser.view.YearView', {
                                     xtype: 'button',
                                     id: 'YCButton',
                                     enableToggle: true,
-                                    icon: 'img/complex.png',
+                                    icon: databrowser.util.Globals['contextPath'] + '/resources/root/img/complex.png',
                                     toggleGroup: 'YearSMCButtonGroup',
                                     listeners: {
                                         click: {

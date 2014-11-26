@@ -64,7 +64,7 @@ Ext.define('databrowser.view.DetailsPanel', {
                                     id: 'SButton',
                                     enableToggle: true,
 //                                    text: 'S',
-                                    icon: 'img/simple.png',
+                                    icon: databrowser.util.Globals['contextPath'] + '/resources/root/img/simple.png',
                                     toggleGroup: 'SMCButtonGroup',
                                     listeners: {
                                         click: {
@@ -77,7 +77,7 @@ Ext.define('databrowser.view.DetailsPanel', {
                                     xtype: 'button',
                                     id: 'MButton',
                                     enableToggle: true,
-                                    icon: 'img/mediu.png',
+                                    icon: databrowser.util.Globals['contextPath'] + '/resources/root/img/middle.png',
                                     toggleGroup: 'SMCButtonGroup',
                                     listeners: {
                                         click: {
@@ -90,7 +90,7 @@ Ext.define('databrowser.view.DetailsPanel', {
                                     xtype: 'button',
                                     id: 'CButton',
                                     enableToggle: true,
-                                    icon: 'img/complex.png',
+                                    icon: databrowser.util.Globals['contextPath'] + '/resources/root/img/complex.png',
                                     toggleGroup: 'SMCButtonGroup',
                                     listeners: {
                                         click: {

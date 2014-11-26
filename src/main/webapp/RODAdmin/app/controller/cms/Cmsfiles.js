@@ -178,7 +178,7 @@ Ext.define('RODAdmin.controller.cms.Cmsfiles', {
     				   var fileitem = fileitemstore.first();
     				   console.log(fileitem);
     				   win.down('form').getForm().loadRecord(fileitem);
-    		//		   win.down('form').down('fieldset').down('hiddenfield#folderid').setValue(fileitem.data.folderid);
+    				 //  win.down('form').down('fieldset').down('hiddenfield#folderid').setValue(fileitem.data.folderid);
     			   }
     		   }
     	   });

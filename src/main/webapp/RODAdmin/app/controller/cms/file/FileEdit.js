@@ -79,7 +79,7 @@ Ext.define('RODAdmin.controller.cms.file.FileEdit', {
 	 * @method
 	 */
     folderLoad : function(component, options) {
-	    var pnode = this.getIconview().getSelectionModel().getLastSelected();
+	    var pnode = this.getItemsview().getSelectionModel().getLastSelected();
 	    var rnode = this.getFolderselect().getRootNode();
 	    var cnode = rnode.findChild('id', pnode.data.folderid, true);
 	    if (cnode != null) {

@@ -27,47 +27,59 @@ Ext.define('RODAdmin.view.user.ProfileEdit', {
                     flex: 2,
                     title: 'User Information',
                     defaults: {
-                        afterLabelTextTpl: RODAdmin.util.Util.required,
+//                        afterLabelTextTpl: RODAdmin.util.Util.required,
                         anchor: '100%',
                         xtype: 'textfield',
-                        allowBlank: false,
+                       // allowBlank: false,
                         labelWidth: 60
                     },
                     items: [
                         {
                             xtype: 'hiddenfield',
                             fieldLabel: 'Label',
-                            name: 'id'
+                            name: 'id',
+                            allowBlank : false,
+                            afterLabelTextTpl: RODAdmin.util.Util.required,
                         },
                         {
                             fieldLabel: 'Firstname',
-                            name: 'firstname'
+                            name: 'firstname',
+                            allowBlank : false,
+                            afterLabelTextTpl: RODAdmin.util.Util.required,
                         },
                         {
                             fieldLabel: 'Lastname',
-                            name: 'lastname'
+                            name: 'lastname',
+                           	allowBlank : false,
+                           	afterLabelTextTpl: RODAdmin.util.Util.required,
                         },
                         {
                             fieldLabel: 'Adresa1',
                             maxLength: 100,
-                            name: 'address1'
+                            name: 'address1',
+                            allowBlank : false,                            
+                            afterLabelTextTpl: RODAdmin.util.Util.required,
                         },
                         {
                             fieldLabel: 'Adresa2',
                             maxLength: 100,
-                            name: 'address2'
+                            name: 'address2',
+                           	allowBlank : true,
                         },
                         {
                             fieldLabel: 'Tara',
-                            name: 'country'
+                            name: 'country',
+                           	allowBlank : true,                            	
                         },
                         {
                             fieldLabel: 'Oras',
-                            name: 'city'
+                            name: 'city',
+                            allowBlank : true,
                         },
                         {
                             fieldLabel: 'Data Nasterii',
                             name: 'birthdate',
+                            allowBlank : true,
                            // type : 'date',
                         },
 

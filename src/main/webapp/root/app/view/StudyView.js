@@ -75,7 +75,7 @@ Ext.define('databrowser.view.StudyView', {
                                         '<tr><th>'+ translations.stdweighting +':</th><td> {weighting}</td></tr>',
                                         '<tr><th>'+ translations.topics +':</th><td>', 
                                         '<tpl for="topics">',
-                                        '{translation}',
+                                        '{translation}, ',
                                         '</tpl>',
                                         '</td></tr>',
                                         '<tr><th>'+ translations.keywords +':</th><td>', 

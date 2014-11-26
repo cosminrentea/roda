@@ -46,7 +46,9 @@ Ext.define('databrowser.controller.History', {
 
     tokenChange : function(token) {
     	if (token) {
-		    var tokenparts = token.split("-");
+    		console.log('token here' + token);
+    		
+		    var tokenparts = token.split(":");
 		    if (tokenparts[0] == 'catalogid') {
 			    console.log('have catalog' + tokenparts[1]);
 			    var catalogid = tokenparts[1];
@@ -69,13 +71,15 @@ Ext.define('databrowser.controller.History', {
 			    }
 		    }
 		    else if (tokenparts[0] == 'catalogstudyid') {
+//		    else if (tokenparts[0] == 'study') {
 			    console.log('have study' + tokenparts[1]);
 			    var studyid = tokenparts[1];
-			    if (study) {
+			    if (studyid) {
 				    this.loadStudyIdinCatalog(studyid);
 			    }
 		    } 
-		    else if (tokenparts[0] == 'yearstudyid') {
+//		    else if (tokenparts[0] == 'yearstudyid') {
+			    else if (tokenparts[0] == 'study') {		    	
 			    console.log('have study' + tokenparts[1]);
 			    var studyid = tokenparts[1];
 			    if (studyid) {
@@ -92,7 +96,8 @@ Ext.define('databrowser.controller.History', {
     
     tokenInit : function(token) {
     	if (token) {
-		    var tokenparts = token.split("-");
+    		console.log('token here' + token);
+    		var tokenparts = token.split(":");
 		    if (tokenparts[0] == 'catalogid') {
 			    console.log('have catalog' + tokenparts[1]);
 			    var catalogid = tokenparts[1];
@@ -121,15 +126,17 @@ Ext.define('databrowser.controller.History', {
 //				    this.loadStudyId(studyid);
 //			    }
 
-		    else if (tokenparts[0] == 'catalogstudyid') {
+//		    else if (tokenparts[0] == 'study') {
+		    else if (tokenparts[0] == 'catalogstudyid') {		    	
 				    console.log('have study' + tokenparts[1]);
 				    var studyid = tokenparts[1];
 				    if (studyid) {
 					    this.loadStudyIdinCatalog(studyid);
 				    }
 			    } 
-		    else if (tokenparts[0] == 'yearstudyid') {
-				    console.log('have study' + tokenparts[1]);
+//		    else if (tokenparts[0] == 'yearstudyid') {
+		    else if (tokenparts[0] == 'study') {
+		    		console.log('have study' + tokenparts[1]);
 				    var studyid = tokenparts[1];
 				    if (studyid) {
 					    this.loadStudyInYearTree(studyid);
@@ -148,7 +155,7 @@ Ext.define('databrowser.controller.History', {
 
     
     noToken : function() {
-    	console.log('bad token: ' + tokenparts[0]);
+    	console.log('no token');
     },
     
 
@@ -208,10 +215,6 @@ Ext.define('databrowser.controller.History', {
 	        callback : function(records, operation, success) {
 	        	studyviewob.setLoading(false);
 	        	if (success) {
-	        		
-	        		
-	        		
-	        		
 	        		//TODO: make it prettier
 	        		var dtab = Ext.getCmp('sdetails');
         		    var variablesgrid = Ext.getCmp('studyvariables');
@@ -223,7 +226,9 @@ Ext.define('databrowser.controller.History', {
 			        variablesgrid.getView().bindStore(rec.variablesStore);
 			        console.log(variablesgrid.getStore());
 			        filestab.bindStore(rec.filesStore);
-			        //aici avem nevoie de catalog
+
+			        
+			        
 		        }
 	        }
 	    });
@@ -247,7 +252,7 @@ Ext.define('databrowser.controller.History', {
 		        		var rec = sStore.first();
 				        var myyear = rec.get('an');
 				        console.log(myyear);
-//				        this.loadYearInTree(myyear);
+				        this.loadYearInTree(myyear);
 				        //aici avem nevoie de catalog
 			        }
 		        }
@@ -329,7 +334,7 @@ Ext.define('databrowser.controller.History', {
 
     
     loadStudyInYearTree : function(studyid) {
-    	console.log('study in year tree');
+    	console.log('study in year tree' + studyid);
 	    this.getBrowser().getLayout().setActiveItem('YearsTreePanel');
 	    var cvv = this.getYearstree();
 	    var mytstore = Ext.StoreManager.get('YearTreeStore');
@@ -355,7 +360,6 @@ Ext.define('databrowser.controller.History', {
 					        var path = this.getPath();
 					        console.log(path);
 					        cvv.expandPath(path);
-					        // get the catalog view loaded or signal it
 				        }
 			        }
 		        });

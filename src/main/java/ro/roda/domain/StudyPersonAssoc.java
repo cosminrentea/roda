@@ -314,12 +314,12 @@ public class StudyPersonAssoc {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexStudyPersonAssoc(this);
+		// indexStudyPersonAssoc(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
@@ -328,7 +328,8 @@ public class StudyPersonAssoc {
 				|| (asocName != null && asocName.equalsIgnoreCase(((StudyPersonAssoc) obj).asocName));
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

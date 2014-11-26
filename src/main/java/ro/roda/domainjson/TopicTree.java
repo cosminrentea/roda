@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.i18n.LocaleContextHolder;
 
 import ro.roda.domain.Lang;
 import ro.roda.domain.Study;
@@ -194,11 +193,13 @@ public class TopicTree extends JsonInfo {
 			this.leaf = false;
 		}
 
-		if (topic.getSeries() == null) {
-			setType(JsonInfo.CATALOG_TYPE);
-		} else {
-			setType(JsonInfo.SERIES_TYPE);
-		}
+		// if (topic.getSeries() == null) {
+		// setType(JsonInfo.TOPIC_TYPE);
+		// } else {
+		// setType(JsonInfo.TOPIC_SERIES_TYPE);
+		// }
+
+		this.setType(JsonInfo.TOPIC_TYPE);
 		this.data = new HashSet<JsonInfo>();
 	}
 

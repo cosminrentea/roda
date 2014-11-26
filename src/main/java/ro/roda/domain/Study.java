@@ -269,7 +269,7 @@ public class Study {
 	@Column(name = "imported_filename", columnDefinition = "text")
 	private String importedFilename;
 
-	@OneToMany(mappedBy = "studyId", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "studyId")
 	private Set<CatalogStudy> catalogStudies;
 
 	@ManyToMany(mappedBy = "studies", fetch = FetchType.LAZY)

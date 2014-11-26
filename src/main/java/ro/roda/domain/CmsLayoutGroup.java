@@ -348,26 +348,28 @@ public class CmsLayoutGroup {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexCmsLayoutGroup(this);
+		// indexCmsLayoutGroup(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof CmsLayoutGroup) {
 			return (id != null && id.equals(((CmsLayoutGroup) obj).id));
-					//|| ((name != null && name.equalsIgnoreCase(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
-						//	.equals(((CmsLayoutGroup) obj).parentId)
-					
+			// || ((name != null && name.equalsIgnoreCase(((CmsLayoutGroup)
+			// obj).name)) && (parentId != null && parentId
+			// .equals(((CmsLayoutGroup) obj).parentId)
+
 		}
 		return false;
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

@@ -317,12 +317,12 @@ public class CmsPageType {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexCmsPageType(this);
+		// indexCmsPageType(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
@@ -331,7 +331,8 @@ public class CmsPageType {
 				|| (name != null && name.equalsIgnoreCase(((CmsPageType) obj).name));
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

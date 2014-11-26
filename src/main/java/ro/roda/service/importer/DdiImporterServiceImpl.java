@@ -37,6 +37,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -237,11 +238,47 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				log.error(errorMessage);
 				throw new IllegalStateException(errorMessage);
 			}
+
+			Integer catalogId = Integer.valueOf(csvLine[0]);
+			Catalog catalog = Catalog.findCatalog(catalogId);
+			if (catalog == null) {
+				String errorMessage = "Study cannot be added because the Catalog was not found: " + csvLine[0];
+				log.error(errorMessage);
+				throw new IllegalStateException(errorMessage);
+			}
+
+			// create the link (CatalogStudy)
 			CatalogStudy cs = new CatalogStudy();
-			cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]), study.getId()));
+			cs.setId(new CatalogStudyPK(catalogId, study.getId()));
+			cs.setCatalogId(catalog);
+			cs.setStudyId(study);
 			cs.persist();
+
+			// add the "link" to Study
+			Set<CatalogStudy> catalogStudies = study.getCatalogStudies();
+			if (catalogStudies == null) {
+				catalogStudies = new HashSet<CatalogStudy>();
+			}
+			catalogStudies.add(cs);
+			study.setCatalogStudies(catalogStudies);
+			study.merge();
+
+			// add the "link" to Catalog
+			catalogStudies = catalog.getCatalogStudies();
+			if (catalogStudies == null) {
+				catalogStudies = new HashSet<CatalogStudy>();
+			}
+			catalogStudies.add(cs);
+			catalog.setCatalogStudies(catalogStudies);
+			catalog.merge();
+
+			study.flush();
 		}
 		log.debug("DDI files put into Catalogs and Series");
+		log.debug("Creating Solr index - Async");
+		Catalog.indexCatalogs(Catalog.findAllCatalogs());
+		StudyDescr.indexStudyDescrs(StudyDescr.findAllStudyDescrs());
+		Variable.indexVariables(Variable.findAllVariables());
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)

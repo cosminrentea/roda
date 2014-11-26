@@ -6,8 +6,8 @@ import ro.roda.domainjson.CatalogTree;
 
 public interface CatalogTreeService {
 
-	public abstract List<CatalogTree> findAllCatalogTree();
+	public abstract List<CatalogTree> findAll();
 
-	public abstract CatalogTree findCatalogTree(Integer id);
+	public abstract CatalogTree find(Integer id);
 
 }

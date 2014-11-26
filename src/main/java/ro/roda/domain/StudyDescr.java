@@ -31,6 +31,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import ro.roda.service.solr.SolrService;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import flexjson.JSONDeserializer;
@@ -47,6 +49,8 @@ public class StudyDescr {
 	public static final String SOLR_STUDY_RO = "Studiu";
 
 	public static final String SOLR_STUDY_EN = "Study";
+
+	public static final String SOLR_STUDY_URL = "catalogstudy";
 
 	public static long countStudyDescrs() {
 		return entityManager().createQuery("SELECT COUNT(o) FROM StudyDescr o", Long.class).getSingleResult();
@@ -94,8 +98,7 @@ public class StudyDescr {
 	public static void indexStudyDescrs(Collection<StudyDescr> studydescrs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (StudyDescr studyDescr : studydescrs) {
-			Lang lang = studyDescr.getLangId();
-			String language = lang.getIso639();
+			String language = studyDescr.getLangId().getIso639();
 			String entityName = null;
 			if ("ro".equalsIgnoreCase(language)) {
 				entityName = SOLR_STUDY_RO;
@@ -103,9 +106,11 @@ public class StudyDescr {
 			if ("en".equalsIgnoreCase(language)) {
 				entityName = SOLR_STUDY_EN;
 			}
+			Study s = studyDescr.getStudyId();
+			Catalog c = s.getCatalogStudies().iterator().next().getCatalogId();
 
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", SOLR_STUDY + "_" + studyDescr.getStudyId().getId() + "_" + language);
+			sid.addField("id", SOLR_STUDY + "_" + s.getId() + "_" + language);
 			sid.addField("table", "study_descr");
 			// this number/ID is different from the "id" Solr field
 			// (which is using the STUDY ID)
@@ -114,7 +119,7 @@ public class StudyDescr {
 			sid.addField("entity", SOLR_STUDY);
 			sid.addField("entityname", entityName);
 			sid.addField("name", studyDescr.getTitle());
-			sid.addField("url", studyDescr.buildUrl(language));
+			sid.addField("url", studyDescr.solrUrl(language, c.getId(), s.getId()));
 			sid.addField(
 					"description",
 					new StringBuilder().append(studyDescr.getTitle()).append(" ").append(studyDescr.getGrantDetails())
@@ -157,7 +162,7 @@ public class StudyDescr {
 	}
 
 	public static QueryResponse search(String queryString) {
-		String searchString = "StudyDescr_solrsummary_t:" + queryString;
+		String searchString = "description:" + queryString;
 		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
@@ -284,6 +289,9 @@ public class StudyDescr {
 
 	@Autowired(required = false)
 	transient SolrServer solrServer;
+
+	@Autowired
+	transient SolrService solrService;
 
 	@Transactional
 	public void clear() {
@@ -471,10 +479,9 @@ public class StudyDescr {
 		this.weighting = weighting;
 	}
 
-	public String buildUrl(String language) {
-		return Setting.findSetting("baseurl").getValue()
-				+ Setting.findSetting(language + "_databrowser_url").getValue() + "#" + SOLR_STUDY + ":"
-				+ getStudyId().getId();
+	public String solrUrl(String language, Integer catalogId, Integer studyId) {
+		String sep = "-";
+		return solrService.baseUrl(language) + SOLR_STUDY_URL + sep + catalogId + sep + studyId;
 	}
 
 	public String toJson() {

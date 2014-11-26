@@ -157,7 +157,7 @@ public class CmsPage implements Comparable<CmsPage> {
 			query = entityManager().createQuery(pageByUrlQuery, CmsPage.class).setParameter(1, url)
 					.setParameter(2, parent);
 		} else {
-			pageByUrlQuery = "SELECT o FROM CmsPage o WHERE url = ?1 and cmsPageId = NULL";
+			pageByUrlQuery = "SELECT o FROM CmsPage o WHERE url = ?1 and cmsPageId IS NULL";
 
 			query = entityManager().createQuery(pageByUrlQuery, CmsPage.class).setParameter(1, url);
 		}

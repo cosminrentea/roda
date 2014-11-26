@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -53,13 +52,15 @@ import flexjson.JSONSerializer;
 @Table(schema = "public", name = "variable")
 @Configurable
 @Audited
-public class Variable implements Comparable {
+public class Variable implements Comparable<Variable> {
 
-	public static final String SOLR_VARIABLE = "variable";
+	public static final String SOLR_VARIABLE_ID = "variable";
 
 	public static final String SOLR_VARIABLE_EN = "Variable";
 
 	public static final String SOLR_VARIABLE_RO = "Variabila";
+
+	public static final String SOLR_VARIABLE_URL = "catalogstudyvariable";
 
 	public static long countVariables() {
 		return entityManager().createQuery("SELECT COUNT(o) FROM Variable o", Long.class).getSingleResult();
@@ -127,6 +128,18 @@ public class Variable implements Comparable {
 			String language = lang.getIso639();
 			Study s = q.getInstances().iterator().next().getStudyId();
 			StudyDescr sd = StudyDescr.findStudyDescr(new StudyDescrPK(lang.getId(), s.getId()));
+			// find a "random" catalog which contains the study
+			Catalog c = null;
+			for (CatalogStudy cs : CatalogStudy.findAllCatalogStudys()) {
+				if (cs.getStudyId().getId() == s.getId()) {
+					c = cs.getCatalogId();
+					break;
+				}
+			}
+
+			// OLD tentative way - strangely, it did not work
+			// Catalog c =
+			// s.getCatalogStudies().iterator().next().getCatalogId();
 
 			String entityName = null;
 			if ("ro".equalsIgnoreCase(language)) {
@@ -137,14 +150,14 @@ public class Variable implements Comparable {
 			}
 
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", SOLR_VARIABLE + "_" + variable.getId() + "_" + language);
+			sid.addField("id", SOLR_VARIABLE_ID + "_" + variable.getId());
 			sid.addField("table", "variable");
 			sid.addField("tableid", variable.getId());
 			sid.addField("language", "ro");
-			sid.addField("entity", SOLR_VARIABLE);
+			sid.addField("entity", SOLR_VARIABLE_ID);
 			sid.addField("entityname", entityName);
 			sid.addField("name", variable.getName());
-			sid.addField("url", variable.buildUrl(language));
+			sid.addField("url", variable.solrUrl(language, c.getId(), s.getId()));
 			sid.addField(
 					"description",
 					new StringBuilder().append(variable.getName()).append(" ").append(variable.getLabel()).append(" ")
@@ -154,7 +167,7 @@ public class Variable implements Comparable {
 			// using Study's ID (not StudyDescr ID ) is correct here
 			sid.addField("parentid", StudyDescr.SOLR_STUDY + "_" + s.getId() + "_" + language);
 			sid.addField("parentname", sd.getTitle());
-			sid.addField("parenturl", sd.buildUrl(language));
+			sid.addField("parenturl", sd.solrUrl(language, c.getId(), s.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -170,7 +183,7 @@ public class Variable implements Comparable {
 	public static void deleteIndex(Variable variable) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById(SOLR_VARIABLE + "_" + variable.getId());
+			solrServer.deleteById(SOLR_VARIABLE_ID + "_" + variable.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -187,7 +200,7 @@ public class Variable implements Comparable {
 	}
 
 	public static QueryResponse search(String queryString) {
-		String searchString = "Variable_solrsummary_t:" + queryString;
+		String searchString = "description:" + queryString;
 		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
@@ -292,7 +305,7 @@ public class Variable implements Comparable {
 	@ManyToMany(mappedBy = "variables", fetch = FetchType.LAZY)
 	private Set<Concept> concepts;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "question_id", columnDefinition = "integer", referencedColumnName = "id")
 	private Question questionId;
 
@@ -340,9 +353,8 @@ public class Variable implements Comparable {
 	@JSON(name = "nrfreq")
 	private Long categoriesNumber;
 
-	@OneToOne(mappedBy = "variable", fetch = FetchType.LAZY)
-	// , optional = false)
-	private SelectionVariable selectionVariable;
+	// @OneToOne(mappedBy = "variable", fetch = FetchType.LAZY)
+	// private SelectionVariable selectionVariable;
 
 	@OneToMany(mappedBy = "nextVariableId", fetch = FetchType.LAZY)
 	private Set<Skip> skips;
@@ -366,9 +378,9 @@ public class Variable implements Comparable {
 	@Autowired
 	transient SolrService solrService;
 
-	public String buildUrl(String language) {
-		return Setting.findSetting("baseurl").getValue()
-				+ Setting.findSetting(language + "_databrowser_url").getValue() + "#" + SOLR_VARIABLE + ":" + getId();
+	public String solrUrl(String language, Integer catalogId, Integer studyId) {
+		String sep = "-";
+		return solrService.baseUrl(language) + SOLR_VARIABLE_URL + sep + catalogId + sep + studyId + sep + id;
 	}
 
 	@Transactional
@@ -441,9 +453,9 @@ public class Variable implements Comparable {
 		return otherStatistics;
 	}
 
-	public SelectionVariable getSelectionVariable() {
-		return selectionVariable;
-	}
+	// public SelectionVariable getSelectionVariable() {
+	// return selectionVariable;
+	// }
 
 	public Set<Skip> getSkips() {
 		return skips;
@@ -529,9 +541,9 @@ public class Variable implements Comparable {
 		this.otherStatistics = otherStatistics;
 	}
 
-	public void setSelectionVariable(SelectionVariable selectionVariable) {
-		this.selectionVariable = selectionVariable;
-	}
+	// public void setSelectionVariable(SelectionVariable selectionVariable) {
+	// this.selectionVariable = selectionVariable;
+	// }
 
 	public void setSkips(Set<Skip> skips) {
 		this.skips = skips;
@@ -634,15 +646,14 @@ public class Variable implements Comparable {
 		return new HashCodeBuilder(17, 37).append(id).toHashCode();
 	}
 
-	@Override
-	public int compareTo(Object o) {
-		Variable other = (Variable) o;
-		return new CompareToBuilder().append(this.id, other.id).toComparison();
-	}
-
 	@JsonIgnore
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
+	}
+
+	@Override
+	public int compareTo(Variable o) {
+		return new CompareToBuilder().append(this.id, o.id).toComparison();
 	}
 
 }

@@ -238,7 +238,7 @@ public class Question {
 	@Column(name = "preamble", columnDefinition = "text")
 	private String preamble;
 
-	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "questionId")
 	private Set<Variable> variables;
 
 	@ManyToMany(fetch = FetchType.LAZY)

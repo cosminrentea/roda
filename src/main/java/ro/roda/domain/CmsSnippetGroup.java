@@ -347,12 +347,12 @@ public class CmsSnippetGroup {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexCmsSnippetGroup(this);
+		// indexCmsSnippetGroup(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
@@ -362,7 +362,8 @@ public class CmsSnippetGroup {
 						.equals(((CmsSnippetGroup) obj).parentId)));
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

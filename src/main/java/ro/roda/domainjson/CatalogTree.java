@@ -46,7 +46,7 @@ public class CatalogTree extends JsonInfo {
 		return serializer.transform(new FieldNameTransformer("indice"), "id").serialize(collection);
 	}
 
-	public static List<CatalogTree> findAllCatalogTree() {
+	public static List<CatalogTree> findAll() {
 		List<CatalogTree> result = new ArrayList<CatalogTree>();
 
 		List<Catalog> catalogs = Catalog.entityManager()
@@ -58,13 +58,13 @@ public class CatalogTree extends JsonInfo {
 			while (catalogIterator.hasNext()) {
 				Catalog catalog = (Catalog) catalogIterator.next();
 
-				result.add(findCatalogTree(catalog.getId()));
+				result.add(find(catalog.getId()));
 			}
 		}
 		return result;
 	}
 
-	public static CatalogTree findCatalogTree(Integer id) {
+	public static CatalogTree find(Integer id) {
 		CatalogTree result = null;
 		Catalog catalog = Catalog.findCatalog(id);
 
@@ -84,7 +84,7 @@ public class CatalogTree extends JsonInfo {
 				Iterator<Catalog> childrenIterator = children.iterator();
 				while (childrenIterator.hasNext()) {
 					Catalog childCatalog = childrenIterator.next();
-					CatalogTree catalogTree = findCatalogTree(childCatalog.getId());
+					CatalogTree catalogTree = find(childCatalog.getId());
 					dataByCatalogSet.add(catalogTree);
 					if (maxDepth < catalogTree.getDepth()) {
 						maxDepth = catalogTree.getDepth();

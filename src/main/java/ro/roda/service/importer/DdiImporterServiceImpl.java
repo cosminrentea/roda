@@ -228,7 +228,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void afterImport(List<String[]> csvLines) {
+	public void afterImport(List<String[]> csvLines) throws Exception {
 		for (String[] csvLine : csvLines) {
 			log.trace("Catalog: " + csvLine[0] + " -- Study Filename: " + csvLine[1]);
 			Study study = Study.findFirstStudyWithFilename(csvLine[1]);
@@ -274,7 +274,14 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 			study.flush();
 		}
-		log.debug("DDI files put into Catalogs and Series");
+
+		log.debug("ACLs for Catalogs, Series, Studies");
+
+		csvImporterService.importCsvFile(profilesFoldername + "/" + rodaDataDdiProfile + "/acl_class.csv");
+		csvImporterService.importCsvFile(profilesFoldername + "/" + rodaDataDdiProfile + "/acl_sid.csv");
+		csvImporterService.importCsvFile(profilesFoldername + "/" + rodaDataDdiProfile + "/acl_object_identity.csv");
+		csvImporterService.importCsvFile(profilesFoldername + "/" + rodaDataDdiProfile + "/acl_entry.csv");
+
 		log.debug("Creating Solr index - Async");
 		Catalog.indexCatalogs(Catalog.findAllCatalogs());
 		StudyDescr.indexStudyDescrs(StudyDescr.findAllStudyDescrs());

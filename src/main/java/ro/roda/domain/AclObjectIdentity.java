@@ -323,11 +323,11 @@ public class AclObjectIdentity {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexAclObjectIdentity(this);
+		// indexAclObjectIdentity(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 }

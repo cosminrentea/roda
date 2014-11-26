@@ -17,6 +17,6 @@ public interface DdiImporterService {
 	public abstract void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
 			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv) throws Exception;
 
-	public abstract void afterImport(List<String[]> csvLines);
+	public abstract void afterImport(List<String[]> csvLines) throws Exception;
 
 }

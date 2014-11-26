@@ -322,11 +322,11 @@ public class AclEntry {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexAclEntry(this);
+		// indexAclEntry(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 }

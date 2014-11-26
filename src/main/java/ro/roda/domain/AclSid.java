@@ -326,12 +326,12 @@ public class AclSid {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexAclSid(this);
+		// indexAclSid(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override

@@ -21,4 +21,6 @@ public interface StudyKeywordService {
 
 	public abstract StudyKeyword updateStudyKeyword(StudyKeyword studyKeyword);
 
+	public abstract String save(Integer studyId, String keywordName);
+
 }

@@ -411,11 +411,15 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 			// }
 			// }
 
+			String context = servletContext.getContextPath();
+			if (!context.endsWith("/")) {
+				context = context + "/";
+			}
+
 			result = result.substring(0, fromIndex)
 					// + (cmsFile != null ? relativePath.toString() +
 					// CMS_FILE_CONTENT_URL + cmsFile.getId() : "")
-					+ (cmsFile != null ? servletContext.getContextPath() + CMS_FILE_CONTENT_URL + cmsFile.getId() : "")
-					+ PAGE_MAPPING
+					+ (cmsFile != null ? context + CMS_FILE_CONTENT_URL + cmsFile.getId() : "") + PAGE_MAPPING
 					+ result.substring(result.indexOf("]]", fromIndex + FILE_URL_LINK_CODE.length()) + "]]".length());
 			fromIndex = result.indexOf(FILE_URL_LINK_CODE, fromIndex + FILE_URL_LINK_CODE.length());
 		}

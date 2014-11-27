@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -204,18 +205,28 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 						"text/xml", new FileInputStream(ddiFile));
 				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
 
-				// add CSV data (if any) to imported DDIs
+				// add CSV data and syntax files to imported DDIs
+				List<MultipartFile> multipartSyntax = new ArrayList<MultipartFile>();
 				MockMultipartFile mockMultipartFileCsv = null;
 				if (importDdiCsv) {
 					// get CSV file name (RODA naming rules)
 					String csvFilename = ddiFile.getName().split("\\.|_|-")[0].concat("_T.csv");
 					// TODO @Value for "ddi" folder below
 					Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
-					FileInputStream fisCsv = null;
-					fisCsv = new FileInputStream(csvResource.getFile());
+					FileInputStream fisCsv = new FileInputStream(csvResource.getFile());
 					mockMultipartFileCsv = new MockMultipartFile(csvFilename, csvFilename, "text/csv", fisCsv);
+
+					List<String> fileExtensions = new ArrayList<String>(Arrays.asList("sps", "do", "sas", "R"));
+					for (String extension : fileExtensions) {
+						String syntaxFilename = ddiFile.getName().split("\\.|_|-")[0].concat("." + extension);
+						Resource syntaxResource = pmr.getResource("classpath:ddi/" + syntaxFilename);
+						multipartSyntax.add(new MockMultipartFile(syntaxFilename, syntaxFilename, "application/text",
+								new FileInputStream(syntaxResource.getFile())));
+					}
 				}
-				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv);
+
+				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv,
+						multipartSyntax);
 
 			} catch (Exception e) {
 				log.fatal("Exception thrown when importing this DDI file: " + ddiFilename, e);
@@ -283,6 +294,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		csvImporterService.importCsvFile(profilesFoldername + "/" + rodaDataDdiProfile + "/acl_entry.csv");
 
 		log.debug("Creating Solr index - Async");
+		CmsPage.indexCmsPages(CmsPage.findAllCmsPages());
 		Catalog.indexCatalogs(Catalog.findAllCatalogs());
 		StudyDescr.indexStudyDescrs(StudyDescr.findAllStudyDescrs());
 		Variable.indexVariables(Variable.findAllVariables());
@@ -290,8 +302,8 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
-			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv)
-			throws FileNotFoundException, IOException {
+			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv,
+			List<MultipartFile> multipartSyntax) throws FileNotFoundException, IOException {
 
 		if (ddiPersistence) {
 			if (this.entityManager == null) {
@@ -856,6 +868,14 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			studyFiles.add(cmsFile);
 
 			fisJson.close();
+		}
+
+		// save & attach more Syntax files
+		for (MultipartFile mpf : multipartSyntax) {
+			AdminJson adminJsonSyntax = adminJsonService.fileSave(adminJsonStudyFolder.getId(), mpf, null, null, null);
+			cmsFile = CmsFile.findCmsFile(adminJsonSyntax.getId());
+			cmsFile.setStudies(currentStudySet);
+			studyFiles.add(cmsFile);
 		}
 
 		// all possible files were already attached to the study

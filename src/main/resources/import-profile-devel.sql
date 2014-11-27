@@ -24,5 +24,5 @@ insert into user_profile(user_id, firstname, middlename, lastname, title, saluta
 
 -- global settings 
 insert into setting(name, "value") values ('baseurl','/roda/');
-insert into setting(name, "value") values ('solrqueryurl','http://localhost:8983/solr/');
+insert into setting(name, "value") values ('solrqueryurl','http://localhost:8983/solr/collection1');
 

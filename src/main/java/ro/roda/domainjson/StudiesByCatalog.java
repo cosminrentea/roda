@@ -26,7 +26,8 @@ public class StudiesByCatalog extends JsonInfo {
 
 		serializer.include("id", "name", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
-				"studies.geographicCoverage", "studies.unitAnalysis", "studies.universe");
+				"studies.geographicCoverage", "studies.unitAnalysis", "studies.universe", "studies.persons",
+				"studies.orgs");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 		serializer.transform(new FieldNameTransformer("nrStudies"), "studiesCount");
@@ -208,7 +209,7 @@ public class StudiesByCatalog extends JsonInfo {
 
 		serializer.exclude("*.class");
 		serializer.exclude("studies.leaf", "studies.variables", "studies.files", "studies.persons", "studies.orgs",
-				"studies.keywords");
+				"studies.keywords", "studies.persons", "studies.orgs");
 
 		serializer.include("id", "name", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",

@@ -284,11 +284,11 @@ public class StudyKeyword {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexStudyKeyword(this);
+		// indexStudyKeyword(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 }

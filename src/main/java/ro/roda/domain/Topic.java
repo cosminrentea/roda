@@ -110,8 +110,6 @@ public class Topic {
 			sid.addField("id", "topic_" + topic.getId());
 			sid.addField("topic.parentid_t", topic.getParentId());
 			sid.addField("topic.preferredsynonymtopicid_t", topic.getPreferredSynonymTopicId());
-			// sid.addField("topic.name_s", topic.getName());
-			// sid.addField("topic.description_s", topic.getDescription());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
@@ -159,19 +157,11 @@ public class Topic {
 		return AuditReaderFactory.get(entityManager());
 	}
 
-	// @Column(name = "description", columnDefinition = "text")
-	// private String description;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	// , columnDefinition = "serial")
 	private Integer id;
-
-	// @Column(name = "name", columnDefinition = "varchar", length = 50, unique
-	// = true)
-	// @NotNull
-	// private String name;
 
 	// Original: insertable = false, updatable = false
 	@ManyToOne
@@ -340,13 +330,11 @@ public class Topic {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		// TODO re-enable later
 		// indexTopic(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		// TODO re-enable later
 		// deleteIndex(this);
 	}
 

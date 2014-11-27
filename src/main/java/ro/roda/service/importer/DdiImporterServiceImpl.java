@@ -110,15 +110,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 	@Autowired
 	AdminJsonService adminJsonService;
 
-	@Autowired
-	CmsFileStoreService cmsFileStoreService;
-
-	@Autowired
-	CmsFolderService cmsFolderService;
-
-	@Autowired
-	CmsFileService cmsFileService;
-
 	@Value("${roda.data.ddi.profile}")
 	private String rodaDataDdiProfile;
 
@@ -218,10 +209,16 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 					List<String> fileExtensions = new ArrayList<String>(Arrays.asList("sps", "do", "sas", "R"));
 					for (String extension : fileExtensions) {
-						String syntaxFilename = ddiFile.getName().split("\\.|_|-")[0].concat("." + extension);
-						Resource syntaxResource = pmr.getResource("classpath:ddi/" + syntaxFilename);
-						multipartSyntax.add(new MockMultipartFile(syntaxFilename, syntaxFilename, "application/text",
-								new FileInputStream(syntaxResource.getFile())));
+						try {
+							String syntaxFilename = ddiFile.getName().split("\\.|_|-")[0].concat("." + extension);
+							Resource syntaxResource = pmr.getResource("classpath:ddi/" + syntaxFilename);
+							multipartSyntax.add(new MockMultipartFile(syntaxFilename, syntaxFilename,
+									"application/text", new FileInputStream(syntaxResource.getFile())));
+						} catch (Exception e) {
+							log.warn("Exception thrown when importing this DDI: " + ddiFilename, e);
+							continue;
+						}
+
 					}
 				}
 
@@ -229,7 +226,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 						multipartSyntax);
 
 			} catch (Exception e) {
-				log.fatal("Exception thrown when importing this DDI file: " + ddiFilename, e);
+				log.fatal("Exception thrown when importing this DDI: " + ddiFilename, e);
 				throw e;
 			}
 		}
@@ -294,6 +291,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		csvImporterService.importCsvFile(profilesFoldername + "/" + rodaDataDdiProfile + "/acl_entry.csv");
 
 		log.debug("Creating Solr index - Async");
+
 		CmsPage.indexCmsPages(CmsPage.findAllCmsPages());
 		Catalog.indexCatalogs(Catalog.findAllCatalogs());
 		StudyDescr.indexStudyDescrs(StudyDescr.findAllStudyDescrs());
@@ -441,14 +439,14 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		s.setImportedFilename(multipartFileDdi.getName());
 
 		Integer userId = 1;
-		Users u = Users.findUsers(userId);
-		s.setAddedBy(u);
-		Set<Study> su = u.getStudies();
+		Users user = Users.findUsers(userId);
+		s.setAddedBy(user);
+		Set<Study> su = user.getStudies();
 		if (su == null) {
 			su = new HashSet<Study>();
 		}
 		su.add(s);
-		u.setStudies(su);
+		user.setStudies(su);
 
 		// TODO don't use directly ID = 1
 		// TODO replace TimeMeth with a field in StudyDescr ?
@@ -553,11 +551,13 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 					// after the previous "keyword-cleanup",
 					// attach it to the study
-					log.trace("Keyword: " + keywordContent);
+					// log.trace("Keyword: " + keywordContent);
 					Keyword keyword = Keyword.checkKeyword(null, keywordContent);
 					StudyKeyword sk = new StudyKeyword();
 					sk.setId(new StudyKeywordPK(s.getId(), keyword.getId(), userId));
-					sk.setAddedBy(u);
+					sk.setStudyId(s);
+					sk.setKeywordId(keyword);
+					sk.setAddedBy(user);
 					sk.setAdded(new GregorianCalendar());
 					sk.persist();
 				}
@@ -572,7 +572,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 					topicContent = topicContent.trim().toUpperCase();
 					if (topicContent.length() == 0)
 						continue;
-					log.trace("Topic of imported study: " + topicContent);
+					// log.trace("Topic of imported study: " + topicContent);
 					String[] topicNames = topicContent.split(";|,|\\.");
 					for (String topicName : topicNames) {
 						TranslatedTopic translatedTopic = TranslatedTopic.findOrCreateTranslatedTopic(topicName.trim(),
@@ -607,7 +607,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 			int counterQstn = 0;
 			for (VarType varType : varTypeList) {
-				log.trace("Variable = " + varType.getName());
+				// log.trace("Variable: " + varType.getName());
 				Variable variable = new Variable();
 				variable.setName(varType.getName());
 				if (varType.getLabl() != null && varType.getLabl().size() > 0) {

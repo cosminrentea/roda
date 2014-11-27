@@ -44,8 +44,9 @@ Ext.define('databrowser.controller.Search', {
 
     	var srcwin = button.up('window');
 		 Ext.data.JsonP.request({
-	            url: 'http://localhost:8983/solr/collection1/select/?q=language:'+translations.language+' AND description:'+stitle+'&version=2.2&hl=true&hl.fl=description&indent=on&wt=json',
-	            method: 'GET',
+//	            url: 'http://localhost:8983/solr/collection1/select/?q=language:'+translations.language+' AND description:'+stitle+'&version=2.2&hl=true&hl.fl=description&indent=on&wt=json',
+	            url: databrowser.util.Globals['solrUrl'] + '/select/?q=language:'+translations.language+' AND description:'+stitle+'&version=2.2&hl=true&hl.fl=description&indent=on&wt=json',
+			    method: 'GET',
 	            callbackKey : 'json.wrf',
 	            params: {
 	            	start: 0,
@@ -70,7 +71,7 @@ Ext.define('databrowser.controller.Search', {
 	        	    	response.docs[i].highlight = highlighting[response.docs[i].id].description;
 	        	    }
 	        	    container.update(response);
-	        	    win.show();
+	        	   // win.show();
 	            }
 	        });			 
 

@@ -89,6 +89,7 @@ Ext.application({
 	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
 	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
 	    databrowser.util.Globals['contextPath'] = '[[Code: ContextPath]]';
+	    databrowser.util.Globals['solrUrl'] = '[[Setting('solrqueryurl')]]';
 	    Ext.create('databrowser.view.DataBrowserPanel',{
 	         renderTo: 'dbcontainer',
 	         plugins : ['fittoparent'],

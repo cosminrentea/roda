@@ -17,7 +17,7 @@
 		if ($(document).height() < $(window).height()) {
 		    $('#footer_wrapper').attr('style', 'position: fixed!important; bottom: 0px;');
 		}
-		on_ready('ro');
+		on_ready('ro', '[[Setting('solrqueryurl')]]');
 	})
 	</script>
 </head>

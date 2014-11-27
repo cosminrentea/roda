@@ -112,10 +112,13 @@ function on_data(lang, data) {
 		}
         var langpar = 'on_recdata_' +lang;
         
-        var url=solrurl + '/select/?q=language:'+lang+'AND description:'+query+'&version=2.2&hl=true&hl.fl=description&start='+start+'&rows='+page+'&indent=on&wt=json&callback=?&json.wrf='+ langpar;
-		console.log(url);
-        $.getJSON(url);
+        var url=solrurl.trim() + '/select/?q=language:'+lang+' AND description:'+query+'&version=2.2&hl=true&hl.fl=description&start='+start+'&rows='+page+'&indent=on&wt=json&callback=?&json.wrf='+ langpar;
+      //var url2='http://localhost:8983/solr/collection1/select/?q=language:'+lang+' AND description:'+query+'&version=2.2&hl=true&hl.fl=description&start='+start+'&rows='+page+'&indent=on&wt=json&callback=?&json.wrf='+ langpar;
 
+      //  console.log(url);
+      //  console.log(url2);
+        
+        $.getJSON(url);
       
     }
     function closesearch() {

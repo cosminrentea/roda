@@ -20,7 +20,7 @@ public class RodaRevisionListener implements RevisionListener {
 			String username = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
 					.getUsername();
 			rodaRevisionEntity.setUsername(username);
-			rodaRevisionEntity.setUserid(Users.findUsersesByUsernameLike(username).getFirstResult());
+			rodaRevisionEntity.setUserid(Users.findUsersesByUsernameLike(username).getSingleResult().getId());
 		} catch (Exception e) {
 			// TODO refactor hard-coded string "admin" and user id value "1"
 			rodaRevisionEntity.setUsername("admin");

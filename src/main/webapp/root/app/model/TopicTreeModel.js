@@ -14,7 +14,12 @@ Ext.define('databrowser.model.TopicTreeModel', {
 		type : 'integer'
 	}, {
 		name : 'children'
-	}, {
+	},
+	{
+		name : 'type',
+		type : 'string'
+	},
+	{
 		name : 'icon',
 		type : 'string',
 		convert : function(v, r) {

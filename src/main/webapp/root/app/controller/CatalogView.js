@@ -31,6 +31,7 @@ Ext.define('databrowser.controller.CatalogView', {
 	},
 
 	onSearchKey : function(field, event) {
+		console.log('ia hai');
 		if (event.getKey() == event.ENTER) {
 			 Ext.data.JsonP.request({
 		            url: 'http://localhost:8983/solr/collection1/select/?q=language:'+translations.language+' AND description:'+field.value+'&version=2.2&hl=true&hl.fl=description&indent=on&wt=json',

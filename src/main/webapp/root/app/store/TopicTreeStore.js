@@ -23,7 +23,7 @@ Ext.define('databrowser.store.TopicTreeStore', {
     },
     proxy : {
         type : 'ajax',
-        url : '../studiesbytopic',
+        url : '../topictree',
         timeout : 200000,
         extraParams : {
 	        lang : translations.language

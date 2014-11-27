@@ -36,6 +36,7 @@ Ext.application({
         'StudyFileModel',
         'StudyPersonModel',        
         'YearModel',
+		'TopicsModel',        
         'FrequencyModel',
 		'StudyOrgModel',
 		'StudyKeywordModel',
@@ -51,6 +52,7 @@ Ext.application({
         'YearStore',
         'VariableStore',
         'TopicTreeStore',
+        'TopicStore',
         'MemoryVariableStore',
         'SrMemoryVariableStore'
     ],
@@ -74,7 +76,8 @@ Ext.application({
         'Alert',
         'ScatterChart',
         'AdvancedSearch',
-        'CancelSave'
+        'CancelSave',
+        'TopicView'
     ],
 	controllers : ['VariableView', 'DataBrowser', 'Browser', 'CatalogView', 'YearView', 'History', 'Abstract', 'Search'],
     autoCreateViewport: false,

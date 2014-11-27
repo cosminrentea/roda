@@ -17,8 +17,8 @@ import static ro.roda.service.page.RodaPageConstants.PAGE_MAPPING;
 import static ro.roda.service.page.RodaPageConstants.PAGE_TITLE_CODE;
 import static ro.roda.service.page.RodaPageConstants.PAGE_TREE_BY_URL_CODE;
 import static ro.roda.service.page.RodaPageConstants.PAGE_URL_LINK_CODE;
-import static ro.roda.service.page.RodaPageConstants.SNIPPET_CODE;
 import static ro.roda.service.page.RodaPageConstants.SETTING_CODE;
+import static ro.roda.service.page.RodaPageConstants.SNIPPET_CODE;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -402,15 +402,20 @@ public class RodaPageServiceImpl implements RodaPageService, ServletContextAware
 					result.indexOf("]]", fromIndex + FILE_URL_LINK_CODE.length()));
 			CmsFile cmsFile = CmsFile.findCmsFile(alias);
 
-			StringBuilder relativePath = new StringBuilder();
-			if (url != null) {
-				for (int i = 0; i < StringUtils.countMatches(url, "/") - OFFSET_RELATIVE_URL; i++) {
-					relativePath.append("../");
-				}
-			}
+			// TODO: Remove the commented code below if the absolute link is ok
+			// StringBuilder relativePath = new StringBuilder();
+			// if (url != null) {
+			// for (int i = 0; i < StringUtils.countMatches(url, "/") -
+			// OFFSET_RELATIVE_URL; i++) {
+			// relativePath.append("../");
+			// }
+			// }
 
 			result = result.substring(0, fromIndex)
-					+ (cmsFile != null ? relativePath.toString() + CMS_FILE_CONTENT_URL + cmsFile.getId() : "")
+					// + (cmsFile != null ? relativePath.toString() +
+					// CMS_FILE_CONTENT_URL + cmsFile.getId() : "")
+					+ (cmsFile != null ? servletContext.getContextPath() + CMS_FILE_CONTENT_URL + cmsFile.getId() : "")
+					+ PAGE_MAPPING
 					+ result.substring(result.indexOf("]]", fromIndex + FILE_URL_LINK_CODE.length()) + "]]".length());
 			fromIndex = result.indexOf(FILE_URL_LINK_CODE, fromIndex + FILE_URL_LINK_CODE.length());
 		}

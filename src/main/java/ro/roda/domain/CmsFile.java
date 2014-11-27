@@ -40,6 +40,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import ro.roda.service.filestore.CmsFileStoreService;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import flexjson.JSONDeserializer;
@@ -269,10 +271,10 @@ public class CmsFile {
 	@Column(name = "label", columnDefinition = "varchar", length = 100, unique = true)
 	private String label;
 
-	@Column(name = "url", columnDefinition = "varchar", length = 200)
+	@Column(name = "url", columnDefinition = "text")
 	private String url;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
 	@JoinTable(name = "study_cms_file", joinColumns = { @JoinColumn(name = "cms_file_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
 	private Set<Study> studies;
 
@@ -291,6 +293,9 @@ public class CmsFile {
 
 	@Autowired(required = false)
 	transient SolrServer solrServer;
+
+	@Autowired
+	transient CmsFileStoreService cmsFileStoreService;
 
 	@Transactional
 	public void clear() {
@@ -335,7 +340,7 @@ public class CmsFile {
 	}
 
 	public String getUrl() {
-		return url;
+		return cmsFileStoreService.getDownloadBaseUrl() + id;
 	}
 
 	public Set<Instance> getInstances() {

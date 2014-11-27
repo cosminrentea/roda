@@ -298,7 +298,7 @@ public class Study {
 	@NotNull
 	private boolean digitizable;
 
-	@ManyToMany(mappedBy = "studies", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "studies")
 	private Set<CmsFile> cmsFiles;
 
 	@Id

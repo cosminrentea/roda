@@ -846,6 +846,16 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 					}
 				}
 			}
+
+			// save & attach more Syntax files
+			for (MultipartFile mpf : multipartSyntax) {
+				AdminJson adminJsonSyntax = adminJsonService
+						.fileSave(adminJsonStudyFolder.getId(), mpf, null, null, "");
+				cmsFile = CmsFile.findCmsFile(adminJsonSyntax.getId());
+				cmsFile.setStudies(currentStudySet);
+				studyFiles.add(cmsFile);
+			}
+
 		}
 
 		// serialization of DDI XML as JSON - only if requested
@@ -868,14 +878,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			studyFiles.add(cmsFile);
 
 			fisJson.close();
-		}
-
-		// save & attach more Syntax files
-		for (MultipartFile mpf : multipartSyntax) {
-			AdminJson adminJsonSyntax = adminJsonService.fileSave(adminJsonStudyFolder.getId(), mpf, null, null, null);
-			cmsFile = CmsFile.findCmsFile(adminJsonSyntax.getId());
-			cmsFile.setStudies(currentStudySet);
-			studyFiles.add(cmsFile);
 		}
 
 		// all possible files were already attached to the study

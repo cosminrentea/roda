@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -29,6 +30,7 @@ import ro.roda.domain.Topic;
 import ro.roda.domain.TranslatedTopic;
 import ro.roda.domain.TranslatedTopicPK;
 import ro.roda.domain.Variable;
+import ro.roda.service.filestore.CmsFileStoreService;
 import ro.roda.transformer.FieldNameTransformer;
 import ro.roda.transformer.FlatQuestionMinInfoTransformer;
 import flexjson.JSONSerializer;

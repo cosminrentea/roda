@@ -37,6 +37,10 @@ public class JsonInfo {
 
 	public static final String YEAR_TYPE = "Y";
 
+	public static final String TOPIC_TYPE = "T";
+
+	public static final String TOPIC_SERIES_TYPE = "TS";
+
 	public static final String MAIN_TYPE = "M";
 
 	public static final DateTransformer DATE_TRANSFORMER = new DateTransformer("MM/dd/yyyy hh:mm:ss");

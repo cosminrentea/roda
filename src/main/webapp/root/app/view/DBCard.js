@@ -26,7 +26,11 @@ Ext.define('databrowser.view.DBCard', {
     {
         id: 'yearview',
         xtype: 'yearview',
-    },    
+    },
+    {
+        id: 'topicview',
+        xtype: 'topicview',
+    },
     {
         id: 'detailspanel',
         xtype: 'detailspanel',    

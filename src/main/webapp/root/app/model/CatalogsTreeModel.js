@@ -32,15 +32,15 @@ Ext.define('databrowser.model.CatalogsTreeModel', {
 		type : 'string',
 		convert : function(v, r) {
 			if (r.get('type') == 'S') {
-				return '/roda/resources/root/img/series.png';
+				return databrowser.util.Globals['contextPath']+'/resources/root/img/series.png';
 			} else if (r.get('type') == 'M') {
-				return '/roda/resources/root/img/roda-m.png';
+				return databrowser.util.Globals['contextPath']+'/resources/root/img/roda-m.png';
 			} else if (r.get('type') == 'C') {
-				return '/roda/resources/root/img/catalog.png';
+				return databrowser.util.Globals['contextPath']+'/resources/root/img/catalog.png';
 			} else if (r.get('type') == 'St') {
-				return '/roda/resources/root/img/study.png';
+				return databrowser.util.Globals['contextPath']+'/resources/root/img/study.png';
 			} else if (r.get('type') == 'Sts') {
-				return '/roda/resources/root/img/series-member.png';
+				return databrowser.util.Globals['contextPath']+'/resources/root/img/series-member.png';
 			}
 		}
 	}, {

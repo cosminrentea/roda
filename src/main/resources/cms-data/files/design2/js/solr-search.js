@@ -49,7 +49,10 @@ function on_data(lang, data) {
 				var cleanText = descr.replace(/<\/?[^>]+(>|$)/g, "");
 				var title = new String;
 				var cleanTitle = new String;
-
+				var parentstring = new String;
+				
+				
+				
 				if (item.name) {
 					title = String(item.name) + ' ';					
 					cleanTitle = title.replace(/<\/?[^>]+(>|$)/g, "");
@@ -61,14 +64,29 @@ function on_data(lang, data) {
 						cleanTitle = 'Untitled';
 					}
 				}
+				if (lang =='ro') { 
+					parentstring = 'parte din <a href="' +item.parenturl + '">'+item.parentname + '</a>';
+				}
+				if (lang =='en') {
+					parentstring = 'member of <a href="' +item.parenturl + '">'+item.parentname + '</a>';
+				}
 				var entityclass;
-				if (item.entity == 'page') {
-					entityclass='tpage';	
+				if (item.entity == 'cmspage') {
+					entityclass='spage';	
+				} else if (item.entity == 'catalog') {
+					entityclass='scatalog';	
+				} else if (item.entity == 'series') {
+					entityclass='sseries';	
+				} else if (item.entity == 'variable') {					
+					entityclass='svariable';	
+					cleanText = cleanText + '<br>' + parentstring;
+				} else if (item.entity == 'study') {				
+					entityclass='sstudy';	
 				} else {
 					entityclass = 'tempty';
 				}
 				
-        		rescont = rescont + '<tr><td valign="top" class="'+entityclass+'"></td><td valign="top">' + '<div class="restitle"><a href="/'+item.url +'">'+ cleanTitle +'</a></div>' +'<p>' + cleanText + '</p></td></tr>';
+        		rescont = rescont + '<tr><td valign="top" class="'+entityclass+'"></td><td valign="top">' + '<div class="restitle"><a href="'+item.url +'">'+ cleanTitle +'</a></div>' +'<p>' + cleanText + '</p></td></tr>';
     	});
 		rescont = rescont + '</table></div>';
     } else {
@@ -80,7 +98,7 @@ function on_data(lang, data) {
     $('#results').show();
 }
 
-    function doSearch(start,page, lang) {
+    function doSearch(start,page, lang, solrurl) {
     	$("#results").mask("Searching...");
     	var query = $('#query').val();
         if (query.length == 0) {
@@ -93,8 +111,10 @@ function on_data(lang, data) {
 			page=10;
 		}
         var langpar = 'on_recdata_' +lang;
-        var url='http://localhost:8983/solr/collection1/select/?q=language:'+lang+'AND description:'+query+'&version=2.2&hl=true&hl.fl=description&start='+start+'&rows='+page+'&indent=on&wt=json&callback=?&json.wrf='+ langpar;
-		$.getJSON(url);
+        
+        var url=solrurl + '/select/?q=language:'+lang+'AND description:'+query+'&version=2.2&hl=true&hl.fl=description&start='+start+'&rows='+page+'&indent=on&wt=json&callback=?&json.wrf='+ langpar;
+		console.log(url);
+        $.getJSON(url);
 
       
     }
@@ -103,14 +123,14 @@ function on_data(lang, data) {
     	  $('#results').hide();
     }
     
-    function on_ready(lang) {
+    function on_ready(lang, solrurl) {
     	$('#searchbtn').click(function() {
-    		doSearch(0,10, lang);
+    		doSearch(0,10, lang, solrurl);
     	});
         /* Hook enter to search */
         $('body').keypress(function(e) {
             if (e.keyCode == '13') {
-                doSearch(0, 10, lang);
+                doSearch(0, 10, lang, solrurl);
             }
         });
     }

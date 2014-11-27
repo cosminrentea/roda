@@ -460,12 +460,12 @@ public class Person {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexPerson(this);
+		// indexPerson(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
@@ -473,7 +473,8 @@ public class Person {
 		return id != null && id.equals(((Person) obj).id);
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

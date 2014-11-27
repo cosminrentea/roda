@@ -11,7 +11,7 @@
     paths: {
         'Ext.ux': 'ux/',
      	 'Ext.ux.plugins': '[[Code: ContextPath]]/resources/root/ux/plugins',
-     	'databrowser.util' : 'app/util'
+     	'databrowser.util' : '[[Code: ContextPath]]/resources/root/app/util'
     		}
 		});
 		
@@ -24,6 +24,7 @@ Ext.application({
         'Ext.toolbar.Paging',
         'Ext.ModelManager',
         'Ext.ux.plugins.FitToParent',
+        'databrowser.util.Globals',
     ],
     models: [
         'CatalogsTreeModel',
@@ -35,6 +36,7 @@ Ext.application({
         'StudyFileModel',
         'StudyPersonModel',        
         'YearModel',
+		'TopicsModel',        
         'FrequencyModel',
 		'StudyOrgModel',
 		'StudyKeywordModel',
@@ -50,6 +52,7 @@ Ext.application({
         'YearStore',
         'VariableStore',
         'TopicTreeStore',
+        'TopicStore',
         'MemoryVariableStore',
         'SrMemoryVariableStore'
     ],
@@ -73,18 +76,19 @@ Ext.application({
         'Alert',
         'ScatterChart',
         'AdvancedSearch',
-        'CancelSave'
+        'CancelSave',
+        'TopicView'
     ],
 	controllers : ['VariableView', 'DataBrowser', 'Browser', 'CatalogView', 'YearView', 'History', 'Abstract', 'Search'],
     autoCreateViewport: false,
     name: 'databrowser',
     appFolder:'[[Code: ContextPath]]/root/app',
     init : function() {  	
-//    	console.log('init');
     	Ext.Ajax.timeout = 200000; // 200 seconds 
 	    Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
 	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
 	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
+	    databrowser.util.Globals['contextPath'] = '[[Code: ContextPath]]';
 	    Ext.create('databrowser.view.DataBrowserPanel',{
 	         renderTo: 'dbcontainer',
 	         plugins : ['fittoparent'],
@@ -94,57 +98,25 @@ Ext.application({
     launch : function() {
     	console.log('launch application');    	
 	    Ext.tip.QuickTipManager.init();
-	    
 	    var me = this;
-      // init Ext.util.History on app launch; if there is a hash in the url,
-//      // our controller will load the appropriate content
-//      Ext.Ajax.timeout = 300000; 
-//	    Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
-//	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
-//	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
-      
-      
-      
-      Ext.util.History.init(function(){
+	    Ext.util.History.init(function(){
       	console.log('history init firing event');
       	var hash = document.location.hash;
-         // me.getMainController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
-//            me.getHistoryController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
-          	me.getHistoryController().fireEvent( 'tokenchangeinit', hash.replace( '#', '' ) );
-            
-      	
+       	me.getHistoryController().fireEvent( 'tokenchangeinit', hash.replace( '#', '' ) );
       })
-      // add change handler for Ext.util.History; when a change in the token
-      // occurs, this will fire our controller's event to load the appropriate content
-
       Ext.util.History.on( 'change', function( token ){
-      	console.log('history change firing event');
-         me.getHistoryController().fireEvent( 'tokenchange', token );
+      me.getHistoryController().fireEvent( 'tokenchange', token );
       });
-
   }    
-    
-    
-    
 });
-		
-		
-		
   	  </script>
-  	  
-  	  
   	  <script type="text/javascript" src="[[Code: ContextPath]]/resources/root/app.js"></script>
-  	  
-  	  
-  	  
 	  <link rel="stylesheet" href="[[Code: ContextPath]]/resources/root/style.css">  	  
       <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
       <style>
 	  [[Snippet: main-css-en]]  
       </style>
       <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
-
-
 
 <style>
 html { height: 100%; }

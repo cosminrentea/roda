@@ -333,12 +333,12 @@ public class CmsSnippet {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexCmsSnippet(this);
+		// indexCmsSnippet(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
@@ -348,7 +348,8 @@ public class CmsSnippet {
 						.equals(((CmsSnippet) obj).cmsSnippetGroupId)));
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

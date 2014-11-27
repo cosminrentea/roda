@@ -117,16 +117,25 @@ public class CmsImporterServiceImpl implements CmsImporterService {
 
 				importCmsFilesRec(file, newFolder, path + "/" + file.getName());
 			} else {
-				MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(),
-						tika.detect(file), new FileInputStream(file));
-
 				// TODO what is the alias of a file? for the moment, it is
 				// its name (without extension)
 				// TODO decide if the URL should be the one above (useful
 				// for ImgLink) of this one:
 				// "file://" + file.getAbsolutePath()
-				adminJsonService.fileSave(cmsFolder.getId(), mockMultipartFile, null,
-						file.getName().substring(0, file.getName().lastIndexOf(".")), path + "/" + file.getName());
+
+				String fileAlias = file.getName().substring(0, file.getName().lastIndexOf("."));
+				if (fileAlias.length() == 0)
+					continue;
+
+				// now we are sure that the generated 'alias' is a valid one
+				// (we also ignored all files starting with a "."
+				// such as .DS_STORE)
+
+				MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(),
+						tika.detect(file), new FileInputStream(file));
+
+				adminJsonService.fileSave(cmsFolder.getId(), mockMultipartFile, null, fileAlias,
+						path + "/" + file.getName());
 
 				cmsFileStoreService.fileSave(mockMultipartFile, cmsFolder);
 			}

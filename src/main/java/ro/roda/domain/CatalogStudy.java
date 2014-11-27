@@ -159,6 +159,9 @@ public class CatalogStudy {
 		return AuditReaderFactory.get(entityManager());
 	}
 
+	@EmbeddedId
+	private CatalogStudyPK id;
+
 	@Column(name = "added", columnDefinition = "timestamp default now()", insertable = false)
 	// @NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -167,14 +170,11 @@ public class CatalogStudy {
 	private Calendar added;
 
 	@ManyToOne
-	@JoinColumn(name = "catalog_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
+	@JoinColumn(name = "catalog_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Catalog catalogId;
 
-	@EmbeddedId
-	private CatalogStudyPK id;
-
 	@ManyToOne
-	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
+	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Study studyId;
 
 	@PersistenceContext
@@ -265,19 +265,20 @@ public class CatalogStudy {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexCatalogStudy(this);
+		// indexCatalogStudy(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	// @PrePersist

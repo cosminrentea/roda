@@ -222,6 +222,10 @@ public class TranslatedTopic {
 							TranslatedTopic.class).setParameter("language", language)
 					.setParameter("parentId", Topic.findTopic(Integer.valueOf(parentTopicId))).getResultList();
 		}
+		if (results == null) {
+			// if no results, return an empty list (not null)
+			results = new ArrayList<TranslatedTopic>();
+		}
 		return results;
 	}
 

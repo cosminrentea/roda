@@ -46,11 +46,11 @@ fields : [ {
 	type : 'string',
 	convert : function(v, r) {
 		if (r.get('type') == 'Sts') {
-			return '/roda/resources/root/img/series-member.png';
+			return databrowser.util.Globals['contextPath']+'/resources/root/img/series-member.png';
 		} else if (r.get('type') == 'M') {
-			return '/roda/resources/root/img/roda-m.png';			
+			return databrowser.util.Globals['contextPath']+'/resources/root/img/roda-m.png';			
 		} else if (r.get('type') == 'St') {
-			return '/roda/resources/root/img/study.png';
+			return databrowser.util.Globals['contextPath']+'/resources/root/img/study.png';
 		}
 	}
 },{

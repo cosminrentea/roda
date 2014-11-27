@@ -307,12 +307,12 @@ public class Keyword {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexKeyword(this);
+		// indexKeyword(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
@@ -321,7 +321,8 @@ public class Keyword {
 				|| (name != null && name.equalsIgnoreCase(((Keyword) obj).name));
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

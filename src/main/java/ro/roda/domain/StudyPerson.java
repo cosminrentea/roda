@@ -265,18 +265,19 @@ public class StudyPerson {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexStudyPerson(this);
+		// indexStudyPerson(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 }

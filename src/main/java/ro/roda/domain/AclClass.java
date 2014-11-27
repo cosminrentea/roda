@@ -300,12 +300,12 @@ public class AclClass {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexAclClass(this);
+		// indexAclClass(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override

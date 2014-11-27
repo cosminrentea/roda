@@ -32,7 +32,11 @@ Ext.define('databrowser.controller.Browser', {
     			},
     			"browser treepanel#YearsTreePanel" : {
     				selectionchange :  this.onYearsTreeSelectionChange
-    			}
+    			},
+    			"browser treepanel#TopicTreePanel" : {
+    				selectionchange :  this.onTopicTreeSelectionChange
+    			},
+    			
     		});
 
     	},
@@ -89,6 +93,52 @@ Ext.define('databrowser.controller.Browser', {
            	    sButton.toggle(true);
            	    console.log(record.get('indice'));
             	catalogview.loaddata(record.get('indice'));
+            } else if (record.get('type') == 'S') {
+            	dbcard.layout.setActiveItem('seriesview');	        	
+            	var seriesviewob = Ext.getCmp('seriesview');
+            	seriesviewob.setTitle(record.get('text'));
+           	    seriesviewob.loaddata(record.get('indice'));
+            } else if (record.get('type') == 'St') {
+            	dbcard.layout.setActiveItem('studyview');	
+            	var studyviewob = Ext.getCmp('studyview');
+            	studyviewob.setTitle(record.get('text'));
+            	studyviewob.loaddata(record.get('indice'));
+            } else if (record.get('type') == 'Sts') {
+            	dbcard.layout.setActiveItem('studyseriesview');	
+            	var studyseriesviewob = Ext.getCmp('studyseriesview');
+            	studyseriesviewob.setTitle(record.get('text'));
+            	studyseriesviewob.loaddata(record.get('indice'));
+            } else {
+            	dbcard.layout.setActiveItem('initial');
+            }
+            var vStore = this.getAnalysisVar().getStore();
+            var srvStore = this.getSranalysisVar().getStore();
+            vStore.getProxy().clear();
+            vStore.data.clear();
+            vStore.sync();
+            srvStore.getProxy().clear();    		
+            srvStore.data.clear();
+            srvStore.sync();
+            this.getDbmaincenter().setLoading(false);
+    	},
+    	
+    	onTopicTreeSelectionChange: function (component, selected, event) {
+    		console.log('captured topic')
+    		var record = selected[0];
+            var dbcard = this.getDbcard();
+            console.log(record.get('type'));
+//    		dbcard.setLoading('Loading...');
+    		this.getDbmaincenter().setLoading('Loading...');
+    		if (record.get('type') == 'T') {
+            	dbcard.layout.setActiveItem('topicview');
+            	var topicview = Ext.getCmp('topicview');
+            	topicview.setTitle(record.get('text'));
+            	topicview.catalogid = record.get('indice');
+            	var cStore = Ext.StoreManager.get('TopicStore');    
+           	    var sButton = Ext.getCmp('SButton');
+           	    sButton.toggle(true);
+           	    console.log(record.get('indice'));
+            	topicview.loaddata(record.get('indice'));
             } else if (record.get('type') == 'S') {
             	dbcard.layout.setActiveItem('seriesview');	        	
             	var seriesviewob = Ext.getCmp('seriesview');

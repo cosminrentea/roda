@@ -107,7 +107,8 @@ public class SelectionVariable {
 		for (SelectionVariable selectionVariable : selectionvariables) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "selectionvariable_" + selectionVariable.getVariableId());
-			sid.addField("selectionVariable.variable_t", selectionVariable.getVariable());
+			// sid.addField("selectionVariable.variable_t",
+			// selectionVariable.getVariable());
 			sid.addField("selectionVariable.mincount_t", selectionVariable.getMinCount());
 			sid.addField("selectionVariable.maxcount_t", selectionVariable.getMaxCount());
 			sid.addField("selectionVariable.variableid_l", selectionVariable.getVariableId());
@@ -115,8 +116,7 @@ public class SelectionVariable {
 			// this type
 			sid.addField(
 					"selectionvariable_solrsummary_t",
-					new StringBuilder().append(selectionVariable.getVariable()).append(" ")
-							.append(selectionVariable.getMinCount()).append(" ")
+					new StringBuilder().append(selectionVariable.getMinCount()).append(" ")
 							.append(selectionVariable.getMaxCount()).append(" ")
 							.append(selectionVariable.getVariableId()));
 			documents.add(sid);
@@ -210,7 +210,7 @@ public class SelectionVariable {
 		}
 
 		object = new SelectionVariable();
-		object.variable = variable;
+		// object.variable = variable;
 		object.minCount = minCount;
 		object.maxCount = maxCount;
 		object.persist();
@@ -233,9 +233,10 @@ public class SelectionVariable {
 	@OneToMany(mappedBy = "variableId")
 	private Set<SelectionVariableItem> selectionVariableItems;
 
-	@OneToOne
-	@JoinColumn(name = "variable_id", nullable = false, insertable = false, updatable = false)
-	private Variable variable;
+	// @OneToOne
+	// @JoinColumn(name = "variable_id", nullable = false, insertable = false,
+	// updatable = false)
+	// private Variable variable;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -274,9 +275,9 @@ public class SelectionVariable {
 		return selectionVariableItems;
 	}
 
-	public Variable getVariable() {
-		return variable;
-	}
+	// public Variable getVariable() {
+	// return variable;
+	// }
 
 	public Long getVariableId() {
 		return this.variableId;
@@ -322,9 +323,9 @@ public class SelectionVariable {
 		this.selectionVariableItems = selectionVariableItems;
 	}
 
-	public void setVariable(Variable variable) {
-		this.variable = variable;
-	}
+	// public void setVariable(Variable variable) {
+	// this.variable = variable;
+	// }
 
 	public void setVariableId(Long id) {
 		this.variableId = id;
@@ -356,11 +357,16 @@ public class SelectionVariable {
 
 	@Override
 	public boolean equals(Object obj) {
-		return (variableId != null && variableId.equals(((SelectionVariable) obj).variableId))
-				|| (variable != null && variable.equals(((SelectionVariable) obj).variable));
+		return (variableId != null && variableId.equals(((SelectionVariable) obj).variableId));
+
+		// return (variableId != null && variableId.equals(((SelectionVariable)
+		// obj).variableId))
+		// || (variable != null && variable.equals(((SelectionVariable)
+		// obj).variable));
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

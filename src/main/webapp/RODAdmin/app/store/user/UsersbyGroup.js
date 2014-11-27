@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.user.UsersbyGroup', {
 
     model: 'RODAdmin.model.user.UserInfo',
     autoLoad: false,    
-    proxy: {type: 'main', url: 'usersbygroup/'},      
+    proxy: {type: 'main', url: 'adminjson/usersbygroup/'},      
 
 });

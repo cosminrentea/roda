@@ -11,11 +11,11 @@ import ro.roda.domainjson.CatalogTree;
 @Transactional
 public class CatalogTreeServiceImpl implements CatalogTreeService {
 
-	public List<CatalogTree> findAllCatalogTree() {
-		return CatalogTree.findAllCatalogTree();
+	public List<CatalogTree> findAll() {
+		return CatalogTree.findAll();
 	}
 
-	public CatalogTree findCatalogTree(Integer id) {
-		return CatalogTree.findCatalogTree(id);
+	public CatalogTree find(Integer id) {
+		return CatalogTree.find(id);
 	}
 }

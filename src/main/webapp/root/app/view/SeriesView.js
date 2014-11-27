@@ -85,7 +85,7 @@ Ext
                                         '<tr><th>'+ translations.stdgeounit +':</th><td> {geo_unit}</td></tr>',
                                         '<tr><th>'+ translations.topics +':</th><td>', 
                                         '<tpl for="topics">',
-                                        '{translation}',
+                                        '{translation}, ',
                                         '</tpl>',
                                         '</td></tr>',
                                         '<tr><th>'+ translations.keywords +':</th><td>', 

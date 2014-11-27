@@ -52,6 +52,11 @@ Ext.define('RODAdmin.view.user.UserDetails', {
 										xtype : 'tbfill'
 									}, {
 										xtype : 'button',
+										itemId : 'useradd',
+										text : 'Add User',
+										tooltip : 'Add user'
+									}, {
+										xtype : 'button',
 										itemId : 'useredit',
 										text : 'Edit User',
 										tooltip : 'Edit user email/name'

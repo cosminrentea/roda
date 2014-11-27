@@ -51,14 +51,14 @@ Ext.define('RODAdmin.view.cms.files.EditFileWindow', {
 								items : [
 									{
 									        xtype: 'displayfield',
-									        itemId: 'parentdfield',
+									        itemId: 'directory',
         									fieldLabel: 'Parent Folder',
-        									name: 'ParentFolder',
+        									name: 'directory',
         									value: ''
 									},	{
 											xtype : 'hiddenfield',
 											fieldLabel : 'Label',
-											name : 'parent',
+											name : 'folderid',
 											value : '',
 											itemId : 'hdparent'
 										},	{
@@ -70,7 +70,7 @@ Ext.define('RODAdmin.view.cms.files.EditFileWindow', {
 										},	{
 											xtype: 'textfield',
 											fieldLabel : 'Alias',
-											name : 'fileAlias',
+											name : 'alias',
 											itemId: 'filealias',
 											value : ''
 										},	{

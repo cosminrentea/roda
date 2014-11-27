@@ -26,14 +26,14 @@ public class CatalogTreeController {
 	public ResponseEntity<String> listJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<CatalogTree> result = catalogTreeService.findAllCatalogTree();
+		List<CatalogTree> result = catalogTreeService.findAll();
 		return new ResponseEntity<String>(CatalogTree.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-		CatalogTree catalogTree = catalogTreeService.findCatalogTree(id);
+		CatalogTree catalogTree = catalogTreeService.find(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (catalogTree == null) {

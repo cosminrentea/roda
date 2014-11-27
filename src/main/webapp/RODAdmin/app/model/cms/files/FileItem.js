@@ -9,13 +9,31 @@ Ext.define('RODAdmin.model.cms.files.FileItem', {
 	}, {
 		name : 'filename',
 		type : 'string'
-	}, {
+	}, 
+	{
+		name : 'folderid',
+		type : 'integer'
+	}, 
+	{
 		name : 'filetype',
 		type : 'string'
 	}, {
 		name : 'filesize',
 		type : 'float'
-	}, {
+	}, 
+	{
+		name : 'created',
+		type : 'date'
+	}, 	
+	{
+		name : 'createdby',
+		type : 'string'
+	}, 
+	{
+		name : 'directory',
+		type : 'string'
+	}, 
+	{
 		name : 'filepath',
 		type : 'string'
 	}, {

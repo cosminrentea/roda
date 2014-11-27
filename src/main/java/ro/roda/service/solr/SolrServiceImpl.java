@@ -2,11 +2,16 @@ package ro.roda.service.solr;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.apache.solr.client.solrj.response.SolrPingResponse;
@@ -22,11 +27,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
+
+import ro.roda.domain.Setting;
 
 @Service
 @Transactional
-public class SolrServiceImpl implements SolrService, SmartLifecycle, ApplicationContextAware {
+public class SolrServiceImpl implements SolrService, SmartLifecycle, ApplicationContextAware, ServletContextAware {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -38,18 +46,30 @@ public class SolrServiceImpl implements SolrService, SmartLifecycle, Application
 	@Autowired(required = false)
 	SolrServer solrServer;
 
-	boolean solrOnline;
-
 	@Value("${solr.compulsory}")
 	private String solrCompulsory;
 
+	// @Value("${solr.serverUrl}")
+	// private String solrUrl;
+	//
+	// public static final String solrCore = "/collection1/";
+
+	private boolean started = false;
+
+	private String contextPath;
+
+	private Map<String, String> urls = null;
+
 	public boolean deleteAll() {
-		log.trace("> Solr deleteAll");
+		log.trace("deleteAll()");
 		boolean ret = false;
 		if (ping()) {
+			// HttpSolrServer httpSolrServer = new HttpSolrServer(solrUrl +
+			// solrCore);
 			UpdateResponse ur = null;
 			try {
-				ur = solrServer.deleteByQuery("*:*", 0);
+				ur = solrServer.deleteByQuery("*:*");
+				ur = solrServer.commit();
 			} catch (SolrServerException e) {
 				log.error("Solr threw exception", e);
 			} catch (IOException e) {
@@ -63,13 +83,13 @@ public class SolrServiceImpl implements SolrService, SmartLifecycle, Application
 	}
 
 	public boolean ping() {
-		solrOnline = false;
+		boolean result = false;
 		if (solrServer != null) {
 			try {
 				SolrPingResponse resp = solrServer.ping();
 				int status = resp.getStatus();
 				if (status == 0) {
-					solrOnline = true;
+					result = true;
 				} else {
 					log.info(String.format("Solr ping returned status %s", status));
 				}
@@ -79,34 +99,34 @@ public class SolrServiceImpl implements SolrService, SmartLifecycle, Application
 				log.error("Solr ping threw exception", ex);
 			}
 			// TODO check this
-			if (!solrOnline && ("yes".equalsIgnoreCase(solrCompulsory))) {
+			if (!result && ("yes".equalsIgnoreCase(solrCompulsory))) {
 				((AbstractApplicationContext) applicationContext).close();
 			}
 		}
-		return solrOnline;
+		return result;
 	}
 
 	@Override
 	public void start() {
 		log.trace("start()");
 
-		// only when profile is
+		// DELETE ALL SOLR CONTENT only when the profile is
 		// devel OR productioninit (initial import for production)
-		if (env.acceptsProfiles("devel", "productioninit")) {
-			if (deleteAll()) {
-				log.info("Removed all Solr content");
-			}
+		if (env.acceptsProfiles("devel", "productioninit") && deleteAll()) {
+			log.info("Deleted all Solr content");
 		}
+		started = true;
 	}
 
 	@Override
 	public void stop() {
 		log.trace("stop()");
+		started = false;
 	}
 
 	@Override
 	public boolean isRunning() {
-		return ping();
+		return (started && ping());
 	}
 
 	@Override
@@ -133,6 +153,26 @@ public class SolrServiceImpl implements SolrService, SmartLifecycle, Application
 	@Override
 	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+	}
+
+	@Override
+	public void setServletContext(ServletContext c) {
+		contextPath = c.getContextPath();
+	}
+
+	public String baseUrl(String language) {
+		if (urls == null) {
+			// compute the base URLs only once, for all languages
+			urls = new HashMap<String, String>();
+
+			// TODO use the existing "contextPath" field
+			// instead of Setting[baseurl]
+			urls.put("ro", Setting.findSetting("baseurl").getValue()
+					+ Setting.findSetting("ro_databrowser_url").getValue() + "#");
+			urls.put("en", Setting.findSetting("baseurl").getValue()
+					+ Setting.findSetting("en_databrowser_url").getValue() + "#");
+		}
+		return urls.get(language);
 	}
 
 	@Async

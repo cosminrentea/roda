@@ -413,12 +413,12 @@ public class Address {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexAddress(this);
+		// indexAddress(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// deleteIndex(this);
 	}
 
 	@Override
@@ -430,7 +430,8 @@ public class Address {
 						.equalsIgnoreCase(((Address) obj).address2)));
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

@@ -15,5 +15,5 @@ Ext.define('RODAdmin.store.studies.VariableItem', {
     model: 'RODAdmin.model.studies.StudyVariable',
 
     autoLoad: true,
-    proxy: {type: 'main', url: 'http://roda.apiary-mock.com/admin/varinfo/13'},    
+    proxy: {type: 'main', url: 'userjson/varinfo/13'},    
 });

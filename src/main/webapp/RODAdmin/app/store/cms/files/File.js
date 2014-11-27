@@ -10,5 +10,5 @@ Ext.define('RODAdmin.store.cms.files.File', {
 
     model: 'RODAdmin.model.cms.files.File',
     autoload: true,    
-    proxy: {type: 'main', url: 'adminjson/cmsfilelist'},  
+    proxy: {type: 'main', url: 'userjson/cmsfilelist'},  
 });

@@ -1,4 +1,4 @@
-package ro.roda.webjson.admin;
+package ro.roda.webjson.user;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.FileList;
 import ro.roda.service.FileListService;
 
-@RequestMapping("/adminjson/cmsfilelist")
+@RequestMapping("/userjson/cmsfilelist")
 @Controller
 public class CmsFileListController {
 

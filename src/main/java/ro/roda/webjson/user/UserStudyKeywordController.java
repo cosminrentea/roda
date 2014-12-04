@@ -30,7 +30,7 @@ public class UserStudyKeywordController {
 	@RequestMapping(value = "/delete", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String delete(@RequestParam(value = "study") Integer studyId,
-			@RequestParam(value = "keyword") Integer keywordId) {
+			@RequestParam(value = "keyword") String keywordName) {
 		return studyKeywordService.delete(studyId, keywordName);
 	}
 

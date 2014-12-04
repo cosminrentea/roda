@@ -44,6 +44,10 @@ public class StudyKeywordServiceImpl implements StudyKeywordService {
 		studyKeyword.persist();
 	}
 
+	public StudyKeyword updateStudyKeyword(StudyKeyword studyKeyword) {
+		return studyKeyword.merge();
+	}
+
 	public String save(Integer studyId, String keywordName) {
 
 		Study study = Study.findStudy(studyId);
@@ -69,12 +73,37 @@ public class StudyKeywordServiceImpl implements StudyKeywordService {
 			sk.setStudyId(study);
 			sk.setKeywordId(keyword);
 			sk.persist();
+			sk.flush();
 		}
 		return new AdminJson(true, "Keyword was attached to Study by User").toJson();
 	}
 
-	public StudyKeyword updateStudyKeyword(StudyKeyword studyKeyword) {
-		return studyKeyword.merge();
+	public String delete(Integer studyId, String keywordName) {
+
+		Study study = Study.findStudy(studyId);
+		if (study == null) {
+			return new AdminJson(false, "ERROR: Keyword was NOT detached from Study by User").toJson();
+		}
+
+		Users user = Users.findUsersesByUsernameLike(
+				((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername())
+				.getSingleResult();
+
+		// TODO only FIND the keyword (not: find or add)
+		Keyword keyword = Keyword.checkKeyword(null, keywordName);
+
+		// we assume: user != null , keyword != null
+		StudyKeywordPK skpk = new StudyKeywordPK(studyId, keyword.getId(), user.getId());
+		StudyKeyword sk = StudyKeyword.findStudyKeyword(skpk);
+
+		if (sk == null) {
+			return new AdminJson(false, "ERROR: Keyword was ALREADY detached from Study by User").toJson();
+		}
+
+		sk.remove();
+		sk.flush();
+
+		return new AdminJson(true, "Keyword was detached from Study by User").toJson();
 	}
 
 }

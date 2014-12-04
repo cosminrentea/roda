@@ -31,9 +31,7 @@ public class UserStudyKeywordController {
 	@ResponseBody
 	public String delete(@RequestParam(value = "study") Integer studyId,
 			@RequestParam(value = "keyword") Integer keywordId) {
-
-		// TODO implement this
-		return null;
+		return studyKeywordService.delete(studyId, keywordName);
 	}
 
 }

@@ -23,4 +23,6 @@ public interface StudyKeywordService {
 
 	public abstract String save(Integer studyId, String keywordName);
 
+	public abstract String delete(Integer studyId, String keywordName);
+
 }

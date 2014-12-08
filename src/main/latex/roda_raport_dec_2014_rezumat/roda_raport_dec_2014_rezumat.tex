@@ -342,7 +342,7 @@ Desigur, nu sunt expuse anumite date sensibile precum hash-uri ale parolelor, dr
 ELSST (European Language Social Science Thesaurus \footnote{\url{http://ukdataservice.ac.uk/about-us/projects/cessda-elsst/details.aspx}, \url{http://elsst.esds.ac.uk/}}) 
 este un thesaurus multi-lingual ce permite relatii ierarhice, sinonimii, definitii si relationarea termenilor.
 
-A fost realizat un servicu de importare a thesaurus-ului ELSST (in doua limbi, engleza si romana). 
+A fost realizat un serviciu de importare a thesaurus-ului ELSST (in doua limbi, engleza si romana). 
 Astfel, baza de date RODA este populata initial cu termenii si relatiile respective.
 Mai multi astfel de termeni ELSST sunt asociati studiilor, 
 si pot fi de asemenea asociati la nivelul seriilor de studii sau chiar al intrebarilor.
@@ -360,7 +360,7 @@ in mod nestructurat (oricate si oricare cuvinte-cheie, in orice limba, independe
 
 Sistemul de diseminare si vizualizare a datelor agregate este proiectat sa prezinte date sintetice 
 distribuite pe unitati administrativ-teritoriale. 
-Acesta trebuie sa poata afisa datele in variate nivele de agregare (localitati, judete, regiuni) 
+Acesta trebuie sa poata afisa datele in variate niveluri de agregare (localitati, judete, regiuni) 
 si sa permita vizualizarea de detalii despre fiecare element in parte. 
 
 \subsubsection{Pregatirea hartilor}
@@ -369,13 +369,13 @@ Pregatirea hartilor pentru afisarea pe internet se face urmarind doua directii p
 conversia modului de stocare in format vectorial special pentru desen pe web si simplificarea cat mai mare a desenului. 
 Simplificarea este foarte importanta datorita dimensiunii semnificative a acestor informatii vectoriale. 
 
-Datorita scopului exclusiv figurativ a acestor harti, poligoanele folosite pentru a fi desenate se pot simplifica semnificativ. Fiecare poligon este compus din puncte intre care se traseaza linii sau curbe. Numarul de puncte se poate reduce semnificativ. 
+Datorita scopului exclusiv figurativ al acestor harti, poligoanele folosite pentru a fi desenate se pot simplifica semnificativ. Fiecare poligon este compus din puncte intre care se traseaza linii sau curbe. Numarul de puncte se poate reduce semnificativ. 
 
 Sistemul de reprezentare a hartilor construieste de obicei fiecare unitate administrativ-teritoriala pe baza unui poligon inchis. Datorita invecinarii acestora, fiecare punct care determina acest poligon este inregistrat de doua ori. Prin stocarea exclusiva a granitelor dintre unitatile administrative cantitatea de date se reduce si mai mult. 
 
 \subsubsection{Formatul hartilor si al datelor de agregare}
 
-Formatul si modul de stocare a hartilor in baza de date si afisarea acestora pe internet depinde de evolutia naturala a acestora. Atat hartile (impartirea administrativa a unei anumite structuri, tara, judet, etc.) cat si datele (indicatorii) se modifica in timp. 
+Formatul si modul de stocare a hartilor in baza de date si afisarea acestora pe internet depinde de evolutia naturala a acestora. Atat hartile (impartirea administrativa a unei anumite structuri, tara, judet etc.) cat si datele (indicatorii) se modifica in timp. 
 Aceste modificari sunt slab corelate unele cu celelalte, indicatorii sintetici sunt publicati anual iar modificarile structurilor administrative se versioneaza la fiecare 6 luni. 
 
 Fiecare versiune a fiecarui indicator statistic este valabila intr-un anumit interval de timp si pe o anumita versiune de harta. De aceea, stocarea datelor trebuie sa tina cont de toate aceste variabilitati. 
@@ -395,16 +395,16 @@ Panoul de selectie contine o structura arborescenta in care se pot vedea toti in
 
 Panoul de vizualizare a datelor contine o bara de instrumente in partea de sus si o componenta special pentru desen vectorial in partea de jos. 
 
-Componenta pentru desen este bazat pe o librarie numita Raphael\footnote{\url{http://raphaeljs.com/}} care a fost integrata in ExtJS 4.0 si care permite desenul vectorial direct in paginile web. 
-Componenta pentru desen se adapteaza automat la programul de navigare utilizat. in majoritatea browserelor moderne datele vor fi prezentate sub forma de SVG. 
+Componenta pentru desen este bazata pe o librarie numita Raphael\footnote{\url{http://raphaeljs.com/}} care a fost integrata in ExtJS 4.0 si care permite desenul vectorial direct in paginile web. 
+Componenta pentru desen se adapteaza automat la programul de navigare utilizat. In majoritatea browserelor moderne datele vor fi prezentate sub forma de SVG. 
 
 Managerul de layout din ExtJS va dimensiona componenta de desenare in functie de containerul in care se afla. 
 Odata desenat insa, acesta va ramane fix pana la redimensionarea ferestrei. 
-Desenul din interiorul componentei va fi redimensionat separat de container pentru a putea fi observat la diferite nivele de marire. 
+Desenul din interiorul componentei va fi redimensionat separat de container pentru a putea fi observat la diferite niveluri de marire. 
 
 In interiorul componentei de desen se gaseste un ansamblu de poligoane, fiecare poligon reprezentand o unitate administrativa. 
-Culoarea acestuia este calculata in functie de parametri pe care harta trebuie sa ii reprezinte. 
-Fiecare poligon are declarat pe el trei evenimente:
+Culoarea acestuia este calculata in functie de parametrii pe care harta trebuie sa ii reprezinte. 
+Fiecare poligon are declarat asupra sa trei evenimente:
 
 \begin{itemize}
 \item
@@ -445,12 +445,15 @@ In interfata de administrare aceste informatii sunt afisate pentru un indicator 
 \item
 /geoborders/<geography\_id> - furnizeaza vectorul complet ce descrie intreaga margine a unei unitati teritoriale, prin compunerea tuturor marginilor stocate in baza de date. 
 \end{itemize}
+
+\newpage
+\clearpage
 Acest ultim controller este util crearii dinamice a hartii in cadrul unei noi pagini a aplicatiei. 
 Pentru aceasta, a fost definit un nou cod ce poate aparea in componentele corespunzatoare sistemului de management al continutului (CMS). 
 
-\clearpage
+%\clearpage
 
-\section{Rezultate, stadiul realiz\u{a}rii obiectivului, concluzii si propuneri pentru continuarea proiectului}
+%\section{Rezultate, stadiul realiz\u{a}rii obiectivului, concluzii si propuneri pentru continuarea proiectului}
 
 %TODO de completat la fiecare faza ???
 

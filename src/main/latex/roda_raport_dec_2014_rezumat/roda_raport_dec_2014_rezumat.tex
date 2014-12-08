@@ -408,11 +408,11 @@ Fiecare poligon are declarat pe el trei evenimente:
 
 \begin{itemize}
 \item
-mouse in (la intrarea cursorului mouse-ului pe suprafata poligonului) - creste grosimea granitelor poligonului
+mouse in (la intrarea cursorului mouse-ului pe suprafata poligonului) -- creste grosimea granitelor poligonului
 \item
-mouse out (iesirea cursorului mouse-ului de pe suprafata poligonului) - scade grosimea granitelor poligonului
+mouse out (la iesirea cursorului mouse-ului de pe suprafata poligonului) -- scade grosimea granitelor poligonului
 \item
-click - se deschide o fereastra in care sune afisate detalii cu privire la unitatea administrativa respectiva
+click -- se deschide o fereastra in care sune afisate detalii cu privire la unitatea administrativa respectiva
 \end{itemize}
 
 La incarcarea fiecarei harti se investigheaza daca aceasta are mai multe nivele de agregare. 
@@ -425,24 +425,28 @@ Componenta va afisa nivelul de agregare predefinit.
 
 Informatia referitoare la datele geografice si indicatorii pentru fiecare unitate teritoriala sunt stocate in baza de date, conform modelului de date descris anterior. 
 
-Pe de o parte, introducerea acestor date in aplicatie a presupune crearea unor noi clase in partea de domeniu din arhitectura proiectului. 
-Pe de alta parte, pentru ca aceste informatii sa fie disponibile in aplicatie, a fost necesara dezvoltarea unor noi clase de servicii si controller-e pe partea de server. 
-Controller-ele sunt invocate prin intermediul unor URL-uri, 
-alcatuite din sirul de caractere ce reprezinta contextul aplicatiei la care se adauga fragmentul corespunzator cererii respective. 
+Pe de o parte, introducerea acestor date in aplicatie a presupus crearea unor noi clase in partea de domeniu din arhitectura proiectului. 
+Pe de alta parte, pentru ca aceste informatii sa fie disponibile in aplicatie, a fost necesara dezvoltarea in aplicatia server a unor noi clase de servicii si controllere. 
+Controller-ele sunt invocate prin intermediul unor URL-uri, alcatuite din sirul de caractere ce reprezinta contextul aplicatiei la care se adauga fragmentul corespunzator cererii respective. 
 Acest fragment poate fi:
 \begin{itemize}
 \item
-/geoversionslist - furnizeaza lista versiunilor referitoare la datele geografice disponibile. In interfata de administrare, aceste versiuni vor fi incarcate intr-o zona in care va fi posibila selectia.
+/geoversionslist - furnizeaza lista versiunilor referitoare la datele geografice disponibile. 
+In interfata de administrare, aceste versiuni sunt incarcate intr-o zona in care e posibila selectia.
 \item
-/geographybyversion/<version\_id> - permite obtinerea denumirilor unitatilor teritoriale pentru o versiune al carei identificator este specificat in URL. In interfata de administrare, aceste informatii vor corespunde versiunii selectate; la randul lor, vor fi disponibile pentru a fi selectate. 
+/geographybyversion/<version\_id> - permite obtinerea denumirilor unitatilor teritoriale pentru o versiune al carei identificator este specificat in URL. 
+In interfata de administrare, aceste informatii corespund versiunii selectate; la randul lor, sunt disponibile pentru a fi selectate. 
 \item
-/geoindicatorlist/<geography\_id> - furnizeaza indicatorii existenti pentru o anumita zona geografica, specificata prin identificatorul sau. In interfata de administrare, aceste informatii vor corespunde unitatii teritoriale selectate.
+/geoindicatorlist/<geography\_id> - furnizeaza indicatorii existenti pentru o anumita zona geografica, specificata prin identificatorul sau. 
+In interfata de administrare, aceste informatii corespund unitatii teritoriale selectate.
 \item
-/geoindicatorvalues/<geography\_id>/<indicator> - permite obtinerea valorii unui indicator in cadrul unei unitati teritoriale. In interfata de administrare aceste informatii vor fi afisate pentru un indicator si o unitate teritoriala selectata.
+/geoindicatorvalues/<geography\_id>/<indicator> - permite obtinerea valorii unui indicator in cadrul unei unitati teritoriale. 
+In interfata de administrare aceste informatii sunt afisate pentru un indicator si o unitate teritoriala selectata.
 \item
 /geoborders/<geography\_id> - furnizeaza vectorul complet ce descrie intreaga margine a unei unitati teritoriale, prin compunerea tuturor marginilor stocate in baza de date. 
 \end{itemize}
-Acest ultim controller este util crearii dinamice a hartii in cadrul unei noi pagini a aplicatiei. Pentru aceasta, a fost definit un nou cod ce poate aparea in componentele corespunzatoare sistemului de management al continutului (CMS). 
+Acest ultim controller este util crearii dinamice a hartii in cadrul unei noi pagini a aplicatiei. 
+Pentru aceasta, a fost definit un nou cod ce poate aparea in componentele corespunzatoare sistemului de management al continutului (CMS). 
 
 \clearpage
 

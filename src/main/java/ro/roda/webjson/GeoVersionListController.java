@@ -1,4 +1,4 @@
-package ro.roda.webjson.admin;
+package ro.roda.webjson;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.GeoVersionList;
 import ro.roda.service.GeoVersionListService;
 
-@RequestMapping("/adminjson/geoversionlist")
+@RequestMapping("/geoversionlist")
 @Controller
 public class GeoVersionListController {
 

@@ -1,4 +1,4 @@
-package ro.roda.webjson.admin;
+package ro.roda.webjson;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.GeoIndicatorList;
 import ro.roda.service.GeoIndicatorListService;
 
-@RequestMapping("/adminjson/geoindicatorlist")
+@RequestMapping("/geoindicatorlist")
 @Controller
 public class GeoIndicatorListController {
 

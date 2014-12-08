@@ -206,9 +206,66 @@ Motor statistic
 
 \medskip
 
-\subsection{?????????}
+\subsection{Servicii web: Cautare}
 
+Pentru a oferi posibilitatea de a cauta intre datele si metadatele disponibile la RODA 
+a fost implementata componenta de Cautare.
 
+Aceasta se bazeaza pe un server de indexare/cautare (Apache Solr) ce ruleaza separat de aplicatia web a RODA. 
+La importarea initiala a datelor, precum si automat la modificarea anumitor tabele din baza de date 
+(de ex. pagini CMS, fisiere CMS, serii / cataloage, studii, intrebari si variabile), 
+se trimit date catre serverul Solr care realizeaza indexarea lor.
+Cautarea se realizeaza din interfata publica sau cea de administrare si este senzitiva la limba curenta in care este afisata aplicatia.
+??? detalii search din client
+
+Schema standard a Solr a fost modificata astfel:
+??? 
+
+Astfel, se observa ca toate "documentele" (in terminologia Solr) care sunt indexate au cel putin urmatoarele campuri:
+???
+
+Campul "url" permite listarea rezultatelor cautarilor avand link-uri directe asociate.
+
+\subsection{Servicii web: API REST}
+
+Pentru a oferi posibilitatea de a accesa datele aplicatiei si de catre partenerii RODA 
+(nu doar din interfata de administrare si cea publica), a fost luata decizia de a expune in mod securizat
+un API de tip REST, care sa comunice cu clientii pe web prin mesaje structurate JSON.
+Astfel, un partener isi poate defini intr-o modalitate proprie un client (de ex. prin JavaScript, serviciu web)
+care sa solicite date granulare din baza de date a RODA.
+
+Principiul pe care l-am aplicat in acest caz a fost HATEOAS. 
+??? detalii
+
+A fost folosit un pattern de programare care se bazeaza pe interfete de tip Repository / CrudRepository 
+din proiectul Spring Data (sub-proiectele Spring Data JPA si Spring Data REST MVC). 
+A fost configurat un URL Dispatcher special care este responsabil de accesarea datelor prin JSON in paradigma HATEOAS. 
+Pentru fiecare clasa din domeniu (corespunzatoare cate unui tabel in baza de date) 
+a fost definita intr-un pachet separat o clasa ce extinde CrudRepository, 
+permitand astfel operatii uzuale - inclusiv paginare si sortare.
+
+Accesul la date este read-only pentru un anumit grup definit de utilizatori (partenerii RODA), 
+iar pentru grupul de administratori este read-write. 
+Desigur, nu sunt expuse anumite date sensibile precum hash-uri ale parolelor, drepturile de acces definite prin ACL etc.
+
+\subsection{Adnotarea studiilor (termeni ELSST, cuvinte-cheie)}
+
+ELSST (acronim = ???) este un thesaurus multi-lingual ce permite relatii ierarhice, sinonimii, definitii si relationarea termenilor.
+??? Istoria ELSST ???
+
+A fost realizat un servicu de importare a thesaurus-ului ELSST (in doua limbi, engleza si romana). 
+Astfel, baza de date RODA este populata initial cu termenii si relatiile respective.
+Mai multi astfel de termeni ELSST sunt asociati studiilor, si pot fi de asemenea asociati la nivelul seriilor de studii sau chiar al intrebarilor.
+Intrucat incadrarea pe domenii tematice este un tip de informatie sensibila si pretioasa pentru cautari 
+(inclusiv cele provenite din alte tari),
+posibilitatea de a edita acest tip de informatii este rezervata doar grupului administratorilor.
+
+Suplimentar, a fost prevazuta si implementata functionalitatea ca fiecare utilizator sa isi ataseze propriile cuvinte-cheie,
+in mod nestructurat (oricate si oricare cuvinte-cheie, in orice limba) si independent de ceilalti utilizatori.
+
+\subsection{Testarea aplicatiei}
+
+??? detalii JUnit, Selenium, Jenkins
 
 \clearpage
 

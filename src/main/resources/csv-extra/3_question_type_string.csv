@@ -1,4 +1,4 @@
-question_id,string_id
-1,1
-1,2
-1,3
+question_id,value,label
+5,1234,"da"
+5,1235,"nu"
+1,3,"nimic"

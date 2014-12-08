@@ -1,2 +1,3 @@
-question_id,free_number,high,low,data_type,category_interpretation
-2,,100,3000,"integer",true
+question_id,high,low,data_type,category_interpretation
+2,100,3000,"Integer",true
+5,20,5,"Integer",true

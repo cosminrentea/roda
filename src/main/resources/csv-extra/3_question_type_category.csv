@@ -1,3 +1,5 @@
 question_id,category_id,label,value,numeric_value,numeric_interpretation
 3,1,"Label1","a",false,false
 3,2,"Label2","b",false,false
+6,1,"da","1234",true,true
+6,2,"nu","1235",true,true

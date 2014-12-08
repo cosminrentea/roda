@@ -2,3 +2,6 @@ name,order_in_main_instance,statement,lang_id,question_type_id
 "Q1",1,"First question",,1
 "Q2",2,"Second question",,2
 "Q3",3,"Third question",,3
+"II1_D",4,"Asigurarea caldurii pe timpul iernii",,2
+"II1_D",5,"Asigurarea caldurii pe timpul iernii",,1
+"II1_D",6,"Asigurarea caldurii pe timpul iernii",,3

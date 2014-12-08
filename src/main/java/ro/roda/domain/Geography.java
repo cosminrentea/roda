@@ -3,6 +3,7 @@ package ro.roda.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -285,6 +287,9 @@ public class Geography {
 	@JoinColumn(name = "geoversion_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private GeoVersion geoVersionId;
 
+	@OneToMany(mappedBy = "geographyId")
+	private Set<GeoData> geoData;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -367,6 +372,10 @@ public class Geography {
 
 	public GeoVersion getGeoVersionId() {
 		return geoVersionId;
+	}
+
+	public Set<GeoData> getGeoData() {
+		return geoData;
 	}
 
 	@Transactional
@@ -455,6 +464,10 @@ public class Geography {
 
 	public void setGeoVersionId(GeoVersion geoVersionId) {
 		this.geoVersionId = geoVersionId;
+	}
+
+	public void setGeoData(Set<GeoData> geoData) {
+		this.geoData = geoData;
 	}
 
 	public String toJson() {

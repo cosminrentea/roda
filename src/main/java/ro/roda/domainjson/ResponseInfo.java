@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import ro.roda.domain.QuestionTypeCategory;
 import ro.roda.domain.QuestionTypeNumeric;
 import ro.roda.domain.QuestionTypeString;
-import ro.roda.transformer.FieldNameTransformer;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -17,34 +16,6 @@ public class ResponseInfo extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "leaf", "name");
-
-		String respType = collection.iterator().next().getRespType();
-
-		if (respType.equals("String")) {
-			serializer.include("freeText", "label");
-
-			serializer.exclude("respType", "dataType", "numberValue", "stringValue", "high", "low", "interpretation",
-					"numericValues");
-
-		} else if (respType.equals("Numeric")) {
-			serializer.include("dataType", "high", "low", "numberValue", "interpretation");
-
-			serializer.exclude("respType", "label", "freeText", "stringValue");
-
-			serializer.transform(new FieldNameTransformer("type"), "dataType");
-			serializer.transform(new FieldNameTransformer("value"), "numberValue");
-			serializer.transform(new FieldNameTransformer("category_interpretation"), "interpretation");
-		} else if (respType.equals("Category")) {
-			serializer.include("label", "stringValue", "numericValues", "interpretation");
-
-			serializer.exclude("respType", "dataType", "freeText", "numberValue", "high", "low");
-
-			serializer.transform(new FieldNameTransformer("value"), "stringValue");
-			serializer.transform(new FieldNameTransformer("is_numeric"), "numericValues");
-			serializer.transform(new FieldNameTransformer("numeric_interpretation"), "interpretation");
-		}
-
-		// serializer.transform(new FieldNameTransformer("indice"), "id");
 
 		return serializer.serialize(collection);
 	}
@@ -57,8 +28,6 @@ public class ResponseInfo extends JsonInfo {
 
 	private String label;
 
-	private String freeText;
-
 	private Long numberValue;
 
 	private String stringValue;
@@ -70,6 +39,9 @@ public class ResponseInfo extends JsonInfo {
 	private Boolean interpretation;
 
 	private Boolean numericValues;
+
+	// TODO: add one more field in question_type_numeric
+	private static long VAL = 1;
 
 	public ResponseInfo(Integer id, String label, Long value) {
 		this.id = id;
@@ -89,7 +61,7 @@ public class ResponseInfo extends JsonInfo {
 	}
 
 	public ResponseInfo(QuestionTypeString questionTypeString) {
-		this(questionTypeString.getId().getStringId(), "");
+		this(questionTypeString.getId().getValue(), questionTypeString.getLabel(), VAL++);
 	}
 
 	public ResponseInfo(QuestionTypeCategory questionTypeCategory) {
@@ -97,7 +69,7 @@ public class ResponseInfo extends JsonInfo {
 	}
 
 	public ResponseInfo(QuestionTypeNumeric questionTypeNumeric) {
-		this(questionTypeNumeric.getTypeQstn(), questionTypeNumeric.getLow(), questionTypeNumeric.getHigh());
+		this(questionTypeNumeric.getDataType(), questionTypeNumeric.getLow(), questionTypeNumeric.getHigh());
 	}
 
 	public Integer getId() {
@@ -164,14 +136,6 @@ public class ResponseInfo extends JsonInfo {
 		this.interpretation = interpretation;
 	}
 
-	public String getFreeText() {
-		return freeText;
-	}
-
-	public void setFreeText(String freeText) {
-		this.freeText = freeText;
-	}
-
 	public String getStringValue() {
 		return stringValue;
 	}
@@ -192,32 +156,6 @@ public class ResponseInfo extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "leaf", "name");
-
-		if (respType.equals("String")) {
-			serializer.include("freeText", "label");
-
-			serializer.exclude("respType", "dataType", "numberValue", "stringValue", "high", "low", "interpretation",
-					"numericValues");
-
-		} else if (respType.equals("Numeric")) {
-			serializer.include("dataType", "high", "low", "numberValue", "interpretation");
-
-			serializer.exclude("respType", "label", "freeText", "stringValue");
-
-			serializer.transform(new FieldNameTransformer("type"), "dataType");
-			serializer.transform(new FieldNameTransformer("value"), "numberValue");
-			serializer.transform(new FieldNameTransformer("category_interpretation"), "interpretation");
-		} else if (respType.equals("Category")) {
-			serializer.include("label", "stringValue", "numericValues", "interpretation");
-
-			serializer.exclude("respType", "dataType", "freeText", "numberValue", "high", "low");
-
-			serializer.transform(new FieldNameTransformer("value"), "stringValue");
-			serializer.transform(new FieldNameTransformer("is_numeric"), "numericValues");
-			serializer.transform(new FieldNameTransformer("numeric_interpretation"), "interpretation");
-		}
-
-		// serializer.transform(new FieldNameTransformer("indice"), "id");
 
 		return serializer.serialize(this);
 	}

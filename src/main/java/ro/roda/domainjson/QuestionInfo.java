@@ -24,34 +24,56 @@ public class QuestionInfo extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "leaf", "type", "id");
-		serializer.include("indice", "name", "respdomain");
-		serializer.include("responses", "missing");
+		serializer.include("indice", "label", "name", "respdomain");
 
 		String respdom = collection.iterator().next().getRespdomain();
 
-		if (respdom.equals("String")) {
-			serializer.include("freeText", "label");
+		if (respdom.equals("Code")) {
 
-			serializer.exclude("respType", "dataType", "numberValue", "stringValue", "high", "low", "interpretation",
-					"numericValues");
+			serializer.include("responses.label", "responses.numberValue", "responses.id");
+
+			// serializer.exclude("responses.dataType", "responses.high",
+			// "responses.interpretation", "responses.low",
+			// "responses.numericValues", "responses.respType",
+			// "responses.stringValue", "responses.type");
+
+			// serializer.transform(new FieldNameTransformer("value"),
+			// "responses.numberValue");
+			serializer.transform(new FieldNameTransformer("coderesponses"), "responses");
 
 		} else if (respdom.equals("Numeric")) {
-			serializer.include("dataType", "high", "low", "numberValue", "interpretation");
 
-			serializer.exclude("respType", "label", "freeText", "stringValue");
+			serializer.include("numericresponses.type", "numericresponses.high", "numericresponses.low");
 
-			serializer.transform(new FieldNameTransformer("type"), "dataType");
-			serializer.transform(new FieldNameTransformer("value"), "numberValue");
-			serializer.transform(new FieldNameTransformer("category_interpretation"), "interpretation");
+			// serializer.exclude("responses.id", "responses.label",
+			// "responses.interpretation", "responses.name",
+			// "responses.numberValue", "responses.numericValues",
+			// "responses.respType", "responses.stringValue",
+			// "responses.type");
+
+			// serializer.transform(new FieldNameTransformer("type"),
+			// "responses.dataType");
+			serializer.transform(new FieldNameTransformer("numericresponses"), "responses");
+
 		} else if (respdom.equals("Category")) {
-			serializer.include("label", "stringValue", "numericValues", "interpretation");
 
-			serializer.exclude("respType", "dataType", "freeText", "numberValue", "high", "low");
+			serializer.include("responses.label", "responses.id");
 
-			serializer.transform(new FieldNameTransformer("value"), "stringValue");
-			serializer.transform(new FieldNameTransformer("is_numeric"), "numericValues");
-			serializer.transform(new FieldNameTransformer("numeric_interpretation"), "interpretation");
+			// serializer.exclude("responses.dataType", "responses.high",
+			// "responses.interpretation", "responses.low",
+			// "responses.name", "responses.numberValue",
+			// "responses.numericValues", "responses.respType",
+			// "responses.stringValue", "responses.type");
+
+			// serializer.transform(new FieldNameTransformer("value"),
+			// "responses.numberValue");
+
+			// TODO: replace with: "categoryresponses"
+			serializer.transform(new FieldNameTransformer("coderesponses"), "responses");
+
 		}
+
+		serializer.include("missing");
 
 		// serializer.transform(new FlatPageTypeTransformer("pagetype"),
 		// "questionUsage.PageTypeId");
@@ -85,7 +107,7 @@ public class QuestionInfo extends JsonInfo {
 			if (question.getQuestionTypeId() != null) {
 				String respType = question.getQuestionTypeId().getName();
 
-				if (respType.equals("String")) {
+				if (respType.equals("Code")) {
 					Set<QuestionTypeString> qstnTypeCodes = question.getQuestionTypeCodes();
 					Iterator<QuestionTypeString> iterator = qstnTypeCodes.iterator();
 
@@ -105,8 +127,8 @@ public class QuestionInfo extends JsonInfo {
 					}
 				}
 
-				return new QuestionInfo(question.getId(), question.getName(), respType, responseInfos,
-						question.getMissingValues());
+				return new QuestionInfo(question.getId(), question.getStatement(), question.getName(), respType,
+						responseInfos, question.getMissingValues());
 			}
 		}
 
@@ -117,15 +139,18 @@ public class QuestionInfo extends JsonInfo {
 
 	private String name;
 
+	private String label;
+
 	private String respdomain;
 
 	private Set<ResponseInfo> responses;
 
 	private Set<MissingValue> missing;
 
-	public QuestionInfo(Long indice, String name, String respdomain, Set<ResponseInfo> responses,
+	public QuestionInfo(Long indice, String label, String name, String respdomain, Set<ResponseInfo> responses,
 			Set<MissingValue> missing) {
 		this.indice = indice;
+		this.label = label;
 		this.name = name;
 		this.respdomain = respdomain;
 		this.responses = responses;
@@ -156,6 +181,10 @@ public class QuestionInfo extends JsonInfo {
 		return missing;
 	}
 
+	public String getLabel() {
+		return label;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -172,40 +201,57 @@ public class QuestionInfo extends JsonInfo {
 		this.missing = missing;
 	}
 
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "leaf", "id");
 		serializer.include("indice", "name", "respdomain");
-		serializer.include("responses", "missing");
+		serializer.include("missing", "responses");
 
-		if (respdomain.equals("String")) {
-			serializer.include("responses.freeText", "responses.label");
+		if (respdomain.equals("Code")) {
+
+			serializer.include("responses.label", "responses.numberValue", "responses.id");
 
 			serializer.exclude("responses.name", "responses.type", "responses.respType", "responses.dataType",
-					"responses.numberValue", "responses.stringValue", "responses.high", "responses.low",
-					"responses.interpretation", "responses.numericValues");
+					"responses.stringValue", "responses.high", "responses.low", "responses.interpretation",
+					"responses.numericValues");
+
+			serializer.transform(new FieldNameTransformer("value"), "responses.numberValue");
+
+			// TODO: how to change a collection's name in flexjson?
+			// serializer.transform(new FieldNameTransformer("coderesponses"),
+			// "responses");
 
 		} else if (respdomain.equals("Numeric")) {
-			serializer.include("responses.dataType", "responses.high", "responses.low", "responses.numberValue",
-					"responses.interpretation");
 
-			serializer.exclude("responses.name", "responses.type", "responses.respType", "responses.label",
-					"responses.freeText", "responses.stringValue");
+			serializer.include("responses.dataType", "responses.high", "responses.low");
+
+			serializer.exclude("responses.name", "responses.type", "responses.id", "responses.label",
+					"responses.interpretation", "responses.numberValue", "responses.numericValues",
+					"responses.respType", "responses.stringValue");
 
 			serializer.transform(new FieldNameTransformer("type"), "responses.dataType");
-			serializer.transform(new FieldNameTransformer("value"), "responses.numberValue");
-			serializer.transform(new FieldNameTransformer("category_interpretation"), "responses.interpretation");
+
+			// TODO: how to change a collection's name in flexjson?
+			// serializer.transform(new
+			// FieldNameTransformer("numericresponses"), "responses");
+
 		} else if (respdomain.equals("Category")) {
-			serializer.include("responses.label", "responses.stringValue", "responses.numericValues",
-					"responses.interpretation");
 
-			serializer.exclude("responses.name", "responses.type", "responses.respType", "responses.dataType",
-					"responses.freeText", "responses.numberValue", "responses.high", "responses.low");
+			serializer.include("responses.label", "responses.id");
 
-			serializer.transform(new FieldNameTransformer("value"), "responses.stringValue");
-			serializer.transform(new FieldNameTransformer("is_numeric"), "responses.numericValues");
-			serializer.transform(new FieldNameTransformer("numeric_interpretation"), "responses.interpretation");
+			serializer.exclude("responses.name", "responses.type", "responses.dataType", "responses.high",
+					"responses.interpretation", "responses.low", "responses.numberValue", "responses.numericValues",
+					"responses.respType", "responses.stringValue");
+
+			// TODO: how to change a collection's name in flexjson?
+			// serializer.transform(new
+			// FieldNameTransformer("categoryresponses"), "responses");
+
 		}
 
 		return "{\"data\":" + serializer.serialize(this) + "}";

@@ -3,11 +3,13 @@ package ro.roda.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -204,6 +206,9 @@ public class GeoDatatype {
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
+	@OneToMany(mappedBy = "datatypesId")
+	private Set<GeoData> geoData;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -238,6 +243,10 @@ public class GeoDatatype {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public Set<GeoData> getGeoData() {
+		return geoData;
 	}
 
 	@Transactional
@@ -282,6 +291,10 @@ public class GeoDatatype {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public void setGeoData(Set<GeoData> geoData) {
+		this.geoData = geoData;
 	}
 
 	public String toJson() {

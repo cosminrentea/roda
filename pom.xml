@@ -100,7 +100,7 @@
 		<jstl-impl.version>1.2</jstl-impl.version>
 		<JRI.version>0.9-6</JRI.version>
 		<c3p0.version>0.9.1.1</c3p0.version>
-		<junit.version>4.11</junit.version>
+		<junit.version>4.12</junit.version>
 		<xstream.version>1.4.7</xstream.version>
 		<opencsv.version>2.3</opencsv.version>
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
@@ -109,7 +109,7 @@
 		<imgscalr-lib.version>4.2</imgscalr-lib.version>
 		<jsoup.version>1.8.1</jsoup.version>
 		<cglib-nodep.version>3.1</cglib-nodep.version> <!-- 2.2.2 -->
-		<joda-time.version>2.5</joda-time.version>
+		<joda-time.version>2.6</joda-time.version>
 		<commons-io.version>2.4</commons-io.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons-collections.version>3.2.1</commons-collections.version>

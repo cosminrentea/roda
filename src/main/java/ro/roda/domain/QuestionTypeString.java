@@ -101,14 +101,14 @@ public class QuestionTypeString {
 		for (QuestionTypeString selectionQuestion : selectionvariableitems) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "selectionquestion_" + selectionQuestion.getId());
-			sid.addField("selectionQuestion.categoryid_t", selectionQuestion.getStringId());
+			sid.addField("selectionQuestion.categoryid_t", selectionQuestion.getValue());
 			sid.addField("selectionQuestion.questionid_t", selectionQuestion.getQuestionId());
 			sid.addField("selectionQuestion.id_t", selectionQuestion.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"selectionvariableitem_solrsummary_t",
-					new StringBuilder().append(selectionQuestion.getStringId()).append(" ")
+					new StringBuilder().append(selectionQuestion.getValue()).append(" ")
 							.append(selectionQuestion.getQuestionId()).append(" ").append(selectionQuestion.getId()));
 			documents.add(sid);
 		}
@@ -154,12 +154,15 @@ public class QuestionTypeString {
 	@EmbeddedId
 	private QuestionTypeStringPK id;
 
-	@Column(name = "string_id", columnDefinition = "int4", nullable = false, insertable = false, updatable = false)
-	private Integer stringId;
+	@Column(name = "value", columnDefinition = "int4", nullable = false, insertable = false, updatable = false)
+	private Integer value;
 
 	@ManyToOne
 	@JoinColumn(name = "question_id", columnDefinition = "int8", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Question questionId;
+
+	@Column(name = "label", columnDefinition = "varchar", length = 200, nullable = true)
+	private String label;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -189,8 +192,12 @@ public class QuestionTypeString {
 		return questionId;
 	}
 
-	public Integer getStringId() {
-		return stringId;
+	public Integer getValue() {
+		return value;
+	}
+
+	public String getLabel() {
+		return label;
 	}
 
 	@Transactional
@@ -225,12 +232,16 @@ public class QuestionTypeString {
 		this.id = id;
 	}
 
-	public void setStringId(Integer stringId) {
-		this.stringId = stringId;
+	public void setValue(Integer value) {
+		this.value = value;
 	}
 
 	public void setQuestionId(Question questionId) {
 		this.questionId = questionId;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String toJson() {
@@ -241,7 +252,8 @@ public class QuestionTypeString {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

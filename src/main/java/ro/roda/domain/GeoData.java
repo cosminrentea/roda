@@ -179,7 +179,7 @@ public class GeoData {
 	private Geography geographyId;
 
 	@Column(name = "value", columnDefinition = "numeric", scale = 10, precision = 5)
-	private Long value;
+	private Double value;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -221,7 +221,7 @@ public class GeoData {
 		return geographyId;
 	}
 
-	public Long getValue() {
+	public Double getValue() {
 		return value;
 	}
 
@@ -273,7 +273,7 @@ public class GeoData {
 		this.geographyId = geographyId;
 	}
 
-	public void setValue(Long value) {
+	public void setValue(Double value) {
 		this.value = value;
 	}
 

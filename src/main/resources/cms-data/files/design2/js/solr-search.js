@@ -46,7 +46,8 @@ function on_data(lang, data) {
     	var rescont = '<div id="res_table"><table class="restable">';
     	$.each(docs, function(i, item) {
 				var descr = String(data.highlighting[item.id].description) + '...';
-				var cleanText = descr.replace(/<\/?[^>]+(>|$)/g, "");
+				var noHTML = descr.replace(/<\/?[^>]+(>|$)/g, "");
+				var cleanText = noHTML.replace(/null/gi, "");
 				var title = new String;
 				var cleanTitle = new String;
 				var parentstring = new String;

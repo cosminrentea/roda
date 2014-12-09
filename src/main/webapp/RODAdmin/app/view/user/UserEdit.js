@@ -49,12 +49,28 @@ Ext.define('RODAdmin.view.user.UserEdit', {
                             name: 'email'
                         },
                         {
-                            xtype: 'combobox',
+                            xtype: 'textfield',
+                            fieldLabel: 'Password',
+                            name: 'password',
+                            inputType:'password', 
+                            allowBlank:false,
+                        },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: 'Password',
+                            name: 'passwordcheck',
+                            inputType:'password', 
+                            allowBlank:false,
+                        },
+                        {
+                            xtype: 'combo',
                             fieldLabel: 'Group',
                             name: 'Group_id',
                             displayField: 'name',
                             valueField: 'id',
-                            queryMode: 'local',
+//                            queryMode: 'local',
+                            typeAhead: true,
+                            tpl: '<tpl for="."><div class="x-boundlist-item"><strong>{name}</strong><br><i>{description}</i><hr></div></tpl>',                            
                             store: 'user.Group'
                         },
                         {

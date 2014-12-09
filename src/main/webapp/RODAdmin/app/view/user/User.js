@@ -32,12 +32,15 @@ Ext.define('RODAdmin.view.user.User', {
 												xtype : 'button',
 												itemId : 'users',
 												iconCls : 'users',
-												text : 'Users'
+												text : 'Users',
+												toggleGroup : 'usersgroups'
+													
 											}, {
 												xtype : 'button',
 												itemId : 'groups',
 												iconCls : 'groups',
-												text : 'Groups'
+												text : 'Groups',
+												toggleGroup : 'usersgroups'
 											}]
 								}],
 						items : [{

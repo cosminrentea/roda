@@ -80,7 +80,13 @@ Ext.define('RODAdmin.view.user.ProfileEdit', {
                             fieldLabel: 'Data Nasterii',
                             name: 'birthdate',
                             allowBlank : true,
-                           // type : 'date',
+                            xtype : 'datefield',
+                        },
+                        {
+                            fieldLabel: 'Sex',
+                            name: 'birthdate',
+                            allowBlank : true,
+                            xtype : 'datefield',
                         },
 
                         

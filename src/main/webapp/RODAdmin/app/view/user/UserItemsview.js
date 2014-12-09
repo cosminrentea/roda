@@ -41,12 +41,28 @@ Ext.define('RODAdmin.view.user.UserItemsview', {
 									flex : 1,
 									dataIndex : 'email',
 									sortable : true,
-								} 
+								}, {
+									xtype: "checkcolumn",
+								    columnHeaderCheckbox: true,
+								    store: 'user.User',
+								    sortable: false,
+								    hideable: false,
+								    menuDisabled: true,
+								    dataIndex: "enabled",
+								    listeners: {
+								        checkchange: function(column, rowIndex, checked){
+								             //code for whatever on checkchange here
+								        }
+								    }
+								}
+								
+								
+								
 								],
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemId : 'usertoolbar',
-									id : 'usertoolbar',
+							//		id : 'usertoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
@@ -60,9 +76,9 @@ Ext.define('RODAdmin.view.user.UserItemsview', {
 												xtype : 'button',
 												itemId : 'clearfilterdata'
 											},{
-												text : 'Reload Tree',
+												text : 'Reload',
 												xtype : 'button',
-												itemId : 'refreshgrid'
+												itemId : 'refreshusers'
 											},
 											
 											]
@@ -88,11 +104,10 @@ Ext.define('RODAdmin.view.user.UserItemsview', {
 											{
 												text : 'Reload Grid',
 												xtype : 'button',
-												itemId : 'refreshgrid'
+												itemId : 'refreshgroups'
 											}]
 								}],
 						columns : [{
-			//						xtype : 'treecolumn',
 									itemId : 'ft',
 									text : 'Group',
 									flex : 2,
@@ -107,7 +122,25 @@ Ext.define('RODAdmin.view.user.UserItemsview', {
 									dataIndex : 'description',
 									sortable : false,
 									filterable : true
-								}]
+								}, {
+									xtype: "checkcolumn",
+								    columnHeaderCheckbox: true,
+								    store: 'user.Group',
+								    sortable: false,
+								    hideable: false,
+								    menuDisabled: true,
+								    text: 'Status',
+								    dataIndex: "enabled",
+								    listeners: {
+								        checkchange: function(column, rowIndex, checked){
+								             //code for whatever on checkchange here
+								        }
+								    }
+								}
+
+								
+								
+								]
 					}
 					]
 		});

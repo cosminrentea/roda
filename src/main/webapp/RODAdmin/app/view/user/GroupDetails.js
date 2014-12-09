@@ -105,11 +105,19 @@ Ext.define('RODAdmin.view.user.GroupDetails', {
 										sortable : false,
 										filterable : true
 									}, {
-										text : 'Active',
-										flex : 1,
-										dataIndex : 'enabled',
-										sortable : false,
-										filterable : true
+										xtype: "checkcolumn",
+									    columnHeaderCheckbox: true,
+									    store: 'user.Group',
+									    sortable: false,
+									    hideable: false,
+									    menuDisabled: true,
+									    dataIndex: "enabled",
+									    text: 'Status',
+									    listeners: {
+									        checkchange: function(column, rowIndex, checked){
+									             //code for whatever on checkchange here
+									        }
+									    }
 									}
 									]
 			         }],

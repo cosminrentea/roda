@@ -14,6 +14,8 @@ Ext.define('RODAdmin.controller.user.UserList', {
             // 'RODAdmin.view.user.AdminItemsview',
             // 'RODAdmin.view.user.User',
             'RODAdmin.view.user.UserItemsview',
+            'RODAdmin.view.user.UserContextMenu',
+            
     // 'RODAdmin.view.user.UserDetails'
     ],
 
@@ -54,10 +56,38 @@ Ext.define('RODAdmin.controller.user.UserList', {
 				 *           grid#usersgrid {@link #onUsersViewSelectionChange}
 				 */
 		        selectionchange : this.onUsersViewSelectionChange,
-	        // itemcontextmenu : this.onItemContextMenu
+	            itemcontextmenu : this.onUserContextMenu,
 	        },
+	        "groupdetails grid#groupusers" : {
+		        /**
+				 * @listener useritemsview-grid-usersgrid-selectionchange
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.user.UserItemsview UserItemsview}
+				 *           grid#usersgrid {@link #onUsersViewSelectionChange}
+				 */
+	            itemcontextmenu : this.onUserContextMenu,
+	        },
+
+	        
+	        
 	    });
     },
+    
+    
+    
+    onUserContextMenu : function(component, record, item, index, e) {
+	    e.stopEvent();
+	    if (this.usermenu) {
+		    this.usermenu.destroy();
+	    }
+	    // aici sa vedem daca pagina are pagini subordonate
+	    // console.log(record.childNodes.length);
+
+	    this.usermenu = Ext.create('widget.usercontextmenu');
+	    this.usermenu.showAt(e.getXY());
+    },
+    
+    
     /**
 	 * @method
 	 */
@@ -65,6 +95,7 @@ Ext.define('RODAdmin.controller.user.UserList', {
 	    console.log('selection change');
 	    this.getDetailscontainer().layout.setActiveItem(0);
 	    var record = selected[0];
+	    if (record) { 
 	    console.log('else here');
 	    var userinfo = this.getUserinfo();
 	    var userprofile = this.getUserprofile();
@@ -79,12 +110,11 @@ Ext.define('RODAdmin.controller.user.UserList', {
 			        console.log(useritem.profile);
 			        var profile = useritem.profileStore.getAt(0);
 			        userinfo.update(useritem);
-			        // var rec = useritem.profile().getAt(0);
 			        userprofile.update(profile);
 		        }
 	        }
 	    });
-
+	    }
     },
 
     /**

@@ -61,20 +61,10 @@ Ext.define('RODAdmin.view.user.UserDetails', {
 										text : 'Edit User',
 										tooltip : 'Edit user email/name'
 									}, {
-										text : 'Inactivate',
-										xtype : 'button',
-										itemId : 'clearfilterdata',
-										tooltip : 'Makes the user inactive',
-									}, {
 										text : 'Delete',
 										xtype : 'button',
 										itemId : 'dropuser',
 										tooltip : 'Deletes the user'
-									}, {
-										text : 'Groups',
-										xtype : 'button',
-										itemId : 'usergroups',
-										tooltip : 'Changes the user groups'
 									}
 									
 									]

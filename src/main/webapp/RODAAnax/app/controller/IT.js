@@ -84,7 +84,7 @@ Ext.define('anax.controller.IT', {
 
 	    var me = this;
 	    Ext.Ajax.request({
-	        url : 'data/map.json',
+	        url : '/roda/resources/RODAAnax/data/map.json',
 	        method : "GET",
 	        params : {
 		        id : this.getAnaxDrawing().getMapid()
@@ -809,7 +809,7 @@ Ext.define('anax.controller.IT', {
 	    // acu ar trebui sa vedem cate nivele avem
 	    var me = this;
 	    Ext.Ajax.request({
-	        url : 'data/map.json',
+	        url : '/roda/resources/RODAAnax/data/map.json',
 	        method : "GET",
 	        params : {
 		        id : geographyid,

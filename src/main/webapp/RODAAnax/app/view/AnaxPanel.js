@@ -13,16 +13,17 @@ Ext.define('anax.view.AnaxPanel', {
         	items: [
                 {
                     xtype: 'anaxcontrol',
+//                	xtype: 'panel',
                     region:'west',
                     //dock: 'left',
-                    id: 'controller',
+            //        id: 'controller',
                     width: '30%',
                     layout: 'fit',
                     animCollapse: false,
                     collapseDirection: 'left',
                     collapsible: true,
                     resizable:true,
-                    title: translations.selectgrouping,
+                    title: 'select grouping',
                     tools:[{
                         id: 'search',
                     }],

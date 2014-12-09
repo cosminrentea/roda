@@ -4,7 +4,6 @@ Ext.Loader.setConfig({
 	paths : {
 		'Ext.ux' : 'ux/',
 		'Ext.ux.plugins' : 'ux/plugins',
-		'databrowser.util' : 'app/util'
 	}
 });
 
@@ -13,12 +12,35 @@ Ext.application({
 	requires : [ 'Ext.grid.*', 'Ext.data.*', 'Ext.util.*',
 			'Ext.toolbar.Paging', 'Ext.ModelManager',
 			'Ext.ux.plugins.FitToParent' ],
-	models : [ 'ItemsModel', 'ExSprite', 'Sprite', 'Years', 'ItemsModel' ],
-	stores : [ 'ItStore', 'YearStore', 'Sprite', 'GeoDataType', 'Indicator'],
-	views : [ 'AnaxPanel', 'Anaxcontrol', 'AnaxMap', 'AnaxDrawing' ],
-	controllers : [ 'IT', 'History' ],
+	models : [ 
+	           'ItemsModel',
+	           'ExSprite',
+	           'Sprite',
+	           'Years',
+	           'ItemsModel' 
+	           ],
+	stores : [ 
+	           'ItStore', 
+	           'YearStore', 
+	           'Sprite', 
+	           'Indicator'
+	           ],
+	views : [ 
+	          'AnaxPanel',
+	          'Anaxcontrol',
+	          'AnaxMap',
+	          'AnaxDrawing'
+	          ],
+	controllers : [
+	               'IT',
+	               'History' 
+	               ],
 	autoCreateViewport : false,
+	
+	
 	name : 'anax',
+	
+	
 	appFolder : 'app',
 	init : function() {
 		Ext.Ajax.timeout = 200000; // 200 seconds

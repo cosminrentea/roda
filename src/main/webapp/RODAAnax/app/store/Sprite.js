@@ -9,8 +9,8 @@ Ext.define('anax.store.Sprite', {
  	
 	 data: {
      	   "id": 1,
-            "name": "Ion Popescu",
-            "details": "Ion Popescu doesn't think cause Ion Popescu knows...",
+            "name": "Name",
+            "details": "Details...",
             "sprites" :[  {
                 type: "path",
                 id: "white-3",

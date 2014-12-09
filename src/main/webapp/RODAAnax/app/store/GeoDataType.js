@@ -3,10 +3,10 @@ Ext.define('anax.store.GeoDataType', {
 	extend : 'Ext.data.Store',
     storeId : 'GeoDataType',
     requires : [
-	    'anax.model.GeoDatatype'
+	    'anax.model.Geodatatype'
     ],
     autoLoad : true,
-    model : 'anax.model.GeoDatatype',
+    model : 'anax.model.Geodatatype',
     
 
 proxy : {

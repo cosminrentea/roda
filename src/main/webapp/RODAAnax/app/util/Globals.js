@@ -1,3 +1,3 @@
-Ext.define('databrowser.util.Globals', {
+Ext.define('anax.util.Globals', {
 //	singleton:true;
 });

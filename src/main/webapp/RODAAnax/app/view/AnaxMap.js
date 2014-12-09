@@ -27,37 +27,37 @@ Ext.define('anax.view.AnaxMap', {
         	                	        	 xtype: 'button',
         	                	        	 itemId : 'zin',
         	                	        	 text: 'Zoom in',
-        	                	        	 icon: 'icon/zoomin.png'
+        	                	        	 icon: anax.util.Globals['contextPath'] + '/resources/RODAAnax/icon/zoomin.png'
         	                	         }, 
         	                	         {
         	                	        	 xtype: 'button',
         	                	        	 itemId : 'zout',
         	                	        	 text: 'Zoom out',
-        	                	        	 icon: 'icon/zoomout.png'
+        	                	        	 icon: anax.util.Globals['contextPath'] + '/resources/RODAAnax/icon/zoomout.png'
         	                	         }, 
         	                	         {
         	                	        	 xtype: 'button',
         	                	        	 itemId : 'pleft',
         	                	        	 text: 'Pan left',
-        	                	        	 icon: 'icon/panleft.png'
+        	                	        	 icon: anax.util.Globals['contextPath'] + '/resources/RODAAnax/icon/panleft.png'
         	                	         }, 
         	                	         {
         	                	        	 xtype: 'button',
         	                	        	 itemId : 'pright',
         	                	        	 text: 'Pan right',
-        	                	        	 icon: 'icon/panright.png'
+        	                	        	 icon: anax.util.Globals['contextPath'] + '/resources/RODAAnax/icon/panright.png'
         	                	         }, 
         	                	         {
         	                	        	 xtype: 'button',
         	                	        	 itemId : 'pup',
         	                	        	 text: 'Pan up',
-        	                	        	 icon: 'icon/panup.png'
+        	                	        	 icon: anax.util.Globals['contextPath'] + '/resources/RODAAnax/icon/panup.png'
         	                	         }, 
         	                	         {
         	                	        	 xtype: 'button',
         	                	        	 itemId : 'pdown',
         	                	        	 text: 'Pan down',
-        	                	        	 icon: 'icon/pandown.png'
+        	                	        	 icon: anax.util.Globals['contextPath'] + '/resources/RODAAnax/icon/pandown.png'
         	                	         },        	                	         
         	                	         {
         	                	        	 xtype: 'button',

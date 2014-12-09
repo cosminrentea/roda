@@ -11,7 +11,7 @@ Ext.define('anax.store.Indicator', {
 
 proxy : {
         type : 'ajax',
-        url : 'data/densitate.json',
+        url :  '/roda/resources/RODAAnax/data/densitate.json',
         extraParams : {
 	        lang : translations.language
         },

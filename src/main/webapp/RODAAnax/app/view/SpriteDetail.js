@@ -30,7 +30,7 @@ Ext.define('anax.view.SpriteDetail', {
 			        	xtype: 'panel',
 			        	itemId: 'spdetails'	,
 			        	flex: 2,
-			        	tpl: '<div class="deti">jesus man...{name} - {details} </div>'
+			        	tpl: '<div class="deti">{name} - {details} </div>'
 			        }
 			        
 			        ]

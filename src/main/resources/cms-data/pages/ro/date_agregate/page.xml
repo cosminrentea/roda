@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Date agregate</title>
+	<menutitle>Date agregate</menutitle>
+	<synopsis></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+
+		<div id="content">
+			<div id="dbcontainer" style="width:80%; height:100%; padding: 0; margin-left:auto; margin-right:auto;"></div>
+	 	</div>
+	
+	]]></content>
+	<cms_layout>new-roda-geography-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>		
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>false</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+	<sequence>10</sequence>
+</pagedata>

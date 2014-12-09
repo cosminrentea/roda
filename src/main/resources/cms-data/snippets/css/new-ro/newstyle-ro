@@ -572,7 +572,7 @@ width:50px;
 }
 
 td.sstudy{
-background: url('[[FileURL:sstudy]]') no-repeat center center;
+background: url('[[FileURL:sstudii]]') no-repeat center center;
 width:50px;
 }
 

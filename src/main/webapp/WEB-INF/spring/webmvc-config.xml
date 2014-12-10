@@ -25,6 +25,9 @@
 	<mvc:resources location="/RODAdmin/" mapping="/admin/**"
 		order="-1" />
 
+	<mvc:resources location="/RODAAnax/" mapping="/RODAAnax/**"
+		order="-1" />
+
 	<mvc:resources location="/root/" mapping="/root/**"
 		order="-1" />
 

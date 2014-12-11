@@ -69,7 +69,8 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddStudyWindow', {
 				        	         {xtype:'sconcepts', itemId:'sconcepts'},
 				        	         {xtype:'squestions', itemId:'squestions'},
 				        	         {xtype:'sdatacollection', itemId:'sdatacollection'},
-				        	         {xtype:'sdataprod', itemId:'sdataprod'},				         
+				        	         {xtype:'sdataprod', itemId:'sdataprod'},	
+				        	         {xtype:'sprocessinfo', itemId:'sprocessinfo'},	
 				        	         ]
 				}]
 			}, {
@@ -121,7 +122,14 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddStudyWindow', {
 				        	anchor:'100%',
 							enableToggle : false,				        	
 				        	itemId: 'sdataprodbutton'
-				        }]				
+				        },{
+				        	xtype:'button',
+				        	text: 'Process info',
+				        	anchor:'100%',
+							enableToggle : false,				        	
+				        	itemId: 'sprocessinfo'
+				        }
+			        ]				
 				}]
 		});
 		me.callParent(arguments);

@@ -10,7 +10,8 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
             'RODAdmin.view.studies.CBEditor.studyadd.sFunding',
             'RODAdmin.view.studies.CBEditor.studyadd.sDataProd',
             'RODAdmin.view.studies.CBEditor.studyadd.sQuestions',
-			'RODAdmin.view.studies.CBEditor.studyadd.sConcepts',            
+			'RODAdmin.view.studies.CBEditor.studyadd.sConcepts',    
+			'RODAdmin.view.studies.CBEditor.studyadd.sProcessinfo',    
 	],
 	stores : ['studies.CBEditor.PrincipalInv', 
 				  'studies.CBEditor.Funder',
@@ -34,7 +35,8 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			      'studies.CBEditor.ConceptsDisp',
 			      'studies.CBEditor.Qmissing',
 			      'studies.CBEditor.Files',
-			      'studies.CBEditor.FileTypes'
+			      'studies.CBEditor.FileTypes',
+			      'studies.CBEditor.SRights',
 			      ],
 	models : ['studies.CBEditor.PersOrg', 'studies.CBEditor.StudyQuestion',
 			'studies.CBEditor.question.response.Numeric'],
@@ -69,6 +71,9 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				ref : 'sdataprod',
 				selector : 'sdataprod'
 			}, {
+				ref : 'sprocessinfo',
+				selector : 'sprocessinfo'
+			},{
 				ref : 'rdomaincard',
 				selector : 'addquestion form#questionform fieldset#qrinformation'
 				// selector: 'addquestion form#questionform'
@@ -199,6 +204,18 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				 */
 				click : this.sDataProductionClick
 			},
+			'studyadd button#sprocessinfo' : {
+				/**
+				 * @listener studies-toolbar-button-icon-view-click
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#icon-view {@link #onIconViewClick}
+				 */
+				click : this.sProcessInfoClick
+			},
+
+			
+			
 			'studyadd button#addpinv' : {
 				/**
 				 * @listener studies-toolbar-button-icon-view-click
@@ -1003,32 +1020,88 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			console.log('savefile');
 
 			console.log(button.up('window').down('form').down('fieldset#fileinfo'));
-			
-			
-			
+			var form = button.up('window').down('form');
+
+			//ok, let's see if we have a real file
+			var filefield = button.up('window').down('form').down('fieldset#fileinfo').down('filefield#fupload');
 			var filename = button.up('window').down('form').down('fieldset#fileinfo').down('textfield[name=name]').getValue();
 			var fileuri = button.up('window').down('form').down('fieldset#fileinfo').down('textfield[name=uri]').getValue();
-
 			var filetypeid = button.up('window').down('form').down('fieldset#fileinfo').down('combo[name=ftype]').getValue();
 			var filetypename = button.up('window').down('form').down('fieldset#fileinfo').down('combo[name=ftype]').getRawValue();
-
 			var filecases = button.up('window').down('form').down('fieldset#datafinfo').down('textfield[name=cases]').getValue();
 			var filereccount = button.up('window').down('form').down('fieldset#datafinfo').down('textfield[name=reccount]').getValue();
-			
-			
 			var filestore = this.getFilesgrid().getStore();
 
-			if (filename.length < 2) {
-				alert('file name too small');
-				return;
-			}			
-			
-			var nextId = this.getStoreNextId(filestore);
+			console.log(button.up('window').down('form').down('fieldset#fileinfo').down('filefield#fupload'));
 
-			var file = new RODAdmin.model.studies.CBEditor.File({
+			
+			if (filefield.value) { 
+				console.log('post savefile');
+				
+				
+			if(form.isValid()){
+				form.submit({
+				url: 'http://localhost:8080/roda/addfiletotemp',
+				method: 'POST',
+				timeout: 10,
+				waitMsg: 'Uploading your file...',
+				success: function(fp, o) {
+					console.log('success');
+					console.log(fp);
+					console.log(o);
+					var nextId = this.getStoreNextId(filestore);
+
+					var file = new RODAdmin.model.studies.CBEditor.File({
+								id : nextId,
+								fname: filename,
+								uri : fileuri,
+								uptype : 'filepost',
+								ftype : filetypename,
+								uploadid : 'uplid',
+								ftypeid : filetypeid,
+								cases: filecases,
+								reccount: filereccount
+							});
+					filestore.add(file);
+					filestore.commitChanges();					
+					button.up('window').close();
+					},
+				failure : function(form, action) {
+					console.log('failure');
+					console.log(form);
+					console.log(action);
+					switch (action.failureType) {
+					      case Ext.form.action.Action.CLIENT_INVALID:
+					      Ext.Msg.alert('Failure', 'Form fields may must be submitted with invalid values');
+					      break;
+				       case Ext.form.action.Action.CONNECT_FAILURE:
+					        Ext.Msg.alert('Failure', 'doesn\'t work');
+					        break;
+					   case Ext.form.action.Action.SERVER_INVALID:
+					        Ext.Msg.alert('Failure', action.response.responseText);
+					   break;
+					        }
+					       }
+				});
+			}
+
+			
+			} else {
+			
+			
+
+				if (filename.length < 2) {
+					alert('file name too small');
+					return;
+				}			
+			
+				var nextId = this.getStoreNextId(filestore);
+
+				var file = new RODAdmin.model.studies.CBEditor.File({
 							id : nextId,
 							fname: filename,
 							uri : fileuri,
+							uptype : 'urlget',
 							ftype : filetypename,
 							ftypeid : filetypeid,
 							cases: filecases,
@@ -1036,7 +1109,9 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 						});
 				filestore.add(file);
 				filestore.commitChanges();
-		button.up('window').close();
+				button.up('window').close();
+			}
+//		
 	},
 	
 	
@@ -1602,6 +1677,18 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		this.getStudyadd().layout.setActiveItem('sdataprod');
 		this.unToggleButtons();
 		var mybutton = button.up('window').down('button#sdataprodbutton');
+		console.log(mybutton);
+		mybutton.toggle();
+	},
+	/**
+	 * @method
+	 */
+	sProcessInfoClick : function(button, e, options) {
+		console.log('Process info');
+		this.refreshWindowStore();
+		this.getStudyadd().layout.setActiveItem('sprocessinfo');
+		this.unToggleButtons();
+		var mybutton = button.up('window').down('button#sprocessinfo');
 		console.log(mybutton);
 		mybutton.toggle();
 	},

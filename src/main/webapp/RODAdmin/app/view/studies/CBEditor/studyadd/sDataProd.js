@@ -191,7 +191,22 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sDataProd', {
 									sortable : true,
 									flex : 1,
 									dataIndex : 'ftype',
-								}, {
+								}, 
+								{
+									itemId : 'uptype',
+									text : 'Upload type',
+									sortable : true,
+									flex : 1,
+									dataIndex : 'uptype',
+								}, 
+								{
+									itemId : 'uploadid',
+									text : 'Upload id',
+									sortable : true,
+									flex : 1,
+									dataIndex : 'uploadid',
+								}, 
+								{
 									itemId : 'furi',
 									text : 'URI',
 									flex: 2,

@@ -13,6 +13,14 @@ Ext.define('RODAdmin.model.studies.CBEditor.File', {
 	type: 'string'
 	},
 	{
+	name: 'uptype',
+	type: 'string'
+	},
+	{
+	name: 'uploadid',
+	type: 'string'
+	},
+	{
 	name: 'ftype',
 	type: 'string'
 	},

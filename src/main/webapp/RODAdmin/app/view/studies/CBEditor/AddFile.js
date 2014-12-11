@@ -38,7 +38,16 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddFile', {
 										name : 'uri',
 										fieldLabel : 'URI',
 										anchor : '100%'
-									},	{
+									},	
+									{
+										xtype : 'filefield',
+										name : 'fupload',
+										fieldLabel : 'File',
+										anchor : '100%',
+										itemId : 'fupload'
+											
+									},	
+									{
 										xtype : 'combo',
 										fieldLabel : 'File type',
 										itemId : 'ftcombo',
@@ -54,7 +63,16 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddFile', {
 										name : 'name',
 										fieldLabel : 'File Name',
 										anchor : '100%'
-									}]
+									}, {
+										xtype : 'textarea',
+										name : 'name',
+										fieldLabel : 'File description',
+										anchor : '100%'
+									}
+									
+									
+									
+									]
 						}, {
 							xtype : 'fieldset',
 							title : 'Data File Information',

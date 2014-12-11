@@ -145,20 +145,20 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
     },
     
     onCheckChange : function(column, rowIndex, checked){ 
-    	console.log('checkchange in controller');
+    	console.log('group checkchange in controller' + checked);
     	
-	    Ext.Ajax.request({
-	        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagenavigable',
-	        method : "POST",
-	        params : {
-	        	navigable : checked,
-		        id : rowIndex
-	        },
-	        failure : function(response, opts) {
-		        Ext.Msg.alert('Failure', response);
-
-	        }
-	    });
+//	    Ext.Ajax.request({
+//	        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagenavigable',
+//	        method : "POST",
+//	        params : {
+//	        	navigable : checked,
+//		        id : rowIndex
+//	        },
+//	        failure : function(response, opts) {
+//		        Ext.Msg.alert('Failure', response);
+//
+//	        }
+//	    });
 
     },
     

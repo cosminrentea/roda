@@ -107,9 +107,10 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sProposal', {
 								fieldLabel : 'Original language',
 								itemId : 'genlanguage',
 								name : 'lang',
-								valueField : 'id',
-								store : 'studies.CBEditor.Lang',
-								displayField : 'name',
+								valueField : 'indice',
+								valueNotFoundText : 'Language not found', 
+								store : 'common.Language',								
+								displayField : 'nameSelf',
 								autoSelect : true,
 								forceSelection : true,
 								anchor : '100%'
@@ -141,6 +142,34 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sProposal', {
 	                 		    	   anchor:'98%',	                 		    	   
 	                 		    	   value : ''
 	                 		       },
+	                 		       {
+	                 		    	   xtype : 'textareafield',
+	                 		    	   fieldLabel : 'Weighting',
+	                 		    	   itemId : 'weighting',
+	                 		    	   name : 'weighting',
+	                 		    	   anchor:'98%',	                 		    	   
+	                 		    	   height: 30,
+	                 		    	   value : ''
+	                 		       }, 
+	                 		       {
+	                 		    	   xtype : 'textareafield',
+	                 		    	   fieldLabel : 'Unit analysis',
+	                 		    	   itemId : 'analysisunit',
+	                 		    	   name : 'analysisunit',
+	                 		    	   anchor:'98%',	                 		    	   
+	                 		    	   height: 30,
+	                 		    	   value : ''
+	                 		       }, 
+	                 		       {
+	                 		    	   xtype : 'textareafield',
+	                 		    	   fieldLabel : 'Universe',
+	                 		    	   itemId : 'universe',
+	                 		    	   name : 'universe',
+	                 		    	   anchor:'98%',	                 		    	   
+	                 		    	   height: 30,
+	                 		    	   value : ''
+	                 		       }, 
+
 	                 		       {
 	                 		    	   xtype : 'textareafield',
 	                 		    	   fieldLabel : 'Geographic coverage',

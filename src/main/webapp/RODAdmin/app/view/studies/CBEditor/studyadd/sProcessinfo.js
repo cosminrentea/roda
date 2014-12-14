@@ -63,7 +63,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sProcessinfo', {
 										// typeAhead: true,
 										valueField : 'id',
 //										tpl : '<tpl for=".">{level}<br>{description}<hr></tpl>',
- 			                            tpl: '<tpl for="."><div class="x-boundlist-item"><strong>{name}</strong><br><i>{description}</i><hr></div></tpl>',
+ 			                            tpl: '<tpl for="."><div class="x-boundlist-item"><strong>{level}</strong><br><i>{description}</i><hr></div></tpl>',
 										store : 'studies.CBEditor.SRights'
 									}
 		            ]

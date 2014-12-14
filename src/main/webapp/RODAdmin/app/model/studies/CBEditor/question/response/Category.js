@@ -9,6 +9,10 @@ Ext.define('RODAdmin.model.studies.CBEditor.question.response.Category', {
 	type: 'string'
 	},
 	{
+	name: 'value',
+	type: 'string'
+	},
+	{
 	name: 'lang',
 	type: 'string'
 	}

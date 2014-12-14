@@ -3,6 +3,7 @@
  */
 Ext.define('RODAdmin.model.common.Language', {
 			extend : 'Ext.data.Model',
+			idProperty : 'indice',
 			fields : [{
 						name : 'indice',
 						type : 'integer'

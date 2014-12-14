@@ -48,9 +48,9 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestionTranslation', {
 										xtype : 'combo',
 										fieldLabel : 'Translation language',
 										name : 'lang',
-										valueField : 'id',
-										store : 'studies.CBEditor.Lang',
-										displayField : 'name',
+										valueField : 'indice',
+										store : 'common.Language',								
+										displayField : 'nameSelf',											
 										autoSelect : true,
 										forceSelection : true,
 										anchor : '100%'	

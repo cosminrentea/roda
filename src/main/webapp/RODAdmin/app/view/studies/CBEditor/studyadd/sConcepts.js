@@ -20,7 +20,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sConcepts', {
 							items : [{
 	               	        	 xtype : 'datefield',
 								fieldLabel : 'Start concept definition',
-								name : 'stdataprod',
+								name : 'stconcepts',
 								itemId : 'stconcepts',
 								padding: 5,
 								flex: 1,
@@ -28,7 +28,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sConcepts', {
 							}, {
                 	        	 xtype : 'datefield',
 								fieldLabel : 'End concept definition',
-								name : 'enddataprod',
+								name : 'endconcepts',
 								itemId : 'endconcepts',
 								padding: 5,
 								flex: 1,

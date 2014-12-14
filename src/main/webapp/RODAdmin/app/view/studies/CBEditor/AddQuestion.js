@@ -59,13 +59,16 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 								xtype : 'combo',
 								fieldLabel : 'Original language',
 								name : 'lang',
-								valueField : 'id',
-								store : 'studies.CBEditor.Lang',
-								displayField : 'name',
+								itemId : 'qlangcombo',
+								valueField : 'indice',
+							//	valueNotFoundText : 'Language not found', 								
+								store : 'common.Language',								
+								displayField : 'nameSelf',								
 								autoSelect : true,
 								forceSelection : true,
 								anchor : '100%'
-							}, {
+							}, 
+							{
 								xtype : 'combo',
 								itemId : 'qrdomain',
 								fieldLabel : 'Response domain',
@@ -108,7 +111,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 								         }, 
 								         {
 									xtype : 'grid',
-									itemId : 'qcoderesp',
+									itemId : 'qcatresp',
 									store : 'studies.CBEditor.Qcoderesp',
 
 									plugins : [Ext.create(

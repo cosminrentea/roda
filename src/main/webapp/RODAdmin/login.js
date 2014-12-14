@@ -36,20 +36,15 @@ Ext.onReady(function(){
  
                         success:function(){ 
                         		login.setVisible = false;
-//                        	Ext.Msg.alert('Status', 'Login Successful!', function(btn, text){
-//				   if (btn == 'ok'){
-
                         		var redirect = 'index.html'; 
 		                        window.location = redirect;
-//                                   }
-//			        });
                         },
- 
                         failure:function(form, action){ 
                             if(action.failureType == 'server'){ 
                         		Ext.ComponentManager.get('lwin').setVisible(true);
-                                obj = Ext.util.JSON.decode(action.response.responseText); 
-                                Ext.Msg.alert('Login Failed!', obj.errors.reason); 
+                                obj = Ext.decode(action.response.responseText); 
+                                console.log(obj);
+                                Ext.Msg.alert('Login Failed!', obj.message); 
                             }else{ 
                                 Ext.Msg.alert('Warning!', 'Authentication server is unreachable : ' + action.response.responseText); 
                             } 

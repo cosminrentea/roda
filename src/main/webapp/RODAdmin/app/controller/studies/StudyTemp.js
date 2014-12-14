@@ -2,7 +2,30 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     extend : 'Ext.app.Controller',
     stores : [
               'studies.TempStudy', 
-//              'common.Audit'
+	          'studies.CBEditor.PrincipalInv', 
+			  'studies.CBEditor.Funder',
+			  'studies.CBEditor.Person',
+			  'studies.CBEditor.Org',
+			  'studies.CBEditor.Qdesign',
+			  'studies.CBEditor.Questions',
+			  'studies.CBEditor.Qtranslation',
+			  'studies.CBEditor.Qsamplingresp',
+			  'studies.CBEditor.DataCollectionResp',
+		      'studies.CBEditor.CollectionMode',
+		      'studies.CBEditor.DPResp',
+		      'studies.CBEditor.Qcoderesp',
+		      'studies.CBEditor.Qcatresp',
+		      'studies.CBEditor.Lang',
+		      'studies.CBEditor.Variables',
+		      'studies.CBEditor.TransQuestions',
+		      'studies.CBEditor.TransQcatresp',
+		      'studies.CBEditor.TransQcoderesp',
+		      'studies.CBEditor.ConceptResp',
+		      'studies.CBEditor.ConceptsDisp',
+		      'studies.CBEditor.Qmissing',
+		      'studies.CBEditor.Files',
+		      'studies.CBEditor.FileTypes',
+		      'studies.CBEditor.SRights',              
               ],
     
     views : [
@@ -23,6 +46,54 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
                 ref : 'iconview',
                 selector : 'studyitemstempview grid#sticonview'
             },
+            {
+            	ref: 'prinvdisplay',
+            	selector: 'sproposal grid#prinvdisplay'
+            },
+            {
+            	ref: 'cnrespdisplay',
+            	selector:'sconcepts grid#cnrespdisplay'
+            },
+            {
+            	ref: 'qsamplingrespdisplay',
+            	selector:'sdatacollection grid#qsamplingrespdisplay'
+            },        	
+            {
+            	ref: 'dcrespdisplay',
+            	selector:'sdatacollection grid#dcrespdisplay'
+            },       	
+            {
+            	ref: 'dprespdisplay',
+            	selector:'sdataprod grid#dprespdisplay'
+            },        	
+            {
+            	ref: 'variabledisplay',
+            	selector:'sdataprod grid#variabledisplay'
+            },       	
+            {
+            	ref: 'filesdisplay',
+            	selector:'sdataprod grid#filesdisplay'
+            },        	
+            {
+            	ref: 'fundvdisplay',
+            	selector:'sfunding grid#fundvdisplay'
+            },        	
+            {
+            	ref: 'qdesigndisplay',
+            	selector:'squestions grid#qdesigndisplay' 
+            },        	
+            {
+            	ref: 'questionsdisplay',
+            	selector:'squestions grid#questionsdisplay'     
+            },        	
+            {
+            	ref: 'qtranslationdisplay',
+            	selector:'squestions grid#qtranslationdisplay'    
+            },        
+            {
+            	ref: 'translationsdisplay',
+            	selector:'squestions grid#translationsdisplay'	            
+            },            
             {
             	ref : 'tempsdetails',
             	selector : 'studiestemp panel#stdetailstempcontainer'
@@ -75,6 +146,10 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     				 */	
     		        click : this.onAddStudyClick
     	        },
+    	        'studiestemp toolbar#studyedittoolbar button#convert-tstudy' : {
+    	        	click : this.onConvertTempStudy
+    	        }, 
+    	        
     	        
        	    });
         	this.listen({
@@ -93,6 +168,74 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 //    	Ext.History.add('menu-studiesmain');
     },
     
+    onConvertTempStudy : function(button, e, options) {
+    	var srec = this.getIconview().getSelectionModel().getLastSelected();
+    	var myid = srec.data.indice;
+
+ 
+    	
+    	
+		Ext.Ajax.request({
+			url: '/roda/cmsfilecontent/'+myid,
+			waitTitle: 'Connecting',
+			waitMsg: 'Receveing data...',                                     
+			method : 'GET',
+			scope:this,
+			success : function(response, opts) {
+				console.log ('success');
+//				console.log (response.responseText);					
+				var resp = Ext.JSON.decode(response.responseText);
+				console.log (resp);
+						//aici incarcam jsonul
+				Ext.data.Connection.prototype.useDefaultXhrHeader = false;
+				Ext.Ajax.request({
+					url: 'http://localhost/ddi/getjson',
+					waitTitle: 'Connecting',
+					waitMsg: 'Sending data...',                                     
+					params: {
+						"data" : Ext.JSON.encode(resp)
+					},
+					scope:this,
+					//				withCredentials: false,
+					//				jsonData: allmydata,
+					method: 'POST',  
+					success : function(response, opts) {
+						console.log ('success');
+						console.log (response.responseText);					
+						var resp = Ext.JSON.decode(response.responseText);
+						console.log (resp);
+						if (resp.success) {
+							console.log ('response success');
+							this.getStudyaddmain().setMode('edit');
+							this.getStudyaddmain().setEditindex(resp.id);
+							this.getTempstudygrid().store.load();
+							console.log (resp.id);					
+						} else {
+							console.log ('error');
+							RODAdmin.util.Util.showErrorMsg(response.message);
+						}
+					},
+					failure : function(response, action) {
+						console.log ('failure');
+						console.log(response);
+						switch (action.failureType) {
+							case Ext.form.action.Action.CLIENT_INVALID:
+								Ext.Msg.alert('Failure', 'Form fields may must be submitted with invalid values');
+								break;
+							case Ext.form.action.Action.CONNECT_FAILURE:
+								Ext.Msg.alert('Failure', 'doesn\'t work');
+								break;
+							case Ext.form.action.Action.SERVER_INVALID:
+								Ext.Msg.alert('Failure', action.result.msg);
+								break;
+						}
+					}
+				});
+			}
+		});
+    
+    
+    },
     
     onEditTempStudy : function(button, e, options) {
 
@@ -129,16 +272,26 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
                     	if (resp.studyProposal.enddate) {
                     		win.down('form#sproposalform datefield#enddate').setValue(new Date(resp.studyProposal.enddate));
                     	}
-                    	win.down('form#sproposalform combo#genlanguage').setValue(resp.studyProposal.genlanguage);                    	
+
+                    	win.down('form#sproposalform combo#genlanguage').setValue(resp.studyProposal.genlanguage);   
                     	win.down('form#sproposalform textareafield#studytitle').setValue(resp.studyProposal.studytitle);
 		    			win.down('form#sproposalform textareafield#stabstract').setValue(resp.studyProposal.stabstract);
 		    			win.down('form#sproposalform textareafield#altitle').setValue(resp.studyProposal.altitle);
 		    			win.down('form#sproposalform textareafield#geocoverage').setValue(resp.studyProposal.geocoverage);
 		    			win.down('form#sproposalform textareafield#geounit').setValue(resp.studyProposal.geounit);
 		    			win.down('form#sproposalform textareafield#resinstrument').setValue(resp.studyProposal.resinstrument);
+		    			win.down('form#sproposalform textareafield#universe').setValue(resp.studyProposal.universe);
+		    			win.down('form#sproposalform textareafield#weighting').setValue(resp.studyProposal.weighting);
+		    			win.down('form#sproposalform textareafield#analysisunit').setValue(resp.studyProposal.analysisunit);
+		    			
+		    			
+		    			
 		    			var porgstore = win.down('sproposal grid#prinvdisplay').store;
+		    			console.log('porgstore');
+		    			console.log(resp.studyProposal.principalinvestigator);
+		    			
 		    			porgstore.removeAll();
-		    			this.loadPOrg(porgstore,resp.studyProposal.principalinvestigaror);
+		    			this.loadPOrg(porgstore,resp.studyProposal.principalinvestigator);
 		    			//study funding
 		    			if (resp.studyFunding.sfunding) {
 		    			win.down('form#sfundingform datefield#startfunding').setValue(new Date(resp.studyFunding.sfunding));
@@ -152,11 +305,11 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 		    			this.loadPOrg(fagstore,resp.studyFunding.fundingAgency);
 		    			//concepts
 
-		    			if (resp.studyConcepts.startqdesign) {
-                    		win.down('form#conceptsform datefield#stconcepts').setValue(new Date(resp.studyConcepts.startqdesign));
+		    			if (resp.studyConcepts.stconcepts) {
+                    		win.down('form#conceptsform datefield#stconcepts').setValue(new Date(resp.studyConcepts.stconcepts));
                     	}
-                    	if (resp.studyConcepts.endqdesign) {
-                    		win.down('form#conceptsform datefield#endconcepts').setValue(new Date(resp.studyConcepts.endqdesign));
+                    	if (resp.studyConcepts.endconcepts) {
+                    		win.down('form#conceptsform datefield#endconcepts').setValue(new Date(resp.studyConcepts.endconcepts));
                     	}
 		    			var concstore = win.down('sconcepts grid#cnrespdisplay').store;
 		    			concstore.removeAll();
@@ -194,10 +347,39 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
                     		win.down('form#questionsform datefield#qtranslationend').setValue(new Date(resp.studyQuestions.endqtranslation));
                     	}
 		    			//Data Collection
+		    			if (resp.dataCollection.startsampling) {
+                    		win.down('form#datacollectionform datefield#startsampling').setValue(new Date(resp.dataCollection.startsampling));
+                    	}
+                    	if (resp.dataCollection.endsampling) {
+                    		win.down('form#datacollectionform datefield#endsampling').setValue(new Date(resp.dataCollection.endsampling));
+                    	}
+
+                    	
+                    	
+                    	
+		    			if (resp.dataCollection.startsampling) {
+                    		win.down('form#datacollectionform datefield#startdatacollection').setValue(new Date(resp.dataCollection.startdatacollection));
+                    	}
+                    	if (resp.dataCollection.endsampling) {
+                    		win.down('form#datacollectionform datefield#enddatacollection').setValue(new Date(resp.dataCollection.enddatacollection));
+                    	}
+                   	
+                    	
+                    	
+                    	
+                    	
+                    	//Data Production
 		    			
-		    			//Data Production
 		    			
-		    			
+		    			if (resp.dataProduction.stdataprod) {
+                    		win.down('form#dataprodform datefield#stdataprod').setValue(new Date(resp.dataProduction.stdataprod));
+                    	}
+                    	if (resp.dataProduction.enddataprod) {
+                    		win.down('form#dataprodform datefield#enddataprod').setValue(new Date(resp.dataProduction.enddataprod));
+                    	}
+                   	
+                    	
+                    	
 		    			
 		    			win.show();
 				
@@ -294,7 +476,9 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     
     loadStudyPreview : function (resp) {
     	//
-    	var spropporgs = this.printPOrgs(resp.studyProposal.principalinvestigaror);
+    	
+    	console.log(resp.studyProposal.principalinvestigator);
+    	var spropporgs = this.printPOrgs(resp.studyProposal.principalinvestigator);
     	resp.studyProposal.stringporg = spropporgs;
     	console.log(spropporgs);
 		var t = new Ext.Template(
@@ -304,12 +488,15 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 		            		     '<tr><th>Start proposal: </th><td>{startdate}</td></tr>',
 		            		     '<tr><th>End proposal: </th><td>{enddate}</td></tr>',
 		            		     '<tr><th>Principal investigator: </th><td>{stringporg}</td></tr>',
-		            		     '<tr><th>General language: </th><td>{genlanguage}</td></tr>',
+		            		     '<tr><th>General language: </th><td>{genlanguagename} ({genlanguage})</td></tr>',
 		            		     '<tr><th>Alternative title: </th><td>{altitle}</td></tr>',
 		            		     '<tr><th>Study abstract: </th><td>{stabstract}</td></tr>',
 		            		     '<tr><th>Geographic coverage: </th><td>{geocoverage}</td></tr>',
 		            		     '<tr><th>Geographic unit: </th><td>{geounit}</td></tr>',
 		            		     '<tr><th>Research instrument: </th><td>{resinstrument}</td></tr>',
+		            		     '<tr><th>Analysis unit: </th><td>{analysisunit}</td></tr>',
+		            		     '<tr><th>Universe: </th><td>{universe}</td></tr>',
+		            		     '<tr><th>Weighting: </th><td>{weighting}</td></tr>',
 		            		     '</table>',
 		            		     '</div>',
 		            		     {
@@ -350,8 +537,8 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 		var t = new Ext.Template(
 		            		     '<div class="stpreviewcontainer">',
 		            		     '<table width="100%">',
-		            		     '<tr><th>Start concepts design: </th><td>{startqdesign}</td></tr>',
-		            		     '<tr><th>End concepts design: </th><td>{endqdesign}</td></tr>',
+		            		     '<tr><th>Start concepts design: </th><td>{stconcepts}</td></tr>',
+		            		     '<tr><th>End concepts design: </th><td>{endconcepts}</td></tr>',
 		            		     '<tr><th>Concept design responsibility: </th><td>{stringporg}</td></tr>',
 		            		     '</table>',
 		            		     '</div>',
@@ -365,7 +552,11 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
  
     loadStudyQuestions : function (resp) {
     	//
-    	var spropporgs = this.printPOrgs(resp.studyQuestions.cdesignresp);
+    	
+    	console.log('------------------------------------');
+    	console.log(resp.studyQuestions);
+    	console.log(resp.studyQuestions.qdesignresp);
+    	var spropporgs = this.printPOrgs(resp.studyQuestions.qdesignresp);
     	resp.studyQuestions.stringporg = spropporgs;
 
     	var spropporgs2 = this.printPOrgs(resp.studyQuestions.transresponsability);
@@ -492,7 +683,7 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 //asta trebuie facut mult mai complicat, sa vedem 
     	for (var index in data) {
     	    var npr = data[index];
-
+    	    console.log(npr);
     	    var response = new RODAdmin.model.studies.CBEditor.StudyQuestion (
 			                                                            {
                                     									id : npr.id ,
@@ -516,12 +707,15 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     		}
     	    
     	    if (npr.respdomain == 'Category') {
-    	    	for (var ncat in npr.catresponses) {
+    	    	console.log('-----------------------------');
+    	    	console.log(npr.catsponses);
+    	    	for (var ncat in npr.catsponses) {
 				var catr = new RODAdmin.model.studies.CBEditor.question.response.Category(
 				                                                  							{
-				                                                  								id : npr.catresponses[ncat].id,
-				                                                  								label : npr.catresponses[ncat].label,
-				                                                  								lang : npr.catresponses[ncat].lang
+				                                                  								id : npr.catsponses[ncat].id,
+				                                                  								label : npr.catsponses[ncat].label,
+				                                                  								lang : npr.catsponses[ncat].lang,
+				                                                  								value : npr.catsponses[ncat].value
 				                                                  							});
 				 
 				response.catresponses().add(catr );
@@ -607,17 +801,54 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     
     onAddStudyClick : function(button, e, options) {
 	    win = Ext.WindowMgr.get('studyadd');
-	    console.log(win);
+	    this.emptyAllStores();
 	    if (!win) {
     	 win = Ext.create('RODAdmin.view.studies.CBEditor.AddStudyWindow');
-	    //win = Ext.create('RODAdmin.view.studies.AddStudyWindow');
+			var prinvdisplaystore = win.down('sproposal grid#prinvdisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('sconcepts grid#cnrespdisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('sdatacollection grid#qsamplingrespdisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('sdatacollection grid#dcrespdisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('sdataprod grid#dprespdisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('sdataprod grid#variabledisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('sdataprod grid#filesdisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('sfunding grid#fundvdisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('squestions grid#qdesigndisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('squestions grid#questionsdisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('squestions grid#qtranslationdisplay').getStore().removeAll();
+			var prinvdisplaystore = win.down('squestions grid#translationsdisplay').getStore().removeAll();			
 	    }
 	    win.setTitle('Add a new Study');
 	    win.show();
     },
 
     
-
+    emptyAllStores : function() {
+    
+    	Ext.StoreManager.get('studies.CBEditor.PrincipalInv').removeAll;
+    	Ext.StoreManager.get('studies.CBEditor.Funder').removeAll;
+    	Ext.StoreManager.get('studies.CBEditor.Person').removeAll;
+    	Ext.StoreManager.get('studies.CBEditor.Org').removeAll;
+    	Ext.StoreManager.get('studies.CBEditor.Qdesign').removeAll;
+    	Ext.StoreManager.get('studies.CBEditor.Questions').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.Qtranslation').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.Qsamplingresp').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.DataCollectionResp').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.CollectionMode').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.DPResp').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.Qcoderesp').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.Qcatresp').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.Lang').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.Variables').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.TransQuestions').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.TransQcatresp').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.TransQcoderesp').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.ConceptResp').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.ConceptsDisp').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.Qmissing').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.Files').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.FileTypes').removeAll;
+        Ext.StoreManager.get('studies.CBEditor.SRights').removeAll; 
+    }
     
     
     

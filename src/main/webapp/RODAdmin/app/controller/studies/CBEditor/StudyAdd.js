@@ -13,7 +13,8 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			'RODAdmin.view.studies.CBEditor.studyadd.sConcepts',    
 			'RODAdmin.view.studies.CBEditor.studyadd.sProcessinfo',    
 	],
-	stores : ['studies.CBEditor.PrincipalInv', 
+	stores : [
+	          'studies.CBEditor.PrincipalInv', 
 				  'studies.CBEditor.Funder',
 				  'studies.CBEditor.Person',
 				  'studies.CBEditor.Org',
@@ -112,9 +113,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				// selector: 'addquestion form#questionform'
 			},
 			{
-				ref : 'responsecodegrid',
-				selector : 'addquestion form#questionform fieldset#qrinformation grid#qcoderesp'
-			}, {
 				ref : 'responsecatgrid',
 				selector : 'addquestion form#questionform fieldset#qrinformation grid#qcatresp'
 			}, {
@@ -324,7 +322,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			'addquestion form#questionform fieldset#questioninfo combo#qrdomain' : {
 				change : this.changeResponseDomain
 			},
-			'addquestion form#questionform fieldset#qrinformation grid#qcoderesp toolbar button#addrespcode' : {
+			'addquestion form#questionform fieldset#qrinformation grid#qcatresp toolbar button#addrespcode' : {
 				click : this.addEmptyResponseCode
 			},
 			'addquestion form#questionform fieldset#missinginfo grid#missing toolbar button#addmissing' : {
@@ -469,7 +467,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	},
 	
 	onNextClick : function (button, e, options) {
-		
+		this.refreshWindowStore();
 		var next = this.getStudyadd().layout.getNext();		
 		if (next) {
 			this.unToggleButtons();
@@ -487,6 +485,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	},
 	
 	onPreviousClick : function (button, e, options) {
+		this.refreshWindowStore();
 		var prev = this.getStudyadd().layout.getPrev();		
 			if (prev) {
 				this.unToggleButtons();
@@ -896,34 +895,27 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	
 	
 	onQuestionEditAction : function(grid, record, rowIndex, row) {
-		console.log('edit shit');
 		var myrecord = grid.getStore().getAt(rowIndex);
+		
+		console.log(myrecord);
 		// intai incercam manual, apoi vedem daca putem lega cu storeul
 		var win = Ext.WindowMgr.get('addquestion');
 		if (!win) {
 			win = Ext.create('RODAdmin.view.studies.CBEditor.AddQuestion');
 		}
-		win.setTitle('Edit Question' + myrecord.data.text);
-
+		win.setTitle('Edit Question ' + myrecord.data.text);
 		win.setMode('edit');
 		win.setEditId(rowIndex);
-		// sa vedem ce se intampla cu storurile. In principiu trebuie sa il
-		// umplem pe cel pe care trebuie sapl umplem si sa le golim pe
-		// celelalte.
-		// referinte utile
 		var cards = win.down('form#questionform').down('fieldset#qrinformation');
-		var codegrid = cards.down('grid#qcoderesp');
 		var catgrid = cards.down('grid#qcatresp');
 		var missinggrid = win.down('grid#missing');
 		var numerictype = cards.down('combo#qnrtype');
 		
 		var nlow = cards.down('textfield[name=qnrlow]');
 		var nhigh = cards.down('textfield[name=qnrhigh]');
+
 		// golim toate storeurile
-		var codestore = codegrid.getStore();
-		codestore.getProxy().clear();
-		codestore.data.clear();
-		codestore.sync();
+
 		var catstore = catgrid.getStore();
 		catstore.getProxy().clear();
 		catstore.data.clear();
@@ -937,27 +929,35 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		win.down('form#questionform').getForm().loadRecord(myrecord);
 		//of course the fucking tree doesn't work
 		//try manually
-//		var combo = win.down('form#questionform').down('fieldset#qrinformation').down('treecombo[name=concept]');
-//		combo.setValue(myrecord.concept_id);
+		
+		var combo = win.down('form#questionform').down('fieldset#questioninfo').down('treecombo#conceptselector');
+		console.log(combo);
+		console.log('concept value: '+ myrecord.data.concept_id);
+		combo.setValue(myrecord.data.concept_id);
+		
+		var langcombo = win.down('form#questionform').down('fieldset#questioninfo').down('combo[name=lang]');
+		if (myrecord.data.lang) {
+			langcombo.setValue(myrecord.data.lang);
+		}
+
+		
+		
+//		console.log(myrecord.data.lang);
+//		console.log(win.down('form#questionform combo#qlangcombo'));
+//		win.down('form#questionform combo#qlangcombo').setValue(myrecord.data.lang);
+		
 		
 //missing
 		var newMStore = myrecord.missing();
 		missingstore.loadRecords(newMStore.getRange(0, newMStore.getCount()), {
 						addRecords : false
 		});
-		
-		
-		if (myrecord.data.respdomain == 'Code') {
-			console.log('code response domain');
-			var newStore = myrecord.coderesponses();
-			console.log(newStore);
-			codestore.loadRecords(newStore.getRange(0, newStore.getCount()), {
-						addRecords : false
-					});
-		} else if (myrecord.data.respdomain == 'Category') {
+
+		if (myrecord.data.respdomain == 'Category') {
 			console.log('category response domain');
-			console.log('code response domain');
+			
 			var newStore = myrecord.catresponses();
+			console.log(newStore);
 			catstore.loadRecords(newStore.getRange(0, newStore.getCount()), {
 						addRecords : false
 					});
@@ -1276,24 +1276,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			
 			var activertype = button.up('window').down('form').down('fieldset#qrinformation').getLayout().getActiveItem();
 			console.log(responsedomain);			
-			if (responsedomain == 'Code') {
-
-				var thisstore = button.up('window').down('form')
-						.down('fieldset#qrinformation').down('grid#qcoderesp')
-						.getStore();
-				var responsecodes = thisstore.getRange();
-					Ext.each(responsecodes, function(item) {
-					var response = new RODAdmin.model.studies.CBEditor.question.response.Code(
-							{
-								id : item.data.id,
-								value : item.data.value,
-								label : item.data.label,
-								lang : item.data.lang
-							});
-					editedQuestion.coderesponses().add(response);
-					editedQuestion.coderesponses().commitChanges();
-				});
-			} else if (responsedomain == 'Category') {
+			if (responsedomain == 'Category') {
 				var catstore = button.up('window').down('form').down('fieldset#qrinformation').down('grid#qcatresp').getStore();
 				var responsecats = catstore.getRange();
 				Ext.each(responsecats, function(item) {
@@ -1301,6 +1284,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 							{
 								id : item.data.id,
 								label : item.data.label,
+								value : item.data.value,
 								lang : item.data.lang
 							});
 					editedQuestion.catresponses().add(response);
@@ -1365,11 +1349,8 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 
 			
 			if (activertype.itemId == 'catresp') {
-
-				// sa vedem cum obtinem datele din store. Intai ne trebuie
-				// store-ul
 				var thisstore = button.up('window').down('form')
-						.down('fieldset#qrinformation').down('grid#qcoderesp')
+						.down('fieldset#qrinformation').down('grid#qcatresp')
 						.getStore();
 				var responsecodes = thisstore.getRange();
 				// avem intrebarea si avem si raspunsurile, sa vedem daca putem
@@ -1377,6 +1358,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				// modelele trebuie instantiate din nou, nu stiu de ce dar
 				// banuiesc ca din lipsa de id
 				Ext.each(responsecodes, function(item) {
+					console.log('we have respcode' + item.data.label);
 					var response = new RODAdmin.model.studies.CBEditor.question.response.Code(
 							{
 								id : item.data.id,
@@ -1384,9 +1366,12 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 								label : item.data.label,
 								lang : item.data.lang
 							});
-					question.coderesponses().add(response);
-					question.coderesponses().commitChanges();
+					question.catresponses().add(response);
+					question.catresponses().commitChanges();
 				});
+				
+				console.log(question);
+				
 				ourstore.add(question);
 				ourstore.commitChanges();
 				button.up('window').close();
@@ -1503,7 +1488,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	addEmptyResponseCode : function(button, e, options) {
 		// sa vedem daca avem limba la intrebarea curenta
 		var qlang = button.up('window').down('fieldset#questioninfo').down('combo[name=lang]').getValue();
-		var ourstore = this.getResponsecodegrid().getStore();
+		var ourstore = this.getResponsecatgrid().getStore();
 		var nextStoreId = this.getStoreNextId(ourstore);
 		if (qlang) {
 			var newrecord = new RODAdmin.model.studies.CBEditor.question.response.Code({
@@ -1783,21 +1768,16 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			langcombo.setValue(genlang);
 		}
 		var cards = win.down('form#questionform').down('fieldset#qrinformation');
-		var codegrid = cards.down('grid#qcoderesp');
 		var catgrid = cards.down('grid#qcatresp');
 		var missinggrid = win.down('form#questionform').down('fieldset#missinginfo').down('grid#missing');
 		var numerictype = cards.down('combo#qnrtype');
 		var nlow = cards.down('textfield[name=qnrlow]');
 		var nhigh = cards.down('textfield[name=qnrhigh]');
 		// golim toate storeurile
-		var codestore = codegrid.getStore();
-		codestore.getProxy().clear();
-		codestore.data.clear();
-		codestore.sync();
-//		var catstore = catgrid.getStore();
-//		catstore.getProxy().clear();
-//		catstore.data.clear();
-//		catstore.sync();
+		var catstore = catgrid.getStore();
+		catstore.getProxy().clear();
+		catstore.data.clear();
+		catstore.sync();
 		var missingstore = missinggrid.getStore();
 		missingstore.getProxy().clear();
 		missingstore.data.clear();
@@ -1809,11 +1789,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	savePersonOrg : function(button, e, options) {
 		console.log(button.up('window').getOriginalStore());
 		var ourstore = button.up('window').getOriginalStore();
-		// console.log(button.up('window'));
-		// salvam formularul din tabul activ
 		var activeform = button.up('window').down('tabpanel').getActiveTab();
-		// console.log(activeform);
-
 		if (activeform.itemId == 'personform') {
 			console.log('person active');
 			var existingselected = activeform.down('fieldset#experson')
@@ -1823,8 +1799,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 						.down('combo#expersonselect')
 						.findRecordByValue(existingselected);
 				var selectedname = personitem.data.name;
-				// var ourstore =
-				// this.getSproposal().down('fieldset#prinvfs').down('grid#prinvdisplay').getStore();
 				var newrecord = {
 					'type' : 'person',
 					'id' : existingselected,
@@ -1834,7 +1808,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				ourstore.add(newrecord);
 				button.up('window').close();
 			} else {
-				// presupunem ca avem un new si incercam sa facem ceva cu el
 				var addfs = activeform.down('fieldset#newperson');
 				console.log(addfs);
 				var cprefix = addfs.down('combo#cprefix').getValue();
@@ -1851,9 +1824,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				var pcode = addressfs.down('textfield[name=postalcode]')
 						.getValue();
 				var city = addressfs.down('combo[name=city]').getValue();
-
-				var ourstore = this.getSproposal().down('fieldset#prinvfs')
-						.down('grid#prinvdisplay').getStore();
 				var newrecord = {
 					'type' : 'person',
 					'selectedname' : cfname + ' ' + clname,
@@ -1881,8 +1851,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 						.down('combo#exorgselect')
 						.findRecordByValue(exorgselected);
 				var selectedname = orgitem.data.name;
-				// var ourstore =
-				// this.getSproposal().down('fieldset#prinvfs').down('grid#prinvdisplay').getStore();
 				var newrecord = {
 					'type' : 'org',
 					'id' : exorgselected,
@@ -1898,8 +1866,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				var csname = addorg.down('textfield[name=shortname]')
 						.getValue();
 				var cfname = addorg.down('textfield[name=fullname]').getValue();
-				// var cemail = addorg.down('textfield[name=email]').getValue();
-				// var cphone = addorg.down('textfield[name=phone]').getValue();
 				var addressfs = addorg.down('fieldset#neworgAddress');
 				var address1 = addressfs.down('textfield[name=address1]')
 						.getValue();
@@ -1908,8 +1874,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				var pcode = addressfs.down('textfield[name=postalcode]')
 						.getValue();
 				var city = addressfs.down('combo[name=city]').getValue();
-				var ourstore = this.getSproposal().down('fieldset#prinvfs')
-						.down('grid#prinvdisplay').getStore();
 				var newrecord = {
 					'type' : 'org',
 					'selectedname' : csname,
@@ -1917,8 +1881,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 					'orgprefix' : cprefix,
 					orgsname : csname,
 					orglname : clname,
-					// orgemail: cemail,
-					// orgphone: cphone,
 					orgaddr1 : address1,
 					orgaddr2 : address2,
 					orgcode : pcode,
@@ -1929,80 +1891,23 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 
 			}
 		}
-		// //sa vedem daca avem existing
-		// var existingselected =
-		// activeform.down('fieldset#experson').down('combo#expersonselect').getValue();
-		// if (existingselected > 0) {
-		// var personitem =
-		// activeform.down('fieldset#experson').down('combo#expersonselect').findRecordByValue(existingselected);
-		// var selectedname = personitem.data.name;
-		// var ourstore =
-		// this.getSproposal().down('fieldset#prinvfs').down('grid#prinvdisplay').getStore();
-		// var newrecord = {'type': 'person', 'id': existingselected,
-		// 'selectedname': selectedname, 'status': 'existing'};
-		//    			
-		// ourstore.add(newrecord);
-		// button.up('window').close();
-		// console.log(ourstore);
-		// }
-		//
-		//		
-		// var eorgselected =
-		// activeform.down('fieldset#exorg').down('combo#exorgselect').getValue();
-		// if (exorgselected > 0) {
-		// //adaugam chestia in storeul din dataview
-		// //sa vedem cum capatam si eticheta
-		// var orgitem =
-		// activeform.down('fieldset#exorg').down('combo#exorgselect').findRecordByValue(exorgselected);
-		// var selectedname = orgitem.data.name;
-		// var ourstore =
-		// this.getSproposal().down('fieldset#prinvfs').down('grid#prinvdisplay').getStore();
-		// var newrecord = {'type': 'org', 'id': exorgselected, 'selectedname':
-		// selectedname, 'status': 'existing'};
-		// ourstore.add(newrecord);
-		// button.up('window').close();
-		// console.log(ourstore);
-		// }
-		//		
-
-		// var personform =
-		// button.up('window').down('tabpanel').down('form#personform');
-		// var orgform =
-		// console.log(button.up('window').down('tabpanel').down('form#orgform'));
-
-		// console.log(personform);
-		// console.log(orgform);
-
-		// console.log(button.up('window').down('tabpanel').query('form#personform'));
-		// console.log(button.up('window').down('tabpanel').query('form#orgform'));
-
-		// console.log(button.up('window').down('form
-		// #personform').down('fieldset #experson'));
-
-		// console.log(button.up('fieldset #experson')).down('combo
-		// #expersonselect');
-
-		// sa vedem daca avem ceva selectat
-		// in primul rand sa vedem daca sunt selectate alea existente
-
 	},
 
 	studySaveClick  : function(button, e, options) {
 		this.refreshWindowStore();
-		 var win = button.up('studyadd');
+		var win = button.up('studyadd');
 	     win.close();
 	},
-	
 	
 	refreshWindowStore : function() {
 		var allmydata = {};
 		allmydata.studyProposal = this.getSproposalData();
-		
 		allmydata.studyFunding = this.getFundingData();
 		allmydata.studyConcepts = this.getConceptData();
 		allmydata.studyQuestions = this.getQuestionsData();
 		allmydata.dataCollection = this.getDataCollectionData();
 		allmydata.dataProduction = this.getDataProductionData();
+		allmydata.dataProcessInfo = this.getProcessInfoData();
 		console.log(allmydata);
 		//ok, try save
 		//sa vedem daca e nou sau nu
@@ -2098,16 +2003,22 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		var ourstore = this.getSproposal().down('fieldset#prinvfs').down('grid#prinvdisplay').getStore();
 		sproposaldata.principalinvestigator = Ext.Array.pluck(ourstore.data.items, 'data');
 		sproposaldata.genlanguage = this.getSproposal().down('combo#genlanguage').getValue();
-		
+		if (sproposaldata.genlanguage > 0) {
+			var storeentry = this.getSproposal().down('combo#genlanguage').store.findRecord('indice', sproposaldata.genlanguage);
+			console.log(storeentry);
+			if (storeentry) {
+				sproposaldata.genlanguagename = storeentry.data.nameSelf;
+			}
+		}
 		sproposaldata.studytitle = this.getSproposal().down('textareafield#studytitle').getValue();
 		sproposaldata.altitle = this.getSproposal().down('textareafield#altitle').getValue();
-
 		sproposaldata.stabstract = this.getSproposal().down('textareafield#stabstract').getValue();
+		sproposaldata.universe = this.getSproposal().down('textareafield#universe').getValue();
+		sproposaldata.weighting = this.getSproposal().down('textareafield#weighting').getValue();
+		sproposaldata.analysisunit = this.getSproposal().down('textareafield#analysisunit').getValue();
 		sproposaldata.geocoverage = this.getSproposal().down('textareafield#geocoverage').getValue();
 		sproposaldata.geounit = this.getSproposal().down('textareafield#geounit').getValue();
 		sproposaldata.resinstrument = this.getSproposal().down('textareafield#resinstrument').getValue();
-		// acu sa vedem storeul de la grid. Sa vedem daca putem sa-l convingem
-		// sa se transforme in json fara scandal.
 		return sproposaldata;
 	},
 
@@ -2137,15 +2048,15 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		var sconceptdata = {};
 		
 		if (this.getSconcepts().down('datefield#stconcepts').getValue()) {
-			sconceptdata.startqdesign = this.getSconcepts().down('datefield#stconcepts').getValue().toJSON();
+			sconceptdata.stconcepts = this.getSconcepts().down('datefield#stconcepts').getValue().toJSON();
 		} else {
-			sconceptdata.startqdesign = '';
+			sconceptdata.stconcepts = '';
 		}
 		
 		if ( this.getSconcepts().down('datefield#endconcepts').getValue() ){
-			sconceptdata.endqdesign = this.getSconcepts().down('datefield#endconcepts').getValue().toJSON();
+			sconceptdata.endconcepts = this.getSconcepts().down('datefield#endconcepts').getValue().toJSON();
 		} else {
-			sconceptdata.endqdesign = '';
+			sconceptdata.endconcepts = '';
 		}
 		
 		
@@ -2161,7 +2072,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	getQuestionsData : function() {
 		//that will be interesting. Can we pluck recursive? I don't think so
 		var squestiondata = {};
-
+		console.log('getting squestion data');
 		 if( this.getSquestions().down('datefield#startqdesign').getValue() ) {
 				squestiondata.startqdesign = this.getSquestions().down('datefield#startqdesign').getValue().toJSON();
 		 } else {
@@ -2177,16 +2088,27 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		var qdesignstore = this.getSquestions().down('fieldset#qdesign').down('grid#qdesigndisplay').getStore();
 		squestiondata.qdesignresp = Ext.Array.pluck(qdesignstore.data.items,'data');
 		var questionsstore = this.getSquestions().down('fieldset#questions').down('grid#questionsdisplay').getStore();
+		console.log(questionsstore);
 		squestiondata.questions = [];
 		questionsstore.each(function(record) {
 			var cquestion = record.data;
+			console.log('++++++++++++++');
+			console.log(record);
+			console.log(record.data.respdomain);
 			if (record.data.respdomain == 'Code') {
 				cquestion.coderesponses = Ext.Array.pluck(record.coderesponses().data.items,'data');
 			} else if (record.data.respdomain == 'Category') {
+				console.log(record.catresponses());
+				console.log(record.catresponses().data.items);
 				cquestion.catsponses = Ext.Array.pluck(record.catresponses().data.items,'data');
 			} else if (record.data.respdomain == 'Numeric') {
 				cquestion.numericresponse = Ext.Array.pluck(record.numericresponse().data.items,'data');
 			}
+			
+			console.log(record.missing());
+			
+			cquestion.missing = Ext.Array.pluck(record.missing().data.items,'data');
+			console.log(cquestion.missing);
 			squestiondata.questions.push(cquestion);
 		} );
 		
@@ -2269,16 +2191,18 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	getDataProductionData : function() {
 		var sdproddata = {};
 		if (this.getSdataprod().down('datefield#stdataprod').getValue()) {
-				sdproddata.startsampling = this.getSdataprod().down('datefield#stdataprod').getValue().toJSON();
+				console.log('do we?-------------')
+				sdproddata.stdataprod = this.getSdataprod().down('datefield#stdataprod').getValue().toJSON();
 		} else {
-				sdproddata.startsampling = '';
+				sdproddata.stdataprod = '';
 		}
 
 		
 		if ( this.getSdataprod().down('datefield#enddataprod').getValue() ) {
-				sdproddata.endsampling = this.getSdataprod().down('datefield#enddataprod').getValue().toJSON();
+			console.log('do we?-------------')
+			sdproddata.enddataprod = this.getSdataprod().down('datefield#enddataprod').getValue().toJSON();
 		} else {
-				sdproddata.endsampling = '';
+				sdproddata.enddataprod = '';
 		}
 
 		var dataprodrespstore = this.getSdataprod().down('fieldset#dpresponsibility').down('grid#dprespdisplay').getStore();
@@ -2290,9 +2214,22 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 
 		var filestore = this.getSdataprod().down('fieldset#dpdatafiles').down('grid#filesdisplay').getStore();
 		sdproddata.files = Ext.Array.pluck(filestore.data.items,'data');
+		console.log(sdproddata);
+		
 		return sdproddata;
 	},
 
+
+	getProcessInfoData : function() {
+		var sdprocinfodata = {};
+		sdprocinfodata.ccorrect = this.getSprocessinfo().down('checkbox#ccorrect').getValue();
+		sdprocinfodata.qextract = this.getSprocessinfo().down('checkbox#qextract').getValue();
+		sdprocinfodata.dataextract = this.getSprocessinfo().down('checkbox#dataextract').getValue();
+		sdprocinfodata.datarights = this.getSprocessinfo().down('combo#datarights').getValue();
+		return sdprocinfodata;
+	},
+	
+	
 	
 	getStoreNextId : function(ourstore) {
 		var maxId = 0;

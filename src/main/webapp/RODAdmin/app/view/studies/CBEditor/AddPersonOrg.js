@@ -8,6 +8,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddPersonOrg', {
 	width : '20%',
 
 	requires : ['RODAdmin.util.Util'],
+	
 
 	layout : {
 		type : 'fit'
@@ -19,7 +20,14 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddPersonOrg', {
 	},
 
 	initComponent : function() {
-		var me = this;
+  	    var personstore = Ext.create('RODAdmin.store.metadata.Persons');		
+  	    var orgstore = Ext.create('RODAdmin.store.metadata.Orgs');	
+
+  	    var prefixstore = Ext.create('RODAdmin.store.metadata.Prefixes');	
+  	    var suffixstore = Ext.create('RODAdmin.store.metadata.Sufixes');	
+  	    var citystore = Ext.create('RODAdmin.store.metadata.City');	
+  	    
+  	    var me = this;
 		Ext.applyIf(me, {
 				layout : 'fit',
 				items : [{
@@ -55,16 +63,9 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddPersonOrg', {
 														name : 'experson',
 														itemId : 'expersonselect',
 														fieldLabel : 'Person',
-														// anchor : '100%',
 														displayField : 'name',
-														// typeAhead: true,
 														valueField : 'id',
-														// tpl: '<tpl
-														// for="."><div
-														// class="x-boundlist-item">{directory}/<strong>{name}</strong><br><i>{description}</i><hr></div></tpl>',
-														// store :
-														// 'cms.layout.Layout'
-														store : 'studies.CBEditor.Person'
+														store : personstore
 													}]
 												},{
 												xtype : 'fieldset',
@@ -76,13 +77,18 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddPersonOrg', {
 													type : 'vbox',
 													align: 'stretch'
 												},														
-												items : 	[{
+												items : 	[
+												        	 {
 																xtype : 'combo',
 																labelWidth : 80,
 																name : 'prefix',
 																itemId: 'cprefix',
-																fieldLabel : 'Prefix'
-																}, {
+																fieldLabel : 'Prefix',
+																displayField : 'name',
+																valueField : 'id',
+																store: prefixstore	
+																}
+												        	 , {
 																	xtype : 'textfield',
 																	name : 'fname',
 																	labelWidth : 80,																	
@@ -92,13 +98,19 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddPersonOrg', {
 																	name : 'lname',
 																	labelWidth : 80,																	
 																	fieldLabel : 'Last Name'
-																}, {
+																}, 
+																{
 																	xtype : 'combo',
 																	labelWidth : 80,
 																	name : 'suffix',
 																	itemId: 'csuffix',
-																	fieldLabel : 'Suffix'
-															}, {
+																	fieldLabel : 'Suffix',
+																	displayField : 'name',
+																	valueField : 'id',
+																	store: suffixstore	
+															}
+																
+																, {
 																	xtype : 'textfield',
 																	labelWidth : 80,
 																	name : 'email',
@@ -131,12 +143,19 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddPersonOrg', {
 																				labelWidth : 80,
 																				name : 'postalcode',
 																				fieldLabel : 'Postal Code'
-																			}, {
+																			},
+																			{
 																				xtype : 'combo',
 																				labelWidth : 80,
 																				name : 'city',
-																				fieldLabel : 'City'
-																			}]  //end fieldset address
+																				fieldLabel : 'City',
+																				displayField : 'name',
+																				valueField : 'id',
+																				store: citystore	
+																					
+																			}
+																			
+																			]  //end fieldset address
 														}] //end fieldset add new person items
 												}] //end person form fieldsets
 											}, // end person form
@@ -164,14 +183,9 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddPersonOrg', {
 														name : 'exorg',
 														itemId : 'exorgselect',
 														fieldLabel : 'Organisation',
-														// anchor : '100%',
 														displayField : 'name',
-														// typeAhead: true,
 														valueField : 'id',
-														// tpl: '<tpl
-														// for="."><div
-														// class="x-boundlist-item">{directory}/<strong>{name}</strong><br><i>{description}</i><hr></div></tpl>',
-														store : 'studies.CBEditor.Org'
+														store: orgstore	
 													}]
 										}, {
 											xtype : 'fieldset',

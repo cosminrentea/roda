@@ -147,8 +147,15 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     		        click : this.onAddStudyClick
     	        },
     	        'studiestemp toolbar#studyedittoolbar button#convert-tstudy' : {
-    	        	click : this.onConvertTempStudy
+    	      //  	click : this.onConvertTempStudy
+    	        	click : this.convertStudyTry
     	        }, 
+    	        'convertconfirm button#cancel' : {
+    	        	click : this.onButtonCancel
+    	        },
+    	        'convertconfirm button#convert' : {
+    	        	click : this.onButtonConvert
+    	        }
     	        
     	        
        	    });
@@ -168,12 +175,100 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 //    	Ext.History.add('menu-studiesmain');
     },
     
+    onButtonCancel : function(button, e, options) {
+    	 button.up('window').close();
+    }, 
+
+    onButtonConvert : function(button, e, options) {
+    	this.onConvertTempStudy();
+    	var srec = this.getIconview().getSelectionModel().getLastSelected();
+    	var myid = srec.data.indice;
+    	
+    	console.log(myid);
+    	
+    	button.up('window').close();
+    }, 
+    
+    
+    convertStudyTry : function(button, e, options) {
+    	console.log('convertStudyTry');
+    	var srec = this.getIconview().getSelectionModel().getLastSelected();
+    	var myid = srec.data.indice;
+		Ext.Ajax.request({
+			url: '/roda/cmsfilecontent/'+myid,
+			waitTitle: 'Connecting',
+			waitMsg: 'Receveing data...',                                     
+			method : 'GET',
+			scope:this,
+			success : function(response, opts) {
+				var studyFile = Ext.JSON.decode(response.responseText);
+				console.log (studyFile);
+				Ext.data.Connection.prototype.useDefaultXhrHeader = false;
+				Ext.Ajax.request({
+					url: 'http://localhost/ddi/checkjson',
+					waitTitle: 'Connecting',
+					waitMsg: 'Sending data...',                                     
+					params: {
+						"data" : Ext.JSON.encode(studyFile)
+					},
+					scope:this,
+					method: 'POST',  
+					success : function(response, opts) {
+						console.log ('success');
+						console.log (response.responseText);					
+
+						var resp = Ext.JSON.decode(response.responseText);
+						console.log (resp);
+						if (resp.success) {
+							console.log ('response success');
+							// acu sa vedem daca avem erori
+	
+
+							var win = Ext.WindowMgr.get('convertconfirm');
+							if (!win) {
+								win = Ext.create('RODAdmin.view.studies.CBEditor.ConvertConfirm');
+							}
+							resp.result.data = studyFile;
+							win.down('panel#convertstatus').update(resp.result);
+							for (i = 0; i < resp.result.errors.length; i++) {
+								console.log(resp.result.errors[i]);
+								if (resp.result.errors[i].type == 'fatal') {
+									win.down('button#convert').disable();
+								}
+							}
+							win.show();
+
+												
+						} else {
+							console.log ('error');
+							RODAdmin.util.Util.showErrorMsg(response.message);
+						}
+					},
+					failure : function(response, action) {
+						console.log ('failure');
+						console.log(response);
+						switch (action.failureType) {
+							case Ext.form.action.Action.CLIENT_INVALID:
+								Ext.Msg.alert('Failure', 'Form fields may must be submitted with invalid values');
+								break;
+							case Ext.form.action.Action.CONNECT_FAILURE:
+								Ext.Msg.alert('Failure', 'doesn\'t work');
+								break;
+							case Ext.form.action.Action.SERVER_INVALID:
+								Ext.Msg.alert('Failure', action.result.msg);
+								break;
+						}
+					}
+				});
+			}
+		});
+
+    },
+    
+    
     onConvertTempStudy : function(button, e, options) {
     	var srec = this.getIconview().getSelectionModel().getLastSelected();
     	var myid = srec.data.indice;
-
- 
-    	
     	
 		Ext.Ajax.request({
 			url: '/roda/cmsfilecontent/'+myid,

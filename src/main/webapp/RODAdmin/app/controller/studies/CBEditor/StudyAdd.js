@@ -1894,9 +1894,90 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	},
 
 	studySaveClick  : function(button, e, options) {
-		this.refreshWindowStore();
+		console.log('study save click');
+		var allmydata = {};
+		allmydata.studyProposal = this.getSproposalData();
+		allmydata.studyFunding = this.getFundingData();
+		allmydata.studyConcepts = this.getConceptData();
+		allmydata.studyQuestions = this.getQuestionsData();
+		allmydata.dataCollection = this.getDataCollectionData();
+		allmydata.dataProduction = this.getDataProductionData();
+		allmydata.dataProcessInfo = this.getProcessInfoData();
+		
 		var win = button.up('studyadd');
-	     win.close();
+
+		var mytitle = this.getSproposal().down('textareafield#studytitle').getValue();
+		if (this.getStudyaddmain().getMode() == 'add') {
+			console.log('add mode -------------------------------------');
+			Ext.Ajax.request({
+				url: '/roda/adminjson/cmsjsoncreate',
+				waitTitle: 'Connecting',
+				waitMsg: 'Sending data...',                                     
+				params: {
+					"name" : mytitle,
+				},
+				scope:this,
+				jsonData: allmydata,
+				success : function(response, opts) {
+					console.log ('success');
+					console.log (response.responseText);					
+					var resp = Ext.JSON.decode(response.responseText);
+					console.log (resp);
+					if (resp.success) {
+                        	this.getTempstudygrid().store.load();
+                        	win.close();
+
+					} else {
+						console.log ('error');
+						RODAdmin.util.Util.showErrorMsg(response.message);
+					}
+				},
+				failure : function(response, opts) {
+					console.log ('failure');
+					switch (action.failureType) {
+					case Ext.form.action.Action.CLIENT_INVALID:
+                        	Ext.Msg.alert('Failure', 'Form fields may must be submitted with invalid values');
+                        	break;
+                        	
+					case Ext.form.action.Action.CONNECT_FAILURE:
+                        	Ext.Msg.alert('Failure', 'doesn\'t work');
+                        	break;
+					case Ext.form.action.Action.SERVER.INVALID:
+                        	Ext.Msg.alert('Failure', action.result.msg);
+                        	break;
+					}
+				}
+			});
+		} else if (this.getStudyaddmain().getMode() == 'edit') {
+			console.log('edit mode -------------------------------------');
+			var myid = this.getStudyaddmain().getEditindex();
+			Ext.Ajax.request({
+			    url: '/roda/adminjson/cmsjsonsave/',
+			    waitTitle: 'Connecting',
+			    waitMsg: 'Sending data...',  
+			    method: 'POST',  
+			    params: {
+			        "name" : mytitle,
+			        "id" : myid,
+			    },
+			    jsonData: allmydata,
+			    scope:this,
+			    success : function(response, opts) {
+                	this.getTempstudygrid().store.load();
+			    	console.log('success');
+                	win.close();
+			    },                                
+			    failure: function(){console.log('failure');}
+			});
+			
+		}
+
+		
+		
+		
+		
+		
+
 	},
 	
 	refreshWindowStore : function() {

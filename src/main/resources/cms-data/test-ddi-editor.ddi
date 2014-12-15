@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<codeBook version="1.2.2" ID="RODA072" xml-lang="en" xmlns="http://www.icpsr.umich.edu/DDI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.icpsr.umich.edu/DDI http://www.icpsr.umich.edu/DDI/Version1-2-2.xsd">
+  <docDscr>
+    <citation>
+      <titlStmt>
+        <titl>
+          Probleme sociale si nivel de trai - 1998
+        </titl>
+        <IDNo>
+          072
+        </IDNo>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty affiliation="RODA">
+          Adrian Dusa
+        </AuthEnty>
+        <AuthEnty affiliation="RODA">
+          Cristina Bajenaru
+        </AuthEnty>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="RODA" affiliation="Universitatea din Bucuresti">
+          Arhiva Romana de Date Sociale
+        </producer>
+        <copyright>
+          Copyright RODA, 2002
+        </copyright>
+        <prodPlac>
+          <![CDATA[RODA
+Bd. Schitu Magureanu nr.1
+et.5, sala 15
+Bucuresti]]>
+        </prodPlac>
+        <software version="4.0.8" date="2012-05-14">
+          Nesstar Publisher
+        </software>
+        <fundAg abbr="ICCV" role="salarii">
+          Institutul de Cercetare a Calitatii Vietii
+        </fundAg>
+        <fundAg abbr="SAS" role="infrastructura, echipamente">
+          Facultatea de Sociologie si Asistenta Sociala
+        </fundAg>
+      </prodStmt>
+      <distStmt>
+        <distrbtr abbr="RODA" affiliation="Universitatea din Bucuresti" URI="http://www.roda.ro">
+          Arhiva Romana de Date Sociale
+        </distrbtr>
+        <contact affiliation="RODA" email="adi@roda.ro">
+          Adrian Dusa
+        </contact>
+        <contact affiliation="RODA" email="mari@roda.ro">
+          Mariana Dan
+        </contact>
+        <depositr/>
+      </distStmt>
+    </citation>
+    <docSrc>
+      <titlStmt>
+        <titl>
+          Temp#1
+        </titl>
+      </titlStmt>
+      <distStmt>
+        <depositr/>
+      </distStmt>
+    </docSrc>
+  </docDscr>
+  <stdyDscr>
+    <citation>
+      <titlStmt>
+        <titl>
+          Probleme sociale si nivel de trai - 1998
+        </titl>
+        <IDNo>
+          072
+        </IDNo>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty affiliation="Universitatea din Bucuresti">
+          SAS-UB - Facultatea de Sociologie si Asistenta Sociala
+        </AuthEnty>
+        <AuthEnty affiliation="Academia Romana">
+          ICCV - Institutul de Cercetare a Calitatii Vietii
+        </AuthEnty>
+        <othId>
+          <p>
+            coordonator: Catalin Zamfir
+          </p>
+        </othId>
+        <othId>
+          <p>
+            colectiv de cercetare: Malina Voicu, Bogdan Voicu, Monica Serban, Adrian Dan, Ruxandra Noica
+          </p>
+        </othId>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="ICCV" affiliation="Academia Romana">
+          ICCV - Institutul de Cercetare a Calitatii Vietii
+        </producer>
+        <producer abbr="Universitatea din Bucuresti">
+          Facultatea de Sociologie si Asistenta Sociala
+        </producer>
+        <copyright>
+          Copyright ICCV, 1998
+        </copyright>
+        <prodPlac>
+          <![CDATA[ICCV
+Casa Academiei Romane
+Calea 13 Septembrie nr.13
+Bucuresti]]>
+        </prodPlac>
+        <software version="4.0.8" date="2012-05-14">
+          Nesstar Publisher
+        </software>
+        <fundAg abbr="CNCSU">
+          CNCSU - Consiliul National al Cercetarii Stiinfitice Universitare
+        </fundAg>
+      </prodStmt>
+      <distStmt>
+        <distrbtr abbr="RODA" affiliation="Universitatea din Bucuresti" URI="http://www.roda.ro">
+          Arhiva Romana de Date Sociale
+        </distrbtr>
+        <contact affiliation="ICCV" email="malina@roda.ro">
+          Malina Voicu
+        </contact>
+        <contact affiliation="ICCV" email="bogdan@iccv.ro">
+          Bogdan Voicu
+        </contact>
+        <depositr abbr="ICCV">
+          Institutul de Cercetare a Calitatii Vietii
+        </depositr>
+      </distStmt>
+    </citation>
+    <stdyInfo>
+      <subject>
+        <topcClas>
+          Politici sociale
+        </topcClas>
+        <topcClas>
+          Saracie
+        </topcClas>
+      </subject>
+      <sumDscr>
+        <nation>
+          Romania
+        </nation>
+        <geogCover>
+          Romania
+        </geogCover>
+        <geogUnit>
+          a) regiuni; b)judete; c) localitati
+        </geogUnit>
+        <anlyUnit>
+          Individul
+        </anlyUnit>
+        <universe>
+          Adulti; National; Adulti (in varsta de peste 18 ani), cetateni romani cu drept de vot
+        </universe>
+      </sumDscr>
+    </stdyInfo>
+    <method>
+      <dataColl>
+        <dataCollector abbr="ICCV" affiliation="Academia Romana">
+          ICCV - Institutul de Cercetare a Calitatii Vietii
+        </dataCollector>
+        <dataCollector abbr="SAS-UB" affiliation="Universitatea din Bucuresti">
+          SAS-UB - Facultatea de Sociologie si Asistenta Sociala
+        </dataCollector>
+        <sampProc>
+          <![CDATA[S-a adoptat o schema de esantionare probabilista multistadiala cu stratificare pentru a reduce cat mai mult erorile de esantionare. Stratificarea populatiei cu drept de vot s-a facut in functie de urmatoarele criterii: 1) Aria socio-culturala: 18 arii socioculturale (grupari de judete) propuse de Dumitru Sandu (Esantionare si analiza regionala, SFOS, 1998) pornind de la indicii judeteni de dezvoltare. 2) Mediul rezidential si marimea localitatii: urban (orase foarte mari, mari, mijlocii si mici) si rural (comune mari si mici)
+
+Sunt considerate foarte mari orasele cu mai mult de 200000 de locuitori, orase mari cele care au peste 100000 de locuitori, mijlocii cele care au intre 30000 si 100000 de locuitori, iar mici cele care au sub 30000 de locuitori.]]>
+        </sampProc>
+        <collMode>
+          Interviuri fata-in-fata
+        </collMode>
+        <resInstru>
+          Structurat
+        </resInstru>
+        <sources/>
+      </dataColl>
+    </method>
+    <dataAccs>
+      <setAvail>
+        <accsPlac URI="http://www.roda.ro">
+          Arhiva Romana de Date Sociale
+        </accsPlac>
+        <origArch>
+          Arhiva Romana de Date Sociale
+        </origArch>
+      </setAvail>
+      <useStmt>
+        <specPerm required="yes">
+          Utilizatorii trebuie sa semneze un 'Acord individual de acces' pentru a acea acces la aceasta baza de date.
+        </specPerm>
+        <contact affiliation="ICCV" email="bogdan@iccv.ro">
+          Bogdan Voicu
+        </contact>
+        <citReq>
+          Publicatiile bazate pe analiza seturilor de date distribuite de RODA trebuie sa mentioneze sursele acestuia prin citari bibliografice. Aceste citari trebuie sa apara in notele de subsol ori in sectiunile cu referinte bibliografice.
+        </citReq>
+        <deposReq>
+          Pentru a aduce la cunostinta finantatorilor informatii esentiale despre modul de folosire a resurselor arhivei si pentru a facilita schimbul de informatii despre activitatea utilizatorilor RODA, acestia sunt rugati sa trimita citari bibliografice din materialele scrise, sau copii ale capitolelor care mentioneaza folosirea setului de date, impreuna cu indicarea titlului materialului in care se pot gasi respectivele citari sau copii de capitole.
+        </deposReq>
+        <disclaimer>
+          Colectorul datelor, finantatorii si arhiva care gazduieste setul de date (RODA) nu-si asuma nici o responsabilitate pentru utilizarea eronata a seturilor de date sau pentru orice interpretari ori inferente in urma unor astfel de utilizari.
+        </disclaimer>
+      </useStmt>
+    </dataAccs>
+    <othrStdyMat>
+      <relMat>
+        <citation>
+          <titlStmt>
+            <titl>
+              Chestionar Word
+            </titl>
+          </titlStmt>
+          <holdings URI="http://www.roda.ro/documente/072.doc"/>
+        </citation>
+      </relMat>
+      <relMat>
+        <citation>
+          <titlStmt>
+            <titl>
+              Chestionar PDF
+            </titl>
+          </titlStmt>
+          <holdings URI="http://www.roda.ro/documente/072.pdf"/>
+        </citation>
+      </relMat>
+    </othrStdyMat>
+  </stdyDscr>
+  <fileDscr ID="F1" URI="Temp#1.~esstar?Index=0&amp;Name=072_F1">
+    <fileTxt>
+      <fileName>
+        072_F1.NSDstat
+      </fileName>
+      <dimensns>
+        <caseQnty>
+          1177
+        </caseQnty>
+        <varQnty>
+          495
+        </varQnty>
+      </dimensns>
+      <fileType>
+        Nesstar 200801
+      </fileType>
+    </fileTxt>
+  </fileDscr>
+  <dataDscr>
+  
+  
+  
+  
+  
+  
+  </dataDscr>
+  <otherMat level="study">
+    <labl>
+      Observatii si probleme
+    </labl>
+    <txt>
+      <![CDATA[Seria de intrebari din chestionar I1 - I10 nu contine nici o informatie in variabilele din setul de date. Prin urmare acestea au fost sterse.
+
+Pentru variabilele i12altii i13altii i14altii i15altii i16altii i17altii i18altii valorile nu sunt etichetate.
+
+Pentru seria de variabile care se refera la ocupatia principala nu exista etichete pentru valori ca: 13, 14, 15, 17, 18, 20, 21, 22.
+
+Pentru seria de variabile care se refera la ocupatia secundara nu exista etichete pentru valori ca: 10, 11.
+]]>
+    </txt>
+  </otherMat>
+</codeBook>

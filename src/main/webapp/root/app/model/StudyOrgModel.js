@@ -7,8 +7,15 @@ Ext.define('databrowser.model.StudyOrgModel', {
             type: 'integer',
         },
         {
-            name: 'fname',
+            name: 'fullName',
             type: 'string'
+        },
+        {
+        	name: 'fname',
+        	type: 'string',
+        	convert: function (v, r) {
+    			return r.get('fullName');
+    		}
         },
         {
             name: 'lname',

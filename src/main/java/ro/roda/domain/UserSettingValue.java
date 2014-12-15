@@ -97,7 +97,7 @@ public class UserSettingValue {
 	public static void setOrAddUserSettingValue(String username, String userSettingName, String userSettingValue) {
 		UserSetting us = UserSetting.checkUserSetting(null, userSettingName, null, null);
 		// TODO Cosmin
-		List<Users> users = Users.findUsersesByUsernameLikeAndEnabled(username, true).getResultList();
+		List<Users> users = Users.findUsersByUsernameLikeAndEnabled(username, true).getResultList();
 		if (users != null && users.size() == 1) {
 			UserSettingValue usv = findUserSettingValue(new UserSettingValuePK(us.getId(), users.get(0).getId()));
 			if (usv == null) {

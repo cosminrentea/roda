@@ -20,4 +20,6 @@ public interface DdiImporterService {
 
 	public abstract void afterImport(List<String[]> csvLines) throws Exception;
 
+	public abstract void importDdiTestFile(MultipartFile multipartFileJson);
+
 }

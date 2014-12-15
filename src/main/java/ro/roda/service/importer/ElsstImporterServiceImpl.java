@@ -219,7 +219,8 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 			// set a parent - child relationship
 			// (type: NT = Narrower Term)
 			if ("NT".equals(csvLine[2].trim())) {
-				log.trace("ELSST Relationship: " + csvLine[1] + " -- " + csvLine[4]);
+				// log.trace("ELSST Relationship: " + csvLine[1] + " -- " +
+				// csvLine[4]);
 				dst.setParentId(src);
 				Set<Topic> topicSet = src.getTopics();
 				if (topicSet == null) {

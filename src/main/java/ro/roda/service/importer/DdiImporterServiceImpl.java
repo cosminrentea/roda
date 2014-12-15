@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,7 +165,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		reader.close();
 
 		// keep the DDI files in the same order each time
-		// so the IDs generated when importing are reproducible across runs
+		// so the IDs generated when importing can be reproduced across runs
 		Set<String> ddiFilenames = new TreeSet<String>();
 
 		for (String[] csvLine : csvLines) {
@@ -278,9 +279,9 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			}
 			catalogStudies.add(cs);
 			catalog.setCatalogStudies(catalogStudies);
-			catalog.merge();
 
-			study.flush();
+			catalog.merge();
+			// catalog.flush();
 		}
 
 		log.debug("ACLs for Catalogs, Series, Studies");
@@ -292,7 +293,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 		log.debug("Creating Solr index - Async");
 
-		CmsPage.indexCmsPages(CmsPage.findAllCmsPages());
+		// CmsPage.indexCmsPages(CmsPage.findAllCmsPages());
 		Catalog.indexCatalogs(Catalog.findAllCatalogs());
 		StudyDescr.indexStudyDescrs(StudyDescr.findAllStudyDescrs());
 		Variable.indexVariables(Variable.findAllVariables());
@@ -888,4 +889,13 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		s.merge();
 		s.flush();
 	}
+
+	public void importDdiTestFile(MultipartFile multipartFileJson) {
+
+		// ddiImporterService.importDdiTestFile(cb, multipartFileDdi,
+		// nesstarExported, legacyDataRODA, ddiPersistence, multipartFileCsv,
+		// multipartSyntax)
+
+	}
+
 }

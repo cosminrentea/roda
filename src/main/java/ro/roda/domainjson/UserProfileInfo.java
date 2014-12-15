@@ -1,11 +1,12 @@
 package ro.roda.domainjson;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
-import ro.roda.domain.UserProfile;
+import ro.roda.domain.Users;
+
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -65,11 +66,10 @@ public class UserProfileInfo extends JsonInfo {
 		this.birthdate = birthdate;
 	}
 
-	public UserProfileInfo(UserProfile userProfile) {
-		this(userProfile.getFirstname(), userProfile.getLastname(), userProfile.getMiddlename(),
-				userProfile.getTitle(), userProfile.getSalutation(), userProfile.getImage(), userProfile.getAddress1(),
-				userProfile.getAddress2(), userProfile.getCity(), userProfile.getCountry(), userProfile.getPhone(),
-				userProfile.getSex(), userProfile.getBirthdate());
+	public UserProfileInfo(Users user) {
+		this(user.getFirstname(), user.getLastname(), user.getMiddlename(), user.getTitle(), user.getSalutation(), user
+				.getImage(), user.getAddress1(), user.getAddress2(), user.getCity(), user.getCountry(),
+				user.getPhone(), user.getSex(), user.getBirthdate());
 	}
 
 	public String getSalutation() {

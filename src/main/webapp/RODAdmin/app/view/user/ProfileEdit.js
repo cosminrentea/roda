@@ -38,6 +38,7 @@ Ext.define('RODAdmin.view.user.ProfileEdit', {
                             xtype: 'hiddenfield',
                             fieldLabel: 'Label',
                             name: 'id',
+                            itemId : 'idfield',
                             allowBlank : false,
                             afterLabelTextTpl: RODAdmin.util.Util.required,
                         },
@@ -76,18 +77,7 @@ Ext.define('RODAdmin.view.user.ProfileEdit', {
                             name: 'city',
                             allowBlank : true,
                         },
-                        {
-                            fieldLabel: 'Data Nasterii',
-                            name: 'birthdate',
-                            allowBlank : true,
-                            xtype : 'datefield',
-                        },
-                        {
-                            fieldLabel: 'Sex',
-                            name: 'birthdate',
-                            allowBlank : true,
-                            xtype : 'datefield',
-                        },
+
 
                         
                     ]

@@ -354,7 +354,7 @@ Ext.define('RODAdmin.controller.user.User', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : RODAdmin.util.Globals.baseurl + '/adminjson/userprofilesave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/usersave',
 
 		        success : function(form, action) {
 			        var result = action.result;
@@ -407,7 +407,7 @@ Ext.define('RODAdmin.controller.user.User', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : RODAdmin.util.Globals.baseurl + '/adminjson/usersave',
+		        url : RODAdmin.util.Globals.baseurl + '/adminjson/usercreate',
 
 		        success : function(form, action) {
 
@@ -444,7 +444,7 @@ Ext.define('RODAdmin.controller.user.User', {
 				        Ext.Msg.alert('Failure', 'doesn\'t work');
 				        break;
 
-			        case Ext.form.action.Action.SERVER.INVALID:
+			        case Ext.form.action.Action.SERVER_INVALID:
 				        Ext.Msg.alert('Failure', action.result.msg);
 				        break;
 			        }
@@ -513,6 +513,7 @@ Ext.define('RODAdmin.controller.user.User', {
 			        var useritem = userstore.first();
 			        var profile = useritem.profileStore.getAt(0);
 			        win.down('form').getForm().loadRecord(profile);
+			        win.down('form hiddenfield#idfield').setValue(currentNode.data.id);
 		        }
 	        }
 	    });

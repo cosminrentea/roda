@@ -25,6 +25,10 @@ Ext.define('RODAdmin.controller.Menu', {
         {
             ref: 'mainPanel',
             selector: 'mainpanel'
+        }, 
+        {
+        	ref: 'userMainPanel',
+        	selector: 'mainuserpanel'
         }
     ],
    	/**
@@ -66,9 +70,20 @@ Ext.define('RODAdmin.controller.Menu', {
    	 */
     onTreepanelSelect: function(selModel, record, index, options) {
         //console.log(record.raw.className);
+    	console.log(RODAdmin.util.Globals);
+    	
+    	if (RODAdmin.util.Globals.isAdmin) {
+    		console.log('isAdmin');
+            mainPanel = this.getMainPanel();
+    	} else {
+    		console.log('is not admin');
+    		if (RODAdmin.util.Globals.isUser) {
+    			console.log('isUser');
+    			mainPanel = this.getUserMainPanel();
+    		}
+    	}
 
-        var mainPanel = this.getMainPanel();
-
+    	console.log(mainPanel);
         var newTab = mainPanel.items.findBy(
         function (tab){ 
             return tab.title === record.get('text'); 

@@ -94,6 +94,7 @@ Ext.define('RODAdmin.view.studies.StudiesTemp', {
                          		        {xtype:'stempquestions', itemId:'squestions'},
                          		        {xtype:'stempdatacollection', itemId:'sdatacollection'},
                          		        {xtype:'stempdataprod', itemId:'sdataprod'},	
+                         		        {xtype:'stprocessinfo', itemId:'sprocessinfo'}
                          		         ]
                          	},
      	                ]

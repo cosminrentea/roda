@@ -9,7 +9,7 @@ Ext.define('RODAdmin.store.cron.ActionList', {
     ],
 
     model: 'RODAdmin.model.cron.action.Action',
-    autoLoad: true,
+    autoLoad: false,
     proxy: {type: 'main', url: 'adminjson/scheduler/tasks'},      
 //    proxy: {type: 'main', url: 'http://roda.apiary.io/admin/scheduler/tasks'},      
 

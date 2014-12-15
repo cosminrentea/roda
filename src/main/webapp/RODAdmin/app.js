@@ -31,7 +31,7 @@ Ext.application({
     ],
 
     views : [
-            'Main', 'Viewport'
+            'Main', 'Viewport', 'MainUserPanel'
     ],
 
     stores : [
@@ -70,7 +70,6 @@ Ext.application({
     launch : function() {
     	console.log('launch application');    	
 	    Ext.tip.QuickTipManager.init();
-	    
         var me = this;
         // init Ext.util.History on app launch; if there is a hash in the url,
         // our controller will load the appropriate content
@@ -78,22 +77,72 @@ Ext.application({
 	    Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
 	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
 	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
-        
-        Ext.create('RODAdmin.view.MainViewport');
-        RODAdmin.util.SessionMonitor.start();
-        
-        
-        Ext.util.History.init(function(){
-        	console.log('history init firing event');
-        	var hash = document.location.hash;
-            me.getMainController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
-        })
-        // add change handler for Ext.util.History; when a change in the token
-        // occurs, this will fire our controller's event to load the appropriate content
-
-        Ext.util.History.on( 'change', function( token ){
-        	console.log('history change firing event');
-            me.getMainController().fireEvent( 'tokenchange', token );
-        });
+        //see if we can get the user session
+	    Ext.Ajax.request({
+			url: '/roda/userjson/session/list',
+			waitTitle: 'Connecting',
+			waitMsg: 'Sending data...',                                     
+			scope:this,
+			success : function(response, opts) {
+				var resp = Ext.JSON.decode(response.responseText);
+				console.log (resp);
+				if (resp.success) {
+					//sa vedem cine e si ce roluri are
+					var session_context = resp.data[0].value;
+					var splits = session_context.split(';');
+					//plecam de la ideea ca ramane asa cum e
+					//user name
+					var sprvalues = splits[0].split(':');
+					var username = sprvalues[sprvalues.length - 1].trim();
+					RODAdmin.util.Globals.username = username;
+					for (i = 0; i < splits.length; i++) {
+						if (splits[i].match(/Authorities/i)) {
+							var authorities = splits[i].split(':');
+							if (authorities[1].match(/ADMIN/)) {
+								RODAdmin.util.Globals.isAdmin = true;
+							}
+							if (authorities[1].match(/USER/)) {
+								RODAdmin.util.Globals.isUser = true;
+							}
+						}
+					}
+					if (RODAdmin.util.Globals.isAdmin ) {
+						Ext.create('RODAdmin.view.MainViewport');
+						RODAdmin.util.SessionMonitor.start();
+						Ext.util.History.init(function(){
+							console.log('history init firing event');
+							var hash = document.location.hash;
+							me.getMainController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
+						})
+						Ext.util.History.on( 'change', function( token ){
+							console.log('history change firing event');
+							me.getMainController().fireEvent( 'tokenchange', token );
+						});
+						} else if (RODAdmin.util.Globals.isUser) {
+							Ext.create('RODAdmin.view.UserViewport');
+							RODAdmin.util.SessionMonitor.start();
+						}			        
+					
+				} else {
+					console.log ('error');
+					RODAdmin.util.Util.showErrorMsg(response.message);
+				}
+			},
+			failure : function(response, opts) {
+				console.log ('failure');
+				switch (action.failureType) {
+				case Ext.form.action.Action.CLIENT_INVALID:
+                    	Ext.Msg.alert('Failure', 'Form fields may must be submitted with invalid values');
+                    	break;
+                    	
+				case Ext.form.action.Action.CONNECT_FAILURE:
+                    	Ext.Msg.alert('Failure', 'doesn\'t work');
+                    	break;
+				case Ext.form.action.Action.SERVER_INVALID:
+                    	Ext.Msg.alert('Failure', action.result.msg);
+                    	break;
+				}
+			}
+		});
     }
 });

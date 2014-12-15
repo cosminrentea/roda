@@ -10,5 +10,5 @@ Ext.define('RODAdmin.store.common.Language', {
 
     model: 'RODAdmin.model.common.Language',
     proxy: {type: 'main', url: 'userjson/languagelist'},      
-    autoLoad: true,
+    autoLoad: false,
 });

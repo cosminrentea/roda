@@ -36,7 +36,8 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
             'RODAdmin.view.studies.tempdetails.sTempDataProd',
             'RODAdmin.view.studies.tempdetails.sTempFunding',
             'RODAdmin.view.studies.tempdetails.sTempProposal',
-            'RODAdmin.view.studies.tempdetails.sTempQuestions'
+            'RODAdmin.view.studies.tempdetails.sTempQuestions',
+            'RODAdmin.view.studies.tempdetails.sTempProcessInfo',
     ],
     /**
 	 * @cfg
@@ -125,7 +126,11 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
             	ref: 'tdataproductionpreview',
             	selector : 'stempdataprod panel#stempdataprodpreview'
            },
-           
+           {
+        	   ref: 'tprocessinfo',
+        	   selector: 'stprocessinfo panel#tprocessinfopreview'
+        	   
+           }
            
            ],
             
@@ -172,7 +177,7 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     	console.log('InitView temp');	
     	this.getIconview().getStore().load();
     	
-//    	Ext.History.add('menu-studiesmain');
+    	Ext.History.add('menu-studiestemp');
     },
     
     onButtonCancel : function(button, e, options) {
@@ -209,7 +214,8 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 					waitTitle: 'Connecting',
 					waitMsg: 'Sending data...',                                     
 					params: {
-						"data" : Ext.JSON.encode(studyFile)
+						"data" : Ext.JSON.encode(studyFile),
+						"username" : RODAdmin.util.Globals.username
 					},
 					scope:this,
 					method: 'POST',  
@@ -288,7 +294,8 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 					waitTitle: 'Connecting',
 					waitMsg: 'Sending data...',                                     
 					params: {
-						"data" : Ext.JSON.encode(resp)
+						"data" : Ext.JSON.encode(resp),
+						"username" : RODAdmin.util.Globals.username
 					},
 					scope:this,
 					//				withCredentials: false,
@@ -368,6 +375,9 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
                     		win.down('form#sproposalform datefield#enddate').setValue(new Date(resp.studyProposal.enddate));
                     	}
 
+                       	Ext.StoreManager.get('common.Language').load();
+                    	
+                    	
                     	win.down('form#sproposalform combo#genlanguage').setValue(resp.studyProposal.genlanguage);   
                     	win.down('form#sproposalform textareafield#studytitle').setValue(resp.studyProposal.studytitle);
 		    			win.down('form#sproposalform textareafield#stabstract').setValue(resp.studyProposal.stabstract);
@@ -539,7 +549,8 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 							this.loadStudyConcepts(resp);
 							this.loadStudyQuestions(resp);
 							this.loadDataCollection(resp);
-							this.loadDataProduction(resp);
+							this.loadProcessInfo(resp);
+							
 							
 							//	RODAdmin.util.Alert.msg('Success!', response.message);
         					//console.log (resp.id);					
@@ -735,6 +746,28 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     	this.getTdataproductionpreview().update(tfinal);
     	
     },
+    
+    loadProcessInfo : function (resp) {
+    		var t = new Ext.Template(
+    		            		     '<div class="stpreviewcontainer">',
+    		            		     '<table width="100%">',
+    		            		     '<tr><th>Process information: </th><td>',
+    		            		     		'<table width="100%" border="0">',
+    		            		     		'<tr><th>RODA can correct minor errors</th><td>{ccorrect}</td></tr>',	
+    		            		     		'<tr><th>RODA can extract questions and variables</th><td>{qextract}</td></tr>',	
+    		            		     		'<tr><th>RODA can extract data</th><td>{dataextract}</td></tr>',	
+    		            		     		'</table>',
+    		            		     '</td></tr>',
+    		            		     '<tr><th>Data rights: </th><td>{datarights}</td></tr>',
+    		            		     '</table>',
+    		            		     '</div>',
+    		            		     {
+    		            			compiled: true
+    		            		});
+       		var tfinal =  t.apply(resp.dataProcessInfo);
+        	this.getTprocessinfo().update(tfinal);
+    },
+    
     
     loadPOrg : function(store, data) {
 //    	console.log(porg);

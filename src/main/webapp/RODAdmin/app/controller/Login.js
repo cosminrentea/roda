@@ -168,21 +168,12 @@ Ext.define('RODAdmin.controller.Login', {
                             	console.log('session set to infinity');
                             }
                         });
-                        
-                        
-                        
-                        
                     } else {
                         RODAdmin.util.Util.showErrorMsg(conn.responseText);
                     }
 
                 },
                 failure: function(conn, response, options, eOpts) {
-
-//                    Ext.get(login.getEl()).unmask();
-                
-                	console.log('NOT Authenticated !');
-                	
                     RODAdmin.util.Util.showErrorMsg(conn.responseText);
                 }
             });
@@ -245,8 +236,16 @@ Ext.define('RODAdmin.controller.Login', {
             success: function(conn, response, options, eOpts){
                 var result = RODAdmin.util.Util.decodeJSON(conn.responseText);
                 if (result.success) {
-                    button.up('mainviewport').destroy();
-                    window.location.reload();
+
+                	if (RODAdmin.util.Globals.isAdmin) {
+                		button.up('mainviewport').destroy();
+                		window.location.reload();
+                	}
+                	if (RODAdmin.util.Globals.isUser) {
+                		button.up('userviewport').destroy();
+                		window.location.reload();
+                	}
+                
                 } else {
                     RODAdmin.util.Util.showErrorMsg(conn.responseText);
                 }

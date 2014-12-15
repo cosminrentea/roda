@@ -223,7 +223,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 					}
 				}
 
-				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistence, mockMultipartFileCsv,
+				importDdiFile(cb, mockMultipartFileDdi, null, true, true, ddiPersistence, mockMultipartFileCsv,
 						multipartSyntax);
 
 			} catch (Exception e) {
@@ -300,8 +300,8 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
-			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv,
+	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, String titleParameter,
+			boolean nesstarExported, boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv,
 			List<MultipartFile> multipartSyntax) throws FileNotFoundException, IOException {
 
 		if (ddiPersistence) {
@@ -401,7 +401,8 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		// create the new Study
 		Study s = new Study();
 
-		String title = cb.getStdyDscr().get(0).getCitation().get(0).getTitlStmt().getTitl().getContent();
+		String title = (titleParameter == null) ? cb.getStdyDscr().get(0).getCitation().get(0).getTitlStmt().getTitl()
+				.getContent() : titleParameter;
 		log.trace("Title = " + title);
 
 		if (nesstarExported && legacyDataRODA) {
@@ -894,7 +895,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		try {
 			this.getUnmarshaller();
 			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
-			Resource resource = pmr.getResource("classpath:" + ddiFoldername + "/test-ddi-editor.ddi");
+			Resource resource = pmr.getResource("classpath:cms-data/test-ddi-editor.ddi");
 			if (resource == null) {
 				log.warn("DDI file not found!");
 			}
@@ -905,9 +906,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			boolean ddiPersistence = "yes".equalsIgnoreCase(rodaDataDdiPersist);
 			boolean importDdiCsv = "yes".equalsIgnoreCase(rodaDataDdiCsv);
 
-			// TODO update StudyName => jsonName
-
-			importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistence, null, null);
+			importDdiFile(cb, mockMultipartFileDdi, jsonName, true, true, ddiPersistence, null, null);
 
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -352,7 +352,6 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 			scope:this,
 			success : function(response, opts) {
 				console.log ('success');
-//				console.log (response.responseText);					
 				var resp = Ext.JSON.decode(response.responseText);
 				console.log (resp);
 						//aici incarcam jsonul
@@ -462,10 +461,10 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
                     	
                     	
                     	
-		    			if (resp.dataCollection.startsampling) {
+		    			if (resp.dataCollection.startdatacollection) {
                     		win.down('form#datacollectionform datefield#startdatacollection').setValue(new Date(resp.dataCollection.startdatacollection));
                     	}
-                    	if (resp.dataCollection.endsampling) {
+                    	if (resp.dataCollection.enddatacollection) {
                     		win.down('form#datacollectionform datefield#enddatacollection').setValue(new Date(resp.dataCollection.enddatacollection));
                     	}
                    	
@@ -483,17 +482,23 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
                     		win.down('form#dataprodform datefield#enddataprod').setValue(new Date(resp.dataProduction.enddataprod));
                     	}
                    	
+		    			var dprstore = win.down('sdataprod grid#dprespdisplay').store;
+		    			dprstore.removeAll();
+		    			this.loadPOrg(dprstore,resp.dataProduction.dataprodresp);
                     	
-                    	
+                    	var variables = win.down('sdataprod grid#variabledisplay').store;
+                    	variables.removeAll();
+		    			this.loadVariables(variables,resp.dataProduction.variables);
+		    			
+		    			//Process Info
+		    			win.down('form#processinfoform checkbox#ccorrect').setValue(resp.dataProcessInfo.ccorrect);
+		    			win.down('form#processinfoform checkbox#qextract').setValue(resp.dataProcessInfo.qextract);
+		    			win.down('form#processinfoform checkbox#dataextract').setValue(resp.dataProcessInfo.dataextract);
+		    			win.down('form#processinfoform combo#datarights').setValue(resp.dataProcessInfo.datarights);
 		    			
 		    			win.show();
-				
-				
-						//	RODAdmin.util.Alert.msg('Success!', response.message);
-    					//console.log (resp.id);					
 			},
 			failure : function(response, opts) {
-				console.log ('failure');
 				switch (action.failureType) {
 				case Ext.form.action.Action.CLIENT_INVALID:
                     	Ext.Msg.alert('Failure', 'Form fields may must be submitted with invalid values');
@@ -549,6 +554,7 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 							this.loadStudyConcepts(resp);
 							this.loadStudyQuestions(resp);
 							this.loadDataCollection(resp);
+							this.loadDataProduction(resp);
 							this.loadProcessInfo(resp);
 							
 							
@@ -725,15 +731,14 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     },
     
     loadDataProduction : function (resp) {
-    	//
     	var spropporgs = this.printPOrgs(resp.dataProduction.dataprodresp);
     	resp.dataProduction.stringporg = spropporgs;
     	resp.dataProduction.varstring = this.printVariables(resp.dataProduction.variables);
     	var t = new Ext.Template(
 		            		     '<div class="stpreviewcontainer">',
 		            		     '<table width="100%">',
-		            		     '<tr><th>Start sampling: </th><td>{startsampling}</td></tr>',
-		            		     '<tr><th>End sampling: </th><td>{endsampling}</td></tr>',
+		            		     '<tr><th>Start data production: </th><td>{stdataprod}</td></tr>',
+		            		     '<tr><th>End data production: </th><td>{enddataprod}</td></tr>',
 		            		     '<tr><th>Data production responsibility: </th><td>{stringporg}</td></tr>',
 		            		     '<tr><th>Variables: </th><td>{varstring}</td></tr>',
 		            		     '<tr><th>Files: </th><td>{files}</td></tr>',
@@ -871,10 +876,95 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     	}
     },
 		                                                            
+   
+    
+    
+    
+    
+    loadVariables : function(store, data) {
+    	//asta trebuie facut mult mai complicat, sa vedem 
+    	    	for (var index in data) {
+    	    	    var npr = data[index];
+    	    	    console.log(npr);
+    	    	    var response = new RODAdmin.model.studies.CBEditor.StudyVariable (
+    				                                                            {
+    	                                    									id : npr.id ,
+    	                                    									name: npr.name,
+    	                                    									label: npr.label,
+    	                                    									respdomain: npr.respdomain ,
+    	                                    									oqid: npr.oqid,
+    	                                    									oqtext: npr.oqtext ,	
+    				                                                            });
+    				
+//    	//missing
+//    	    	    
+//    	    		for (var miss in npr.missing) {
+//    	    			var missing = new RODAdmin.model.studies.CBEditor.question.Missing(
+//    	    			                                       							{
+//    	    			                                       								value : npr.missing[miss].value,
+//    	    			                                       								label : npr.missing[miss].label
+//    	    			                                       							});
+//    	    			response.missing().add(missing);
+//    	    			response.missing().commitChanges();
+//    	    		}
+//    	    	    
+//    	    	    if (npr.respdomain == 'Category') {
+//    	    	    	console.log('-----------------------------');
+//    	    	    	console.log(npr.catsponses);
+//    	    	    	for (var ncat in npr.catsponses) {
+//    					var catr = new RODAdmin.model.studies.CBEditor.question.response.Category(
+//    					                                                  							{
+//    					                                                  								id : npr.catsponses[ncat].id,
+//    					                                                  								label : npr.catsponses[ncat].label,
+//    					                                                  								lang : npr.catsponses[ncat].lang,
+//    					                                                  								value : npr.catsponses[ncat].value
+//    					                                                  							});
+//    					 
+//    					response.catresponses().add(catr );
+//    					response.catresponses().commitChanges();
+//    	    	    	}
+//    	    	    	
+//    	    	    	
+//    	    	    } else if (npr.respdomain == 'Numeric') {
+//    	    	    		for (var nind in npr.numericresponse) {
+//    	    	    			var num = npr.numericresponse[nind];
+//    	    	    			var numericresponse = new RODAdmin.model.studies.CBEditor.question.response.Numeric(
+//    	    	    	                                                            						{
+//    	    	    	                                                            							type : num.numresponsetype,
+//    	    	    	                                                            							low : num.numresponselow,
+//    	    	    	                                                            							high : num.numresponsehigh
+//    	    	    	                                                            						});
+//    	    	    	
+//    	    	    			response.numericresponse().add(numericresponse );
+//    	    					response.numericresponse().commitChanges();
+//    	    	    		}
+//    	    	    }
+//    	     	    
+    	    	    store.add(response);
+    				store.commitChanges();    	    
+    	    	}
+    	    },
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     printPOrgs : function(porg) {
-//    	console.log(porg);
+    	console.log(porg);
     	var templ =  new Ext.Template('<b>Status: </b> {status} <b>Type: </b> {type} <b>Name: </b> {selectedname}',  {compiled: true});
     	var response = '';
     	for (var index in porg) {

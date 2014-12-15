@@ -2248,7 +2248,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		
 		sdcoldata.sampledescr = this.getSdatacollection().down('textareafield#sampldescription').getValue()
 
-		if (this.getSdatacollection().down('datefield#startdatacollection').getValue()) {
+		if (this.getSdatacollection().down('datefield#startdatacollection').getValue() != null && this.getSdatacollection().down('datefield#startdatacollection').getValue() !== undefined) {
 				sdcoldata.startdatacollection = this.getSdatacollection().down('datefield#startdatacollection').getValue().toJSON();
 		} else {
 				sdcoldata.startdatacollection = '';

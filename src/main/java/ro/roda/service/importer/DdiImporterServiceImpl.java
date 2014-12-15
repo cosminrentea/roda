@@ -176,7 +176,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 		log.trace("roda.data.ddi.persist = " + rodaDataDdiPersist);
 		log.trace("roda.data.ddi.csv = " + rodaDataDdiCsv);
-		boolean ddiPersistance = "yes".equalsIgnoreCase(rodaDataDdiPersist);
+		boolean ddiPersistence = "yes".equalsIgnoreCase(rodaDataDdiPersist);
 		boolean importDdiCsv = "yes".equalsIgnoreCase(rodaDataDdiCsv);
 
 		this.getUnmarshaller();
@@ -223,7 +223,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 					}
 				}
 
-				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv,
+				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistence, mockMultipartFileCsv,
 						multipartSyntax);
 
 			} catch (Exception e) {
@@ -890,12 +890,27 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		s.flush();
 	}
 
-	public void importDdiTestFile(MultipartFile multipartFileJson) {
+	public void importDdiTestFile(String jsonName, InputStream is) {
+		try {
+			this.getUnmarshaller();
+			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
+			Resource resource = pmr.getResource("classpath:" + ddiFoldername + "/test-ddi-editor.ddi");
+			if (resource == null) {
+				log.warn("DDI file not found!");
+			}
+			File ddiFile = resource.getFile();
+			MockMultipartFile mockMultipartFileDdi = new MockMultipartFile(jsonName, jsonName, "text/xml",
+					new FileInputStream(ddiFile));
+			CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
+			boolean ddiPersistence = "yes".equalsIgnoreCase(rodaDataDdiPersist);
+			boolean importDdiCsv = "yes".equalsIgnoreCase(rodaDataDdiCsv);
 
-		// ddiImporterService.importDdiTestFile(cb, multipartFileDdi,
-		// nesstarExported, legacyDataRODA, ddiPersistence, multipartFileCsv,
-		// multipartSyntax)
+			// TODO update StudyName => jsonName
 
+			importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistence, null, null);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
-
 }

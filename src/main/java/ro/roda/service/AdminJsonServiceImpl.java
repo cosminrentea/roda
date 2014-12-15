@@ -212,20 +212,14 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	public AdminJson jsonImport(Integer cmsFileId) {
-		try {
-			CmsFile jsonFile = CmsFile.findCmsFile(cmsFileId);
-			InputStream is = fileStoreService.fileLoad(jsonFile);
-			MockMultipartFile mmf;
-			mmf = new MockMultipartFile(jsonFile.getFilename(), is);
-			ddiImporterService.importDdiTestFile(mmf);
+		CmsFile jsonFile = CmsFile.findCmsFile(cmsFileId);
+		InputStream is = fileStoreService.fileLoad(jsonFile);
+		ddiImporterService.importDdiTestFile(jsonFile.getFilename(), is);
 
-			// remove the last version of the JSON
-			fileDrop(cmsFileId);
+		// remove the last version of the JSON
+		fileDrop(cmsFileId);
 
-			return new AdminJson(true, "Study was imported");
-		} catch (IOException e) {
-			return new AdminJson(true, "Exception when importing Study: " + e);
-		}
+		return new AdminJson(true, "Study was imported");
 	}
 
 	public AdminJson fileMove(Integer folderId, Integer fileId) {

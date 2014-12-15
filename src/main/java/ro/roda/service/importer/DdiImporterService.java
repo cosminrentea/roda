@@ -1,5 +1,6 @@
 package ro.roda.service.importer;
 
+import java.io.InputStream;
 import java.util.List;
 
 import javax.xml.bind.Unmarshaller;
@@ -20,6 +21,6 @@ public interface DdiImporterService {
 
 	public abstract void afterImport(List<String[]> csvLines) throws Exception;
 
-	public abstract void importDdiTestFile(MultipartFile multipartFileJson);
+	public abstract void importDdiTestFile(String jsonName, InputStream is);
 
 }

@@ -2,7 +2,9 @@ package ro.roda.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -27,6 +29,7 @@ import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -146,6 +149,28 @@ public class Authorities {
 		return AuditReaderFactory.get(entityManager());
 	}
 
+	public static Authorities findOrCreate(Users user, String authorityName) {
+		AuthoritiesPK aPK = new AuthoritiesPK(user.getUsername(), authorityName);
+		Authorities authority = findAuthorities(aPK);
+		if (authority == null) {
+			// if not previously existing, then add the Authority for the User
+			authority = new Authorities();
+			authority.setId(aPK);
+			authority.setUsername(user);
+			authority.setGroupname(UserGroup.findOrCreate(null, authorityName, null, true));
+			authority.persist();
+
+			Set<Authorities> authorities = user.getAuthorities();
+			if (authorities == null) {
+				authorities = new HashSet<Authorities>();
+			}
+			authorities.add(authority);
+			user.setAuthorities(authorities);
+			user.merge();
+		}
+		return authority;
+	}
+
 	@EmbeddedId
 	private AuthoritiesPK id;
 
@@ -154,8 +179,8 @@ public class Authorities {
 	private Users username;
 
 	@ManyToOne
-	@JoinColumn(name = "authority", referencedColumnName = "groupname", nullable = false, insertable = false, updatable = false)
-	private UserGroup authority;
+	@JoinColumn(name = "groupname", referencedColumnName = "groupname", nullable = true, insertable = true, updatable = true)
+	private UserGroup groupname;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -185,8 +210,8 @@ public class Authorities {
 		return username;
 	}
 
-	public UserGroup getAuthority() {
-		return authority;
+	public UserGroup getGroupname() {
+		return groupname;
 	}
 
 	@Transactional
@@ -225,8 +250,8 @@ public class Authorities {
 		this.username = username;
 	}
 
-	public void setAuthority(UserGroup groupname) {
-		this.authority = groupname;
+	public void setGroupname(UserGroup groupname) {
+		this.groupname = groupname;
 	}
 
 	public String toJson() {
@@ -237,7 +262,8 @@ public class Authorities {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 

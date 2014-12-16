@@ -55,8 +55,8 @@ public class StudyKeywordServiceImpl implements StudyKeywordService {
 			return new AdminJson(false, "ERROR: Keyword was NOT attached to Study by User").toJson();
 		}
 
-		Users user = Users.findUsersesByUsernameLike(
-				((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername())
+		Users user = Users.findUsersByUsernameAndEnabled(
+				((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(), true)
 				.getSingleResult();
 
 		// find or add the keyword
@@ -85,8 +85,8 @@ public class StudyKeywordServiceImpl implements StudyKeywordService {
 			return new AdminJson(false, "ERROR: Keyword was NOT detached from Study by User").toJson();
 		}
 
-		Users user = Users.findUsersesByUsernameLike(
-				((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername())
+		Users user = Users.findUsersByUsernameAndEnabled(
+				((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(), true)
 				.getSingleResult();
 
 		// TODO only FIND the keyword (not: find or add)

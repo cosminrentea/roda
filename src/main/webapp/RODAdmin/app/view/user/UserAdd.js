@@ -34,18 +34,11 @@ Ext.define('RODAdmin.view.user.UserAdd', {
                         labelWidth: 60
                     },
                     items: [
-                        {
-                            xtype: 'hiddenfield',
-                            fieldLabel: 'Label',
-                            name: 'id'
-                        },
-                        {
-                            xtype: 'hiddenfield',
-                            fieldLabel: 'Enabled',
-                            name: 'enables'
-                        },
-                        
-                        
+//                        {
+//                            xtype: 'hiddenfield',
+//                            fieldLabel: 'Label',
+//                            name: 'id'
+//                        },
                         {
                             fieldLabel: 'Username',
                             name: 'username'
@@ -78,7 +71,7 @@ Ext.define('RODAdmin.view.user.UserAdd', {
                         {
                         	xtype: 'hiddenfield',
                             fieldLabel: 'Enabled',
-                            name: 'enables'
+                            name: 'enabled'
                         },
                         {
                             fieldLabel: 'Email',
@@ -89,9 +82,9 @@ Ext.define('RODAdmin.view.user.UserAdd', {
                         {
                             xtype: 'combo',
                             fieldLabel: 'Group',
-                            name: 'Group_id',
+                            name: 'authority',
                             displayField: 'name',
-                            valueField: 'id',
+                            valueField: 'name',
                             tpl: '<tpl for="."><div class="x-boundlist-item"><strong>{name}</strong><br><i>{description}</i><hr></div></tpl>',
                             store: 'user.Group'
                         },

@@ -155,6 +155,9 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     	      //  	click : this.onConvertTempStudy
     	        	click : this.convertStudyTry
     	        }, 
+    	        'studiestemp toolbar#studyedittoolbar button#delete-tstudy' : {
+    	    	        	click : this.deleteStudy
+      	        },     	        
     	        'convertconfirm button#cancel' : {
     	        	click : this.onButtonCancel
     	        },
@@ -194,7 +197,37 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     	button.up('window').close();
     }, 
     
-    
+    deleteStudy : function (button, e, options) {
+    	console.log('delete study');
+    	var srec = this.getIconview().getSelectionModel().getLastSelected();
+    	var myid = srec.data.indice;
+	    var me = this;
+	    Ext.Msg.confirm('Delete Requirement', 'Are you sure you want to delete the temporary study ' + srec.data.id
+	            + '?', function(id, value) {
+		    if (id === 'yes') {
+			    console.log('we will delete');
+			    Ext.Ajax.request({
+			        url : RODAdmin.util.Globals.baseurl + '/userjson/cmsfiledrop',
+			        method : "POST",
+			        params : {
+				        fileid : myid
+			        },
+			        success : function() {
+			        	me.getIconview().store.load();
+			        	RODAdmin.util.Alert.msg('Success!', 'News item deleted.');
+
+			        },
+			        failure : function(response, opts) {
+				        Ext.Msg.alert('Failure', response);
+
+			        }
+			    });
+		    }
+	    }, this);
+	    e.stopEvent();
+	}, 
+	
+	
     convertStudyTry : function(button, e, options) {
     	console.log('convertStudyTry');
     	var srec = this.getIconview().getSelectionModel().getLastSelected();

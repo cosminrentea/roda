@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,7 +165,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		reader.close();
 
 		// keep the DDI files in the same order each time
-		// so the IDs generated when importing are reproducible across runs
+		// so the IDs generated when importing can be reproduced across runs
 		Set<String> ddiFilenames = new TreeSet<String>();
 
 		for (String[] csvLine : csvLines) {
@@ -175,7 +176,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 		log.trace("roda.data.ddi.persist = " + rodaDataDdiPersist);
 		log.trace("roda.data.ddi.csv = " + rodaDataDdiCsv);
-		boolean ddiPersistance = "yes".equalsIgnoreCase(rodaDataDdiPersist);
+		boolean ddiPersistence = "yes".equalsIgnoreCase(rodaDataDdiPersist);
 		boolean importDdiCsv = "yes".equalsIgnoreCase(rodaDataDdiCsv);
 
 		this.getUnmarshaller();
@@ -222,7 +223,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 					}
 				}
 
-				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv,
+				importDdiFile(cb, mockMultipartFileDdi, null, true, true, ddiPersistence, mockMultipartFileCsv,
 						multipartSyntax);
 
 			} catch (Exception e) {
@@ -278,9 +279,9 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			}
 			catalogStudies.add(cs);
 			catalog.setCatalogStudies(catalogStudies);
-			catalog.merge();
 
-			study.flush();
+			catalog.merge();
+			// catalog.flush();
 		}
 
 		log.debug("ACLs for Catalogs, Series, Studies");
@@ -292,15 +293,15 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 		log.debug("Creating Solr index - Async");
 
-		CmsPage.indexCmsPages(CmsPage.findAllCmsPages());
+		// CmsPage.indexCmsPages(CmsPage.findAllCmsPages());
 		Catalog.indexCatalogs(Catalog.findAllCatalogs());
 		StudyDescr.indexStudyDescrs(StudyDescr.findAllStudyDescrs());
 		Variable.indexVariables(Variable.findAllVariables());
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
-			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv,
+	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, String titleParameter,
+			boolean nesstarExported, boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv,
 			List<MultipartFile> multipartSyntax) throws FileNotFoundException, IOException {
 
 		if (ddiPersistence) {
@@ -400,7 +401,8 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		// create the new Study
 		Study s = new Study();
 
-		String title = cb.getStdyDscr().get(0).getCitation().get(0).getTitlStmt().getTitl().getContent();
+		String title = (titleParameter == null) ? cb.getStdyDscr().get(0).getCitation().get(0).getTitlStmt().getTitl()
+				.getContent() : titleParameter;
 		log.trace("Title = " + title);
 
 		if (nesstarExported && legacyDataRODA) {
@@ -887,5 +889,27 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		// Merge & Flush the study (+related data)
 		s.merge();
 		s.flush();
+	}
+
+	public void importDdiTestFile(String jsonName, InputStream is) {
+		try {
+			this.getUnmarshaller();
+			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
+			Resource resource = pmr.getResource("classpath:cms-data/test-ddi-editor.ddi");
+			if (resource == null) {
+				log.warn("DDI file not found!");
+			}
+			File ddiFile = resource.getFile();
+			MockMultipartFile mockMultipartFileDdi = new MockMultipartFile(jsonName, jsonName, "text/xml",
+					new FileInputStream(ddiFile));
+			CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
+			boolean ddiPersistence = "yes".equalsIgnoreCase(rodaDataDdiPersist);
+			boolean importDdiCsv = "yes".equalsIgnoreCase(rodaDataDdiCsv);
+
+			importDdiFile(cb, mockMultipartFileDdi, jsonName, true, true, ddiPersistence, null, null);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }

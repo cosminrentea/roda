@@ -16,7 +16,6 @@ import ro.roda.domain.CmsPage;
 import ro.roda.domain.Person;
 import ro.roda.domain.PersonLinks;
 import ro.roda.domain.UserMessage;
-import ro.roda.domain.UserProfile;
 import ro.roda.domain.Users;
 import ro.roda.transformer.FieldNameTransformer;
 import flexjson.JSONSerializer;
@@ -56,9 +55,9 @@ public class UserInfo extends UserList {
 		UserInfo result = null;
 
 		Users user = Users.findUsers(id);
+		Users profile = user;
 
 		if (user != null) {
-			UserProfile profile = user.getUserProfile();
 			Set<PersonLinks> personLinks = user.getPersonLinkss();
 			if (personLinks != null && personLinks.size() > 0) {
 				Person person = personLinks.iterator().next().getPersonId();
@@ -78,7 +77,7 @@ public class UserInfo extends UserList {
 				}
 			} else {
 				// use the userProfile information
-				result = new UserInfo(user, profile);
+				result = new UserInfo(user);
 			}
 
 			Set<UserMessage> userMessages = new HashSet<UserMessage>();
@@ -139,9 +138,8 @@ public class UserInfo extends UserList {
 		// .isEnabled());
 	}
 
-	public UserInfo(Users user, UserProfile profile) {
-		// TODO: email in the UserProfile
-		super(user, profile);
+	public UserInfo(Users user) {
+		super(user);
 	}
 
 	public Set<UserGroupInfo> getGroups() {

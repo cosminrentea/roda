@@ -1,5 +1,7 @@
 package ro.roda.webjson.admin;
 
+import java.sql.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,76 +25,66 @@ public class UserManagementController {
 
 	// User management - POST methods
 
+	@RequestMapping(value = "/usercreate", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String userCreate(@RequestParam(value = "authority") String authorityName,
+			@RequestParam(value = "username") String username, @RequestParam(value = "password") String password,
+			@RequestParam(value = "passwordcheck") String passwordCheck,
+			@RequestParam(value = "enabled", defaultValue = "true") Boolean enabled,
+			@RequestParam(value = "email", required = false) String email,
+			@RequestParam(value = "firstname", required = false) String firstname,
+			@RequestParam(value = "middlename", required = false) String middlename,
+			@RequestParam(value = "lastname", required = false) String lastname,
+			@RequestParam(value = "title", required = false) String title,
+			@RequestParam(value = "sex", required = false) String sex,
+			@RequestParam(value = "salutation", required = false) String salutation,
+			@RequestParam(value = "birthdate", required = false) Date birthdate,
+			@RequestParam(value = "address1", required = false) String address1,
+			@RequestParam(value = "address2", required = false) String address2) {
+		return umService.userCreate(authorityName, username, password, passwordCheck, enabled, email, firstname,
+				middlename, lastname, title, sex, salutation, birthdate, address1, address2).toJsonWithId();
+	}
+
 	@RequestMapping(value = "/usersave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String userSave(@RequestParam(value = "id", required = false) Integer id,
-			@RequestParam(value = "username") String username, @RequestParam(value = "password") String password,
-			@RequestParam(value = "passwordcheck") String passwordCheck,
-			@RequestParam(value = "email", defaultValue = "") String email,
-			@RequestParam(value = "enabled", defaultValue = "true") Boolean enabled) {
-		AdminJson response = umService.userSave(id, username, password, passwordCheck, email, enabled);
+			@RequestParam(value = "username", required = false) String username,
+			@RequestParam(value = "email", required = false) String email,
+			@RequestParam(value = "firstname", required = false) String firstname,
+			@RequestParam(value = "middlename", required = false) String middlename,
+			@RequestParam(value = "lastname", required = false) String lastname,
+			@RequestParam(value = "title", required = false) String title,
+			@RequestParam(value = "sex", required = false) String sex,
+			@RequestParam(value = "salutation", required = false) String salutation,
+			@RequestParam(value = "birthdate", required = false) Date birthdate,
+			@RequestParam(value = "address1", required = false) String address1,
+			@RequestParam(value = "address2", required = false) String address2) {
+		return umService.userSave(id, username, email, firstname, middlename, lastname, title, sex, salutation,
+				birthdate, address1, address2).toJsonWithId();
+	}
+
+	@RequestMapping(value = "/userdrop", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String userDrop(@RequestParam(value = "userid") Integer userId) {
+		AdminJson response = umService.userDrop(userId);
 		if (response == null) {
 			return null;
 		}
 		return response.toJson();
 	}
 
-	@RequestMapping(value = "/groupsave", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/useraddauthority", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String groupSave(@RequestParam(value = "id", required = false) Integer id,
-			@RequestParam(value = "name") String name,
-			@RequestParam(value = "description", defaultValue = "") String description,
-			@RequestParam(value = "enabled", defaultValue = "true") Boolean enabled) {
-		AdminJson response = umService.groupSave(id, name, description, enabled);
-		if (response == null) {
-			return null;
-		}
-		return response.toJson();
+	public String userAddAuthority(@RequestParam(value = "userid") Integer userId,
+			@RequestParam(value = "authority") String authorityName) {
+		return umService.userAddAuthority(userId, authorityName).toJson();
 	}
 
-	@RequestMapping(value = "/useraddtogroup", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/userremoveauthority", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String userAddToGroup(@RequestParam(value = "userid") Integer userId,
-			@RequestParam(value = "groupid") Integer groupId) {
-		AdminJson response = umService.userAddToGroup(userId, groupId);
-		if (response == null) {
-			return null;
-		}
-		return response.toJson();
-	}
-
-	@RequestMapping(value = "/userremovefromgroup", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public String userRemoveFromGroup(@RequestParam(value = "userid") Integer userId,
-			@RequestParam(value = "groupid") Integer groupId) {
-		AdminJson response = umService.userRemoveFromGroup(userId, groupId);
-		if (response == null) {
-			return null;
-		}
-		return response.toJson();
-	}
-
-	@RequestMapping(value = "/useraddtoadmin", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public String userAddToAdmin(@RequestParam(value = "userid") Integer userId,
-			@RequestParam(value = "groupid") Integer groupId) {
-		// TODO make sure admin group has ID 1
-		AdminJson response = umService.userAddToGroup(userId, 1);
-		if (response == null) {
-			return null;
-		}
-		return response.toJson();
-	}
-
-	@RequestMapping(value = "/userremovefromadmin", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public String userRemoveFromAdmin(@RequestParam(value = "userid") Integer userId) {
-		// TODO make sure admin group has ID 1
-		AdminJson response = umService.userRemoveFromGroup(userId, 1);
-		if (response == null) {
-			return null;
-		}
-		return response.toJson();
+	public String userRemoveAuthority(@RequestParam(value = "userid") Integer userId,
+			@RequestParam(value = "authority") String authorityName) {
+		return umService.userRemoveAuthority(userId, authorityName).toJson();
 	}
 
 	@RequestMapping(value = "/userenable", method = RequestMethod.POST, produces = "application/json")
@@ -109,16 +101,6 @@ public class UserManagementController {
 	@ResponseBody
 	public String userDisable(@RequestParam(value = "userid") Integer userId) {
 		AdminJson response = umService.userDisable(userId);
-		if (response == null) {
-			return null;
-		}
-		return response.toJson();
-	}
-
-	@RequestMapping(value = "/userdrop", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public String userDrop(@RequestParam(value = "userid") Integer userId) {
-		AdminJson response = umService.userDrop(userId);
 		if (response == null) {
 			return null;
 		}
@@ -150,9 +132,9 @@ public class UserManagementController {
 
 	@RequestMapping(value = "/groupmessage", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String groupMessage(@RequestParam(value = "groupid") Integer groupId,
+	public String groupMessage(@RequestParam(value = "authority") String authorityName,
 			@RequestParam(value = "subject") String subject, @RequestParam(value = "message") String message) {
-		AdminJson response = umService.groupMessage(groupId, subject, message);
+		AdminJson response = umService.groupMessage(authorityName, subject, message);
 		if (response == null) {
 			return null;
 		}

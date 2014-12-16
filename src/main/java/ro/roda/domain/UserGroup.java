@@ -170,7 +170,7 @@ public class UserGroup implements Serializable {
 	 *            - numele grupului.
 	 * @return
 	 */
-	public static UserGroup checkUserGroup(Integer id, String userGroup, String userGroupType, Boolean enabled) {
+	public static UserGroup findOrCreate(Integer id, String groupname, String description, Boolean enabled) {
 		UserGroup object;
 
 		if (id != null) {
@@ -183,20 +183,20 @@ public class UserGroup implements Serializable {
 
 		List<UserGroup> queryResult;
 
-		if (userGroup != null) {
+		if (groupname != null) {
 			TypedQuery<UserGroup> query = entityManager().createQuery(
-					"SELECT o FROM UserGroup o WHERE lower(o.userGroup) = lower(:userGroup)", UserGroup.class);
-			query.setParameter("userGroup", userGroup);
-
+					"SELECT o FROM UserGroup o WHERE lower(o.groupname) = lower(:groupname)", UserGroup.class);
+			query.setParameter("groupname", groupname);
 			queryResult = query.getResultList();
 			if (queryResult.size() > 0) {
 				return queryResult.get(0);
 			}
 		}
 
+		// if not found, create it
 		object = new UserGroup();
-		object.groupname = userGroup;
-		object.description = userGroupType;
+		object.groupname = groupname;
+		object.description = description;
 		object.enabled = enabled;
 		object.persist();
 
@@ -216,7 +216,7 @@ public class UserGroup implements Serializable {
 	// @OneToMany(mappedBy = "userGroupId")
 	// private Set<UserGroupUser> userGroupUsers;
 
-	@OneToMany(mappedBy = "authority")
+	@OneToMany(mappedBy = "groupname")
 	private Set<Authorities> authorities;
 
 	@Column(name = "groupname", columnDefinition = "varchar", length = 30, unique = true)
@@ -351,7 +351,8 @@ public class UserGroup implements Serializable {
 				|| (groupname != null && groupname.equalsIgnoreCase(((UserGroup) obj).groupname));
 	}
 
-	@JsonIgnore public AuditReader getAuditReader() {
+	@JsonIgnore
+	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
 }

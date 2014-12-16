@@ -44,152 +44,117 @@ public class CmsController {
 	@ResponseBody
 	public String layoutGroupSave(@RequestParam(value = "groupname") String groupname,
 			@RequestParam(value = "parent") Integer parentId, @RequestParam(value = "description") String description) {
-
 		AdminJson layoutGroupSave = adminJsonService.layoutGroupSave(groupname, parentId, description);
-
 		if (layoutGroupSave == null) {
 			return null;
 		}
 		return layoutGroupSave.toJson();
-
 	}
 
 	@RequestMapping(value = "/layoutgroupempty", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String layoutGroupEmpty(@RequestParam(value = "groupid") Integer groupId) {
-
 		AdminJson layoutGroupEmpty = adminJsonService.layoutGroupEmpty(groupId);
-
 		if (layoutGroupEmpty == null) {
 			return null;
 		}
 		return layoutGroupEmpty.toJson();
-
 	}
 
 	@RequestMapping(value = "/layoutgroupdrop", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String layoutGroupDrop(@RequestParam(value = "groupid") Integer groupId) {
-
 		AdminJson layoutGroupDrop = adminJsonService.layoutGroupDrop(groupId);
-
 		if (layoutGroupDrop == null) {
 			return null;
 		}
 		return layoutGroupDrop.toJson();
-
 	}
 
 	@RequestMapping(value = "/layoutdrop", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String layoutDrop(@RequestParam(value = "layoutid") Integer layoutId) {
-
 		AdminJson layoutDrop = adminJsonService.layoutDrop(layoutId);
-
 		if (layoutDrop == null) {
 			return null;
 		}
 		return layoutDrop.toJson();
-
 	}
 
-	
-	
 	@RequestMapping(value = "/layoutsave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String layoutSave(@RequestParam(value = "group") Integer groupId,
 			@RequestParam(value = "content") String content, @RequestParam(value = "name") String name,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "id", required = false) Integer layoutId) {
-
 		AdminJson layoutSave = adminJsonService.layoutSave(groupId, content, name, description, layoutId);
-
 		if (layoutSave == null) {
 			return null;
 		}
 		return layoutSave.toJson();
-
 	}
 
 	@RequestMapping(value = "/layoutmove", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String layoutMove(@RequestParam(value = "group") Integer groupId,
 			@RequestParam(value = "id") Integer layoutId) {
-
 		AdminJson layoutMove = adminJsonService.layoutMove(groupId, layoutId);
-
 		if (layoutMove == null) {
 			return null;
 		}
 		return layoutMove.toJson();
-
 	}
 
 	@RequestMapping(value = "/layoutgroupmove", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String layoutGroupMove(@RequestParam(value = "parent") Integer parentGroupId,
 			@RequestParam(value = "group") Integer groupId) {
-
 		AdminJson layoutGroupMove = adminJsonService.layoutGroupMove(parentGroupId, groupId);
-
 		if (layoutGroupMove == null) {
 			return null;
 		}
 		return layoutGroupMove.toJson();
-
 	}
 
 	@RequestMapping(value = "/snippetgroupsave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String snippetGroupSave(@RequestParam(value = "groupname") String groupname,
 			@RequestParam(value = "parent") Integer parentId, @RequestParam(value = "description") String description) {
-
 		AdminJson snippetGroupSave = adminJsonService.snippetGroupSave(groupname, parentId, description);
-
 		if (snippetGroupSave == null) {
 			return null;
 		}
 		return snippetGroupSave.toJson();
-
 	}
 
 	@RequestMapping(value = "/snippetgroupempty", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String snippetGroupEmpty(@RequestParam(value = "groupid") Integer groupId) {
-
 		AdminJson snippetGroupEmpty = adminJsonService.snippetGroupEmpty(groupId);
-
 		if (snippetGroupEmpty == null) {
 			return null;
 		}
 		return snippetGroupEmpty.toJson();
-
 	}
 
 	@RequestMapping(value = "/snippetgroupdrop", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String snippetGroupDrop(@RequestParam(value = "groupid") Integer groupId) {
-
 		AdminJson snippetGroupDrop = adminJsonService.snippetGroupDrop(groupId);
-
 		if (snippetGroupDrop == null) {
 			return null;
 		}
 		return snippetGroupDrop.toJson();
-
 	}
 
 	@RequestMapping(value = "/snippetdrop", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String snippetDrop(@RequestParam(value = "snippetid") Integer snippetId) {
-
 		AdminJson snippetDrop = adminJsonService.snippetDrop(snippetId);
-
 		if (snippetDrop == null) {
 			return null;
 		}
 		return snippetDrop.toJson();
-
 	}
 
 	@RequestMapping(value = "/snippetsave", method = RequestMethod.POST, produces = "application/json")
@@ -197,14 +162,11 @@ public class CmsController {
 	public String snippetSave(@RequestParam(value = "group") Integer groupId,
 			@RequestParam(value = "content") String content, @RequestParam(value = "name") String name,
 			@RequestParam(value = "id", required = false) Integer snippetId) {
-
 		AdminJson snippetSave = adminJsonService.snippetSave(groupId, content, name, snippetId);
-
 		if (snippetSave == null) {
 			return null;
 		}
 		return snippetSave.toJson();
-
 	}
 
 	@RequestMapping(value = "/snippetmove", method = RequestMethod.POST, produces = "application/json")
@@ -239,53 +201,41 @@ public class CmsController {
 	@ResponseBody
 	public String folderSave(@RequestParam(value = "foldername") String foldername,
 			@RequestParam(value = "parent") Integer parentId, @RequestParam(value = "description") String description) {
-
 		AdminJson folderSave = adminJsonService.folderSave(foldername, parentId, description);
-
 		if (folderSave == null) {
 			return null;
 		}
 		return folderSave.toJson();
-
 	}
 
 	@RequestMapping(value = "/cmsfolderempty", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String folderEmpty(@RequestParam(value = "folderid") Integer folderId) {
-
 		AdminJson folderEmpty = adminJsonService.folderEmpty(folderId);
-
 		if (folderEmpty == null) {
 			return null;
 		}
 		return folderEmpty.toJson();
-
 	}
 
 	@RequestMapping(value = "/cmsfolderdrop", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String folderDrop(@RequestParam(value = "folderid") Integer folderId) {
-
 		AdminJson folderDrop = adminJsonService.folderDrop(folderId);
-
 		if (folderDrop == null) {
 			return null;
 		}
 		return folderDrop.toJson();
-
 	}
 
 	@RequestMapping(value = "/cmsfiledrop", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String fileDrop(@RequestParam(value = "fileid") Integer fileId) {
-
 		AdminJson fileDrop = adminJsonService.fileDrop(fileId);
-
 		if (fileDrop == null) {
 			return null;
 		}
 		return fileDrop.toJson();
-
 	}
 
 	@RequestMapping(value = "/cmsfilesave", method = RequestMethod.POST, produces = "application/json")
@@ -296,12 +246,10 @@ public class CmsController {
 			@RequestParam(value = "url", required = false) String url, HttpServletRequest httpServletRequest) {
 		log.trace("> fileSave controller: " + folderId + " ; " + fileId + " ; " + alias);
 		AdminJson fileSave = adminJsonService.fileSave(folderId, content, fileId, alias, url);
-
 		if (fileSave == null) {
 			return null;
 		}
-
-		return fileSave.toJson();
+		return fileSave.toJsonWithId();
 	}
 
 	@RequestMapping(value = "/cmsjsoncreate", method = RequestMethod.POST, produces = "application/json")
@@ -310,11 +258,9 @@ public class CmsController {
 			HttpServletRequest httpServletRequest) {
 		log.trace("> jsonCreate controller: " + name);
 		AdminJson jsonSave = adminJsonService.jsonCreate(jsonString, name);
-
 		if (jsonSave == null) {
 			return null;
 		}
-
 		return jsonSave.toJsonWithId();
 	}
 
@@ -324,25 +270,20 @@ public class CmsController {
 			@RequestParam(value = "name", required = false) String name, HttpServletRequest httpServletRequest) {
 		log.trace("> jsonSave controller: " + id + " ; " + name);
 		AdminJson jsonSave = adminJsonService.jsonSave(jsonString, id, name);
-
 		if (jsonSave == null) {
 			return null;
 		}
-
 		return jsonSave.toJsonWithId();
 	}
 
 	@RequestMapping(value = "/cmsfilemove", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String fileMove(@RequestParam(value = "folder") Integer folderId, @RequestParam(value = "id") Integer fileId) {
-
 		AdminJson fileMove = adminJsonService.fileMove(folderId, fileId);
-
 		if (fileMove == null) {
 			return null;
 		}
 		return fileMove.toJson();
-
 	}
 
 	@RequestMapping(value = "/cmsfoldermove", method = RequestMethod.POST, produces = "application/json")
@@ -379,12 +320,10 @@ public class CmsController {
 		AdminJson cmspageSave = adminJsonService.cmsPageSave(true, parent, title, lang, menutitle, synopsis, target,
 				url, defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable,
 				pageType, id, content);
-
 		if (cmspageSave == null) {
 			return null;
 		}
 		return cmspageSave.toJson();
-
 	}
 
 	@RequestMapping(value = "/cmspagepreview", method = RequestMethod.POST, produces = "application/json")
@@ -410,12 +349,10 @@ public class CmsController {
 		AdminJson cmspageSave = adminJsonService.cmsPageSave(false, parent, title, lang, menutitle, synopsis, target,
 				url, defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable,
 				pageType, id, content);
-
 		if (cmspageSave == null) {
 			return null;
 		}
 		return cmspageSave.toJson();
-
 	}
 
 	@RequestMapping(value = "/cmspagemove", method = RequestMethod.POST, produces = "application/json")
@@ -425,48 +362,37 @@ public class CmsController {
 			@RequestParam(value = "mode", required = true) String mode) {
 
 		AdminJson cmspageMove = adminJsonService.cmsPageMove(groupId, cmspageId, mode);
-
 		if (cmspageMove == null) {
 			return null;
 		}
 		return cmspageMove.toJson();
-
 	}
 
 	@RequestMapping(value = "/cmspagedrop", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String cmspageDrop(@RequestParam(value = "cmspageid") Integer cmspageId) {
-
 		AdminJson cmspageDrop = adminJsonService.cmsPageDrop(cmspageId);
-
 		if (cmspageDrop == null) {
 			return null;
 		}
 		return cmspageDrop.toJson();
-
 	}
 
-    @RequestMapping(value = "/cmspagenavigable", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public String cmspageNavigable(
-                    @RequestParam(value = "navigable", required = true) Boolean navigable,
-                    @RequestParam(value = "id", required = true) Integer cmspageId) {
+	@RequestMapping(value = "/cmspagenavigable", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String cmspageNavigable(@RequestParam(value = "navigable", required = true) Boolean navigable,
+			@RequestParam(value = "id", required = true) Integer cmspageId) {
 
-//            AdminJson cmspageSetNavigable = adminJsonService.cmsPageSetNavigable(navigable, cmspageId);
-            AdminJson cmspageSetNavigable = adminJsonService.cmsPageNav(navigable, cmspageId);
+		// AdminJson cmspageSetNavigable =
+		// adminJsonService.cmsPageSetNavigable(navigable, cmspageId);
+		AdminJson cmspageSetNavigable = adminJsonService.cmsPageNav(navigable, cmspageId);
+		// log.trace("page navigable in controller");
+		if (cmspageSetNavigable == null) {
+			return null;
+		}
+		return cmspageSetNavigable.toJson();
+	}
 
-            
-            log.trace("page navigable in controller");
-
-            if (cmspageSetNavigable == null) {
-                    return null;
-            }
-            return cmspageSetNavigable.toJson();
-
-    }
-
-	
-	
 	@RequestMapping(value = "/newssave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String newsSave(@RequestParam(value = "id", required = false) Integer id,
@@ -475,25 +401,19 @@ public class CmsController {
 			@RequestParam(value = "content", required = true) String content) {
 
 		AdminJson newsSave = adminJsonService.newsSave(id, langId, title, content, Calendar.getInstance().getTime());
-
 		if (newsSave == null) {
 			return null;
 		}
 		return newsSave.toJson();
-
 	}
 
 	@RequestMapping(value = "/newsdrop", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String newsDrop(@RequestParam(value = "newsid") Integer newsId) {
-
 		AdminJson newsDrop = adminJsonService.newsDrop(newsId);
-
 		if (newsDrop == null) {
 			return null;
 		}
 		return newsDrop.toJson();
 	}
-	
-	
 }

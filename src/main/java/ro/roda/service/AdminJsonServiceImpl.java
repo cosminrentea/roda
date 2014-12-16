@@ -1,5 +1,7 @@
 package ro.roda.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -15,6 +17,7 @@ import ro.roda.domain.CmsLayout;
 import ro.roda.domain.CmsPage;
 import ro.roda.domainjson.AdminJson;
 import ro.roda.service.filestore.CmsFileStoreService;
+import ro.roda.service.importer.DdiImporterService;
 import ro.roda.service.page.RodaPageService;
 
 @Service
@@ -22,7 +25,10 @@ import ro.roda.service.page.RodaPageService;
 public class AdminJsonServiceImpl implements AdminJsonService {
 
 	@Autowired
-	CmsFileStoreService fileStore;
+	CmsFileStoreService fileStoreService;
+
+	@Autowired
+	DdiImporterService ddiImporterService;
 
 	@Autowired
 	RodaPageService rodaPageService;
@@ -110,8 +116,7 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	public AdminJson newsDrop(Integer newsId) {
 		return AdminJson.newsDrop(newsId);
 	}
-	
-	
+
 	// CMS PAGE
 	public AdminJson cmsPageSave(boolean save, Integer cmsPageParentId, String name, String lang, String menutitle,
 			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
@@ -151,31 +156,31 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	public AdminJson folderSave(String foldername, Integer parentId, String description) {
 		AdminJson result = AdminJson.folderSave(foldername, parentId, description);
-		fileStore.folderSave(CmsFolder.findCmsFolder(result.getId()));
+		fileStoreService.folderSave(CmsFolder.findCmsFolder(result.getId()));
 		return result;
 	}
 
 	public AdminJson folderEmpty(Integer folderId) {
 		AdminJson result = AdminJson.folderEmpty(folderId);
-		fileStore.folderEmpty(CmsFolder.findCmsFolder(folderId));
+		fileStoreService.folderEmpty(CmsFolder.findCmsFolder(folderId));
 		return result;
 	}
 
 	public AdminJson folderDrop(Integer folderId) {
 		AdminJson result = AdminJson.folderDrop(folderId);
-		fileStore.folderDrop(CmsFolder.findCmsFolder(folderId));
+		fileStoreService.folderDrop(CmsFolder.findCmsFolder(folderId));
 		return result;
 	}
 
 	public AdminJson fileDrop(Integer fileId) {
 		AdminJson result = AdminJson.fileDrop(fileId);
-		fileStore.fileDrop(CmsFile.findCmsFile(fileId));
+		fileStoreService.fileDrop(CmsFile.findCmsFile(fileId));
 		return result;
 	}
 
 	public AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias, String url) {
 		AdminJson result = AdminJson.fileSave(folderId, content, fileId, alias, url);
-		fileStore.fileSave(content, CmsFolder.findCmsFolder(folderId));
+		fileStoreService.fileSave(content, CmsFolder.findCmsFolder(folderId));
 		return result;
 	}
 
@@ -185,10 +190,10 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 				.forName("UTF-8")));
 		// get or create the folder for JSONs
 		CmsFolder folder = CmsFolder.checkCmsFolder(null, CmsFolder.jsonCmsFolderName, null, null);
-		fileStore.folderSave(folder);
+		fileStoreService.folderSave(folder);
 
 		AdminJson result = AdminJson.fileSave(folder.getId(), mmf, null, null, null);
-		fileStore.fileSave(mmf, folder);
+		fileStoreService.fileSave(mmf, folder);
 		return result;
 	}
 
@@ -196,26 +201,36 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		MockMultipartFile mmf = new MockMultipartFile(name, name, "application/json", jsonString.getBytes(Charset
 				.forName("UTF-8")));
 		CmsFolder folder = CmsFolder.checkCmsFolder(null, CmsFolder.jsonCmsFolderName, null, null);
-		fileStore.folderSave(folder);
+		fileStoreService.folderSave(folder);
 
-		// remove the old version of the JSON
-		fileStore.fileDrop(CmsFile.findCmsFile(cmsFileId));
+		// first remove the old version of the JSON
+		fileStoreService.fileDrop(CmsFile.findCmsFile(cmsFileId));
 
 		AdminJson result = AdminJson.fileSave(folder.getId(), mmf, cmsFileId, null, null);
-		fileStore.fileSave(mmf, folder);
-
+		fileStoreService.fileSave(mmf, folder);
 		return result;
+	}
+
+	public AdminJson jsonImport(Integer cmsFileId) {
+		CmsFile jsonFile = CmsFile.findCmsFile(cmsFileId);
+		InputStream is = fileStoreService.fileLoad(jsonFile);
+		ddiImporterService.importDdiTestFile(jsonFile.getFilename(), is);
+
+		// remove the last version of the JSON
+		fileDrop(cmsFileId);
+
+		return new AdminJson(true, "Study was imported");
 	}
 
 	public AdminJson fileMove(Integer folderId, Integer fileId) {
 		AdminJson result = AdminJson.fileMove(folderId, fileId);
-		fileStore.fileMove(CmsFolder.findCmsFolder(folderId), CmsFile.findCmsFile(fileId));
+		fileStoreService.fileMove(CmsFolder.findCmsFolder(folderId), CmsFile.findCmsFile(fileId));
 		return result;
 	}
 
 	public AdminJson folderMove(Integer parentFolderId, Integer folderId) {
 		AdminJson result = AdminJson.fileMove(parentFolderId, folderId);
-		fileStore.folderMove(CmsFolder.findCmsFolder(parentFolderId), CmsFolder.findCmsFolder(folderId));
+		fileStoreService.folderMove(CmsFolder.findCmsFolder(parentFolderId), CmsFolder.findCmsFolder(folderId));
 		return result;
 	}
 
@@ -223,5 +238,5 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		rodaPageService.evictAll();
 		return AdminJson.cmsPageSetNavigable(navigable, cmsPageId);
 	}
-	
+
 }

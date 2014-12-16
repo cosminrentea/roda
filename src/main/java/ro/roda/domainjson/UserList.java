@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.Person;
 import ro.roda.domain.PersonLinks;
-import ro.roda.domain.UserProfile;
 import ro.roda.domain.Users;
 import ro.roda.transformer.FieldNameTransformer;
 import flexjson.JSONSerializer;
@@ -61,9 +60,7 @@ public class UserList extends JsonInfo {
 				Person person = personLink.getPersonId();
 				result.add(new UserList(user, person));
 			} else {
-				// use the profile information
-				UserProfile userProfile = UserProfile.findUserProfile(user.getId());
-				result.add(new UserList(user, userProfile));
+				result.add(new UserList(user));
 			}
 			return result;
 		}
@@ -89,18 +86,16 @@ public class UserList extends JsonInfo {
 
 	public UserList(Users user, Person person) {
 
-		// TODO: get the main mail, instead of the first one
+		// TODO: get the main email, instead of the first one
 		this(user.getId(), user.getUsername(), person != null ? person.getFname() : null, person != null ? person
 				.getLname() : null,
 				(person != null && person.getEmails() != null && person.getEmails().size() > 0) ? person.getEmails()
 						.iterator().next().getEmail() : null, user.isEnabled());
 	}
 
-	public UserList(Users user, UserProfile userProfile) {
-
-		// TODO: email for UserProfile
-		this(user.getId(), user.getUsername(), userProfile != null ? userProfile.getFirstname() : null,
-				userProfile != null ? userProfile.getLastname() : null, null, user.isEnabled());
+	public UserList(Users user) {
+		this(user.getId(), user.getUsername(), user != null ? user.getFirstname() : null, user != null ? user
+				.getLastname() : null, null, user.isEnabled());
 	}
 
 	public String getFirstname() {

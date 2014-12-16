@@ -1,5 +1,6 @@
 package ro.roda.service.importer;
 
+import java.io.InputStream;
 import java.util.List;
 
 import javax.xml.bind.Unmarshaller;
@@ -14,10 +15,12 @@ public interface DdiImporterService {
 
 	public abstract void importDdiFiles() throws Exception;
 
-	public abstract void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
-			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv,
+	public abstract void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, String titleParameter,
+			boolean nesstarExported, boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv,
 			List<MultipartFile> multipartSyntax) throws Exception;
 
 	public abstract void afterImport(List<String[]> csvLines) throws Exception;
+
+	public abstract void importDdiTestFile(String jsonName, InputStream is);
 
 }

@@ -70,7 +70,15 @@ Ext.define('RODAdmin.view.studies.StudiesTemp', {
               	                                itemId : 'convert-tstudy',
               	                                iconCls : 'file-icon-view',
               	                                text : 'Convert temporary Study'
+              	                            	},
+              	                            	{
+                  	                            	xtype : 'button',
+                  	                                itemId : 'delete-tstudy',
+                  	                                iconCls : 'file-icon-view',
+                  	                                text : 'Delete temporary Study'
               	                            	}
+              	                            	
+              	                            	
               	                    ]
               	                }
                               ],

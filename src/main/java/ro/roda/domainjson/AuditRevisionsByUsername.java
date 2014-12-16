@@ -166,7 +166,7 @@ public class AuditRevisionsByUsername extends JsonInfo {
 				}
 			}
 
-			onConstructRevisionsByUsername(userName, Users.findUsersesByUsernameLike(userName).getFirstResult(),
+			onConstructRevisionsByUsername(userName, Users.findUsersByUsernameLike(userName).getFirstResult(),
 					revisions.size(), lastRevision, revisions);
 		}
 	}

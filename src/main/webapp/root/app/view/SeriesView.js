@@ -11,6 +11,7 @@ Ext
 					header : true,
 					hideHeaders : false,
 					store : 'SeriesStore',
+				
 					loadStudy : function(id) {
 						console.log(id);
 //						var series = Ext.getCmp('sedetails').data.name;

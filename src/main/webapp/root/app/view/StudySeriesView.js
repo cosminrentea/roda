@@ -12,6 +12,10 @@ Ext
                     header : true,
                     hideHeaders : false,
                     store : 'StudyStore',
+				    config : {
+				    	studyId: 0,
+				    	seriesId: 0,
+				    },	
                     loaddata : function(id) {
 
 	                    // asta e o varianta idioata determinata oarecum de
@@ -31,7 +35,7 @@ Ext
 		                        this.setLoading(false);
 		                        if (success) {
 			                        var rec = sStore.first();
-
+			    			        this.setStudyId(id);
 			                        var templatedata = records[0].data;
 			                        if (rec.personsStore) {
 				                        var personsdata = Ext.Array.pluck(rec.personsStore.data.items, 'data');
@@ -50,14 +54,22 @@ Ext
 			                        templatedata.keywords = kwsdata;
 			                        templatedata.topics = topicsdata;
 			                        dtab.update(templatedata);
-
-			                        variablesgrid.getView().bindStore(rec.variablesStore);
+			                        variablesgrid.reconfigure(rec.variablesStore);			                        
 			                        filestab.bindStore(rec.filesStore);
 			                        this.setTitle(records[0].data.an + ' - ' + records[0].data.name);
 			                        // aici trebuie sa incarcam storeul de serie
 			                        console.log(records[0].data);
 			                        console.log('name: ' + records[0].data.name);
 			                        console.log('seriesId: ' + records[0].data.seriesId);
+			    			        if (databrowser.util.Globals['vselect']) {
+			    			        	var mystore = variablesgrid.getStore();
+			   			        	 	var dbcard = Ext.getCmp('dbcard');
+			   			        	 	activecard = dbcard.layout.getActiveItem();
+			   			        	 	activecard.layout.setActiveItem('svariables');
+			   			        	 	var rowIndex = rec.variablesStore.find('indice', databrowser.util.Globals['vselect']);
+			   			        	 	variablesgrid.getSelectionModel().select(rowIndex);
+			   			        	 	variablesgrid.getView().focusRow(rowIndex)
+			    			        }
 			                        var seriesStore = Ext.StoreManager.get('SeriesStore');
 			                        seriesStore.load({
 			                            id : records[0].data.seriesId,
@@ -152,6 +164,7 @@ Ext
                                             split : false,
                                             // itemId: 'studyseriesvariables',
                                             id : 'studyseriesvariables',
+                                            deferRowRender:false,
                                             width : '100%',
                                             flex : 1,
                                             autoScroll : true,

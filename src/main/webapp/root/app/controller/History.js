@@ -25,7 +25,22 @@ Ext.define('databrowser.controller.History', {
                 ref : 'topicstree',
                 selector : 'browser treepanel#TopicTreePanel'
             },
-
+	        {
+	            ref: 'studyview',
+	            selector: 'studyview'
+	        },
+	        {
+	            ref: 'studyseriesview',
+	            selector: 'studyseriesview'
+	        },
+	        {
+	            ref: 'studyVariables',
+	            selector: 'studyview gridpanel#studyvariables'
+	        },
+	        {
+	            ref: 'studyseriesVariables',
+	            selector: 'studyseriesview gridpanel#studyseriesvariables'
+	        },
     ],
 
     init : function(application) {
@@ -49,50 +64,74 @@ Ext.define('databrowser.controller.History', {
     	if (token) {
     		console.log('token change here' + token);
 		    var tokenparts = token.split("-");
-		    if (tokenparts[0] == 'catalogid') {
-			    console.log('have catalog' + tokenparts[1]);
-			    var catalogid = tokenparts[1];
-			    if (catalogid) {
-				    this.loadCatalogInTree(catalogid);
-			    }
-		    }
-		    else if (tokenparts[0] == 'year') {
-			    console.log('have year' + tokenparts[1]);
-			    var year = tokenparts[1];
-			    if (year) {
-				    this.loadYearInTree(year);
-			    }
-		    }
-		    else if (tokenparts[0] == 'topicid') {
-			    console.log('change topic' + tokenparts[1]);
-			    var topic = tokenparts[1];
-			    if (topic) {
-				    this.loadTopicInTree(topic);
-			    }
-		    }
-		    else if (tokenparts[0] == 'catalogstudyid') {
-			    console.log('have study' + tokenparts[1]);
-			    var studyid = tokenparts[1];
-			    if (studyid) {
-				    this.loadStudyInCatalogTreeD(studyid);
-			    }
-		    } 
-		    else if (tokenparts[0] == 'catalogstudy') {
-			    console.log('have study' + tokenparts[1]);
-			    var catalogid = tokenparts[1];
-			    var studyid = tokenparts[2];
-			    if (studyid) {
-				    this.loadStudyInCatalogTreeD(studyid);
-			    }
-		    } 		    
-		    else if (tokenparts[0] == 'catalogstudyvariable') {
+//		    if (tokenparts[0] == 'catalogid') {
+//			    console.log('have catalog' + tokenparts[1]);
+//			    var catalogid = tokenparts[1];
+//			    if (catalogid) {
+//				    this.loadCatalogInTree(catalogid);
+//			    }
+//		    }
+//		    else if (tokenparts[0] == 'year') {
+//			    console.log('have year' + tokenparts[1]);
+//			    var year = tokenparts[1];
+//			    if (year) {
+//				    this.loadYearInTree(year);
+//			    }
+//		    }
+//		    else if (tokenparts[0] == 'topicid') {
+//			    console.log('change topic' + tokenparts[1]);
+//			    var topic = tokenparts[1];
+//			    if (topic) {
+//				    this.loadTopicInTree(topic);
+//			    }
+//		    }
+//		    else if (tokenparts[0] == 'catalogstudyid') {
+//			    console.log('have study' + tokenparts[1]);
+//			    var studyid = tokenparts[1];
+//			    if (studyid) {
+//				    this.loadStudyInCatalogTreeD(studyid);
+//			    }
+//		    } 
+//		    else if (tokenparts[0] == 'catalogstudy') {
+//			    console.log('have study' + tokenparts[1]);
+//			    var catalogid = tokenparts[1];
+//			    var studyid = tokenparts[2];
+//			    if (studyid) {
+//				    this.loadStudyInCatalogTreeD(studyid);
+//			    }
+//		    } 		    
+		    if (tokenparts[0] == 'catalogstudyvariable') {
 			    console.log('have variable' + tokenparts[1]);
-			    var catalogid = tokenparts[1];
-			    var studyid = tokenparts[2];
-			    var variableid = tokenparts[3];
-			    this.loadVariableinCatalog(studyid, variableid);
-
+			    //aici trebuie sa vedem daca nu cumva ne plimbam printre variabile de la acelasi studiu
+			    
+			    var studyid = tokenparts[1];
+			    var variableid = tokenparts[2];
+			    databrowser.util.Globals['vselect'] = variableid;
+			    if (this.getStudyview().getStudyId() == studyid) {
+			    	this.loadVariableLocally();
+			    } else {
+				    this.loadVariableinCatalog(studyid, variableid);
+			    }
 		    } 
+		    else if (tokenparts[0] == 'catalogserstudyvariable') {
+			    console.log('have variable' + tokenparts[1]);
+			    //aici trebuie sa vedem daca nu cumva ne plimbam printre variabile de la acelasi studiu
+			    
+			    var studyid = tokenparts[1];
+			    var variableid = tokenparts[2];
+			    
+			    
+			    
+			    databrowser.util.Globals['vselect'] = variableid;
+			    if (this.getStudyseriesview().getStudyId() == studyid) {
+			    	this.loadSeriesVariableLocally();
+			    } else {
+				    this.loadSeriesVariableinCatalog(studyid, variableid);
+			    }
+		    } 
+
+		    
+		    
 		    else if (tokenparts[0] == 'yearstudyid') {
 			    console.log('have study' + tokenparts[1]);
 			    var studyid = tokenparts[1];
@@ -105,8 +144,35 @@ Ext.define('databrowser.controller.History', {
 		    }
 	    }
     },
+ 
     
+    loadSeriesVariableLocally : function() {
+    	var variablegrid = this.getStudyseriesVariables();
+   	 	var dbcard = Ext.getCmp('dbcard');
+   	 	activecard = dbcard.layout.getActiveItem();
+   	 	if (activecard.layout.getActiveItem().id == 'svariables') {
+   	 	} else {
+   	 		activecard.layout.setActiveItem('svariables');
+   	 	}	
+   	 	var rowIndex = this.getStudyseriesVariables().getStore().find('indice', databrowser.util.Globals['vselect']);
+   	 	console.log(rowIndex);
+   	 	this.getStudyseriesVariables().getSelectionModel().select(rowIndex);
+   	 	this.getStudyseriesVariables().getView().focusRow(rowIndex);
+    },
+
     
+     loadVariableLocally : function() {
+    	 var variablegrid = this.getStudyVariables();
+    	 var dbcard = Ext.getCmp('dbcard');
+    	 activecard = dbcard.layout.getActiveItem();
+    	 if (activecard.layout.getActiveItem().id == 'svariables') {
+    	 } else {
+    		 activecard.layout.setActiveItem('svariables');
+    	 }
+    	 var rowIndex = this.getStudyVariables().getStore().find('indice', databrowser.util.Globals['vselect']);
+    	 this.getStudyVariables().getSelectionModel().select(rowIndex);
+    	 this.getStudyVariables().getView().focusRow(rowIndex);
+     },
     
     tokenInit : function(token) {
     	if (token) {
@@ -120,6 +186,14 @@ Ext.define('databrowser.controller.History', {
 				    this.loadCatalogInTree(catalogid);
 			    }
 		    }
+		    if (tokenparts[0] == 'catalogseriesid') {
+			    console.log('have catalogseries' + tokenparts[1]);
+			    var catalogseriesid = tokenparts[1];
+			    if (catalogseriesid) {
+				    this.loadCatalogSeriesInTree(catalogseriesid);
+			    }
+		    }		    
+		    
 		    else if (tokenparts[0] == 'year') {
 			    console.log('have year' + tokenparts[1]);
 			    var year = tokenparts[1];
@@ -159,12 +233,19 @@ Ext.define('databrowser.controller.History', {
 				    }
 		    }
 		    else if (tokenparts[0] == 'catalogstudyvariable') {
-					    console.log('have variable' + tokenparts[1]);
-					    var catalogid = tokenparts[1];
-					    var studyid = tokenparts[2];
-					    var variableid = tokenparts[3];
+					    console.log('token init have variable' + tokenparts[2]);
+					    var studyid = tokenparts[1];
+					    var variableid = tokenparts[2];
+					    console.log('-----------------------------' + studyid);
+					    console.log('-----------------------------' + variableid);
 					    this.loadVariableinCatalog(studyid, variableid);
-
+		    } 
+		    else if (tokenparts[0] == 'catalogserstudyvariable') {
+			    	var studyid = tokenparts[1];
+			    	var variableid = tokenparts[2];
+		    		console.log('-----------------------------' + studyid);
+		    		console.log('-----------------------------' + variableid);
+				    this.loadSerVariableinCatalog(studyid, variableid);
 		    } 
 			    
 			    
@@ -231,11 +312,9 @@ Ext.define('databrowser.controller.History', {
     	this.loadYears();
     	this.loadTopics();
     	this.getBrowser().getLayout().setActiveItem('CatalogsTreePanel');
-    	console.log('=============');
     	var cvv = this.getCatalogtree();
 	    var mytstore = Ext.StoreManager.get('CatalogTreeStore');
 	    //console.log(mytstore);
-    	console.log('=============');	    
 	    mytstore.load({
 	        scope : this,
 	        callback : function(records, operation, success) {
@@ -253,29 +332,36 @@ Ext.define('databrowser.controller.History', {
 					        console.log('found the cucker');
 					        var cvv = me.getCatalogtree();
 //					        var record = cvv.getStore().getNodeById(this.data.year);
+					        databrowser.util.Globals['vselect'] = variableid;
 					        cvv.getSelectionModel().select(this);
 					        var path = this.getPath();
 					        console.log(path);
 					        cvv.expandPath(path);
 					        
 					        //acu sa vedem ce avem in panoul din dreapta
-					        var dbcard = Ext.getCmp('dbcard');
-						    var activeitem = dbcard.layout.getActiveItem();
-					        console.log(activeitem);
-					        if (activeitem.itemId == 'studyseriesview') {
-					        	activeitem.layout.setActiveItem('svariables');
-					        	var vgrid = activeitem.down('gridpanel#studyseriesvariables');
-					        	var rowIndex = vgrid.getStore().find('indice', variableid);  //where 'id': the id field of your model, record.getId() is the method automatically created by Extjs. You can replace 'id' with your unique field.. And 'this' is your store.
-					        	console.log(rowIndex);
-					        	vgrid.getView().select(rowIndex);
-					        	
-					        } else if (activeitem.itemId == 'studyview') {
-					        	activeitem.layout.setActiveItem('svariables');
-					        	var vgrid = activeitem.down('gridpanel#studyvariables');
-					        	var rowIndex = vgrid.getStore().find('indice', variableid);  //where 'id': the id field of your model, record.getId() is the method automatically created by Extjs. You can replace 'id' with your unique field.. And 'this' is your store.
-					        	console.log(rowIndex);
-					        	vgrid.getView().select(rowIndex);
-					        }
+//					        var dbcard = Ext.getCmp('dbcard');
+//						    var activeitem = dbcard.layout.getActiveItem();
+//					        console.log(activeitem);
+//					        if (activeitem.itemId == 'studyseriesview') {
+//					        	console.log('studyseriesview');
+//					        	activeitem.layout.setActiveItem('svariables');
+//					        	var vgrid = activeitem.down('gridpanel#studyseriesvariables');
+//					        	var rowIndex = vgrid.getStore().find('indice', variableid);  //where 'id': the id field of your model, record.getId() is the method automatically created by Extjs. You can replace 'id' with your unique field.. And 'this' is your store.
+//					        	console.log(rowIndex);
+//					        	vgrid.getView().select(rowIndex);
+//					        	
+//					        } else if (activeitem.itemId == 'studyview') {
+//					        	console.log('studyview');
+//					        	activeitem.layout.setActiveItem('svariables');
+//					        	var vgrid = activeitem.down('gridpanel#studyvariables');
+//					        	console.log(vgrid);
+//					        	var gridstore = vgrid.store;
+//					        	console.log(gridstore);
+//					        	var rowIndex = vgrid.getStore().find('indice', variableid);  //where 'id': the id field of your model, record.getId() is the method automatically created by Extjs. You can replace 'id' with your unique field.. And 'this' is your store.
+//					        	console.log(rowIndex);
+////					        	vgrid.getView().select(rowIndex);
+//					        	vgrid.getSelectionModel().select(rowIndex);
+//					        }
 //					        activeitem.layout.setActiveItem('');
 					        
 					        
@@ -285,7 +371,46 @@ Ext.define('databrowser.controller.History', {
 	        }
 	    });
 	},
-    
+ 
+	
+    loadSerVariableinCatalog : function (studyid, variableid){
+    	console.log('loading series variable ' + studyid + 'var: '+ variableid);
+    	this.loadYears();
+    	this.loadTopics();
+    	this.getBrowser().getLayout().setActiveItem('CatalogsTreePanel');
+    	var cvv = this.getCatalogtree();
+	    var mytstore = Ext.StoreManager.get('CatalogTreeStore');
+	    //console.log(mytstore);
+	    mytstore.load({
+	        scope : this,
+	        callback : function(records, operation, success) {
+		        var cvv = this.getCatalogtree();
+		        Ext.apply(cvv, {
+			        store : mytstore
+		        });
+		        var rn = mytstore.getRootNode();
+		        var me = this;
+		        rn.cascadeBy(function() {
+		        	console.log('ce facem');
+			        if (this.data.type == 'St' || this.data.type == 'Sts') {
+			        	console.log(this.data.indice);
+				        if (this.data.indice == studyid) {
+					        console.log('found the cucker');
+					        var cvv = me.getCatalogtree();
+					        databrowser.util.Globals['vselect'] = variableid;
+					        cvv.getSelectionModel().select(this);
+					        var path = this.getPath();
+					        console.log(path);
+					        cvv.expandPath(path);
+				        }
+			        }
+		        });
+	        }
+	    });
+	},
+	
+	
+	
     loadStudyIinCatalog : function(studyid) {
     	this.loadYears();
     	this.loadTopics();
@@ -551,6 +676,63 @@ Ext.define('databrowser.controller.History', {
 	    }
     },
 
+    
+    loadCatalogSeriesInTree : function(catalogid) {
+    	this.loadTopics();
+    	this.loadYears();
+    	console.log('load catalog series in tree');
+    	this.getBrowser().setLoading(translations.loading);
+    	this.getBrowser().getLayout().setActiveItem('CatalogsTreePanel');
+    	var cvv = Ext.getCmp('CatalogsTreePanel');
+	    var cvv = this.getCatalogtree();
+	    var mytstore = Ext.StoreManager.get('CatalogTreeStore');
+	    console.log(mytstore);
+	    var cucu = mytstore.load({
+	    	scope : this,
+	        callback : function(records, operation, success) {
+	        	console.log('catalog tree store loaded');
+	        	var cvv = this.getCatalogtree();
+		        Ext.apply(cvv, {
+			        store : mytstore
+		        });
+		        var rn = mytstore.getRootNode();
+		        var me = this;
+		        rn.cascadeBy(function() {
+			        console.log(this);
+			        if (this.data.type == 'S') {
+			        	console.log('found the cucker');	
+				        if (this.data.indice == catalogid) {
+				        	var cvv = me.getCatalogtree();
+					        cvv.getSelectionModel().select(this);
+					        var path = this.getPath();
+					        cvv.expandPath(path);
+					    	me.getBrowser().setLoading(false);
+				        }
+			        }
+		        });
+	        }
+	    });
+	    if (cucu) {
+	    } else {
+	    	console.log('else');
+	        var rn = mytstore.getRootNode();
+	        var me = this;
+	        rn.cascadeBy(function() {
+		        console.log(this);
+		        if (this.data.type == 'S') {
+		        	console.log('found the cucker');	
+			        if (this.data.indice == catalogid) {
+			        	var cvv = me.getCatalogtree();
+				        cvv.getSelectionModel().select(this);
+				        var path = this.getPath();
+				        cvv.expandPath(path);
+			        }
+		        }
+	        });
+	    }
+    },
+    
+    
     setCatalogInTree : function(catalogid) {
     	this.loadYears();
     	this.loadTopics();

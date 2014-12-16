@@ -11,6 +11,15 @@ Ext.define('databrowser.controller.DataBrowser', {
 	            ref: 'analysisVar',
 	            selector: 'studyview gridpanel#analysisvar'
 	        }, 
+	        {
+	            ref: 'studyview',
+	            selector: 'studyview'
+	        }, 
+	        {
+	            ref: 'studyseriesview',
+	            selector: 'studyseriesview'
+	        }, 
+	        
 //	        {
 //	        	ref: 'freqChart',
 //	        	selector: 'studyview freqchart#ilfreqchart'
@@ -64,8 +73,7 @@ Ext.define('databrowser.controller.DataBrowser', {
 		this.control({
 			"studyview gridpanel#studyvariables" : {
 				 itemcontextmenu : this.onVariablesGridContextMenu,
-				 cellclick : this.onMenuGetRDetails
-				// selectionchange: this.onMenuGetRDetails
+				 selectionchange: this.onMenuGetRDetails
 			},
 
 			"studyseriesview gridpanel#studyseriesvariables" : {
@@ -244,14 +252,18 @@ onSTSendToAnalysis : function (button) {
 },
 	
 
-	onMenuGetRDetails : function (component, event) {
-		console.log('onMenuGetRDetails');
+	onMenuGetRDetails : function (component, two, three) {
+		console.log('on menu get R details')
 		var currentNode = this.getStudyVariables().getSelectionModel().getLastSelected();
+		if (currentNode) {
+		var vgrid = this.getStudyVariables();
+		console.log('studyid: ----> ' + this.getStudyview().getStudyId());
+		Ext.History.add('catalogstudyvariable-' + this.getStudyview().getStudyId() + '-' + currentNode.data.indice);
+		console.log('ok, well load the variable: v1: '+ currentNode.data.indice + ' lang: '+  translations.language);
 		this.getSingledetails().setLoading('Loading...');
 		var me = this;
 		Ext.Ajax.request({
 	        url : '../statistics',
-//	        url : 'http://roda.apiary-mock.com/statistics',
 	        method : "GET",
 	        params : {
 	                variable1 : currentNode.data.indice,
@@ -281,6 +293,7 @@ onSTSendToAnalysis : function (button) {
 
 	        }
 	    });	
+		}
 	},
 
 	
@@ -503,6 +516,11 @@ onSTSendToAnalysis : function (button) {
 	onSTMenuGetRDetails : function (component, event) {
 		console.log('stmenugetrdetails');
 		var currentNode = this.getSrstudyVariables().getSelectionModel().getLastSelected();
+
+		console.log('series studyid: ----> ' + this.getStudyseriesview().getStudyId());
+		Ext.History.add('catalogserstudyvariable-' + this.getStudyseriesview().getStudyId() + '-' + currentNode.data.indice);
+		
+		
 		this.getSrvarPanel().setLoading('Loading...');	
 		console.log(currentNode);
 		var me = this;

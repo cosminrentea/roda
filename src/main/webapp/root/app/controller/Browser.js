@@ -42,6 +42,7 @@ Ext.define('databrowser.controller.Browser', {
     	},
     	
     	onYearsTreeSelectionChange : function (component, selected, event) {
+    		Ext.History.add('');
     		var record = selected[0];
             var dbcard = this.getDbcard();
             this.getDbmaincenter().setLoading('Loading...');
@@ -92,21 +93,34 @@ Ext.define('databrowser.controller.Browser', {
            	    var sButton = Ext.getCmp('SButton');
            	    sButton.toggle(true);
            	    console.log(record.get('indice'));
+           	    if (databrowser.util.Globals['vselect'] > 0) {
+           	    	
+           	    } else {
+           	    	Ext.History.add('catalogid-'+record.get('indice'));
+           	    }
             	catalogview.loaddata(record.get('indice'));
             } else if (record.get('type') == 'S') {
             	dbcard.layout.setActiveItem('seriesview');	        	
             	var seriesviewob = Ext.getCmp('seriesview');
             	seriesviewob.setTitle(record.get('text'));
+        		Ext.History.add('catalogseriesid-'+record.get('indice'));
            	    seriesviewob.loaddata(record.get('indice'));
             } else if (record.get('type') == 'St') {
             	dbcard.layout.setActiveItem('studyview');	
             	var studyviewob = Ext.getCmp('studyview');
             	studyviewob.setTitle(record.get('text'));
+        		Ext.History.add('catalogstudyid-'+record.get('indice'));
             	studyviewob.loaddata(record.get('indice'));
             } else if (record.get('type') == 'Sts') {
             	dbcard.layout.setActiveItem('studyseriesview');	
             	var studyseriesviewob = Ext.getCmp('studyseriesview');
             	studyseriesviewob.setTitle(record.get('text'));
+           	    if (databrowser.util.Globals['vselect'] > 0) {
+           	    	
+           	    } else {
+            		Ext.History.add('seriesstudyid-'+record.get('indice'));
+           	    }
+            	
             	studyseriesviewob.loaddata(record.get('indice'));
             } else {
             	dbcard.layout.setActiveItem('initial');
@@ -130,6 +144,7 @@ Ext.define('databrowser.controller.Browser', {
 //    		dbcard.setLoading('Loading...');
     		this.getDbmaincenter().setLoading('Loading...');
     		if (record.get('type') == 'T') {
+    			console.log('-----------topic view-------------------');
             	dbcard.layout.setActiveItem('topicview');
             	var topicview = Ext.getCmp('topicview');
             	topicview.setTitle(record.get('text'));

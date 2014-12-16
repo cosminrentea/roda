@@ -23,6 +23,9 @@ Ext.define('databrowser.view.StudyView', {
     header : true,
     hideHeaders : false,
     store : 'StudyStore',
+    config : {
+    	studyId: 0,	
+    },
     loaddata : function(id) {
 
 	    // asta e o varianta idioata determinata oarecum de incapacitatea
@@ -40,6 +43,7 @@ Ext.define('databrowser.view.StudyView', {
 	        	this.setLoading(false);
 	        	if (success) {
 			        var rec = sStore.first();
+			        this.setStudyId(id);
 			        var templatedata = records[0].data;
 			        var personsdata = Ext.Array.pluck(rec.personsStore.data.items,'data');
 		        	var orgsdata = Ext.Array.pluck(rec.orgsStore.data.items,'data');
@@ -50,7 +54,21 @@ Ext.define('databrowser.view.StudyView', {
 			        templatedata.keywords = kwsdata;
 			        templatedata.topics = topicsdata;
 			        dtab.update(templatedata);
-			        variablesgrid.getView().bindStore(rec.variablesStore);
+//			        variablesgrid.getView().bindStore(rec.variablesStore);
+			        variablesgrid.reconfigure(rec.variablesStore);
+			        
+			        
+			        console.log(databrowser.util.Globals['vselect']);
+			        if (databrowser.util.Globals['vselect']) {
+			        	 var mystore = variablesgrid.getStore();
+			        	 var dbcard = Ext.getCmp('dbcard');
+			        	 activecard = dbcard.layout.getActiveItem();
+			        	 activecard.layout.setActiveItem('svariables');
+			        	 var rowIndex = rec.variablesStore.find('indice', databrowser.util.Globals['vselect']);
+			        	 variablesgrid.getSelectionModel().select(rowIndex);
+			        	 variablesgrid.getView().focusRow(rowIndex)
+			        	// Ext.fly(variablesgrid.getView().getNode(rowIndex).scrollIntoView());
+			        }
 			        console.log(variablesgrid.getStore());
 			        filestab.bindStore(rec.filesStore);
 		        }
@@ -114,6 +132,7 @@ Ext.define('databrowser.view.StudyView', {
                             collapsible : false,
                             split : false,
                             id : 'studyvariables',
+                            deferRowRender:false,
                             width : '100%',
                             flex : 1,
                             autoScroll : true,

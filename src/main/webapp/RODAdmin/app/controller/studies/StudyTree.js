@@ -27,7 +27,9 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                   'RODAdmin.view.studies.CatalogContextMenu',
 	                   'RODAdmin.view.studies.AddStudyToGroupWindow',
 	                   'RODAdmin.view.studies.StudyItemviewContextMenu',
-	                   'RODAdmin.view.studies.CatalogDetails'	                   
+	                   'RODAdmin.view.studies.CatalogDetails',
+	                   'RODAdmin.view.studies.ImportStudyToGroupWindow',
+	                   'RODAdmin.view.studies.AddImportFile'
 	                   ],
 
 	                   refs : [
@@ -84,6 +86,11 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                               ref: 'sdetailscontainer',
 	                               selector: 'studiesmain panel#stdetailscontainer'
 	                           },
+	          
+	                           {
+	               				ref : 'filesgrid',
+	               				selector : 'studygimport form#estudyform fieldset#sfiles grid#filesdisplay'
+	               			},
 
 	                           
 	                           
@@ -180,6 +187,16 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        			    */	        	
 	                        			   click : this.onAddStudyClick
 	                        		   },
+	                        		   "catalogcontextmenu menuitem#importstudy" : {
+	                        			   /**
+	                        			    * @listener catalogcontextmenu-menuitem-addstudy
+	                        			    *           triggered-by:
+	                        			    *           {@link RODAdmin.view.studies.CatalogContextMenu CatalogContextMenu}
+	                        			    *           menuitem#addstudy {@link #onAddStudyClick}
+	                        			    */	        	
+	                        			   click : this.onImportStudyClick
+	                        		   },
+	                        		   
 	                        		   "catalogcontextmenu menuitem#newgroup" : {
 	                        			   /**
 	                        			    * @listener catalogcontextmenu-menuitem-newgriup
@@ -190,6 +207,30 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        			   click : this.onNewGroupClick
 	                        		   },
 	                        		   
+	                       			'studygimport button#addfile' : {
+	                    				/**
+	                    				 * @listener studies-toolbar-button-icon-view-click
+	                    				 *           triggered-by:
+	                    				 *           {@link RODAdmin.view.studies.Studies Studies}
+	                    				 *           toolbar button#icon-view {@link #onIconViewClick}
+	                    				 */
+	                    				click : this.addFile
+	                    			},	
+	                    			'addimportfile button#save' : {
+	                    				click : this.saveImportFile
+	                    			},
+	                    			
+	                       			'studygimport button#save' : {
+	                    				/**
+	                    				 * @listener studies-toolbar-button-icon-view-click
+	                    				 *           triggered-by:
+	                    				 *           {@link RODAdmin.view.studies.Studies Studies}
+	                    				 *           toolbar button#icon-view {@link #onIconViewClick}
+	                    				 */
+	                    				click : this.importStudyFiles
+	                    			},	
+	                    			
+	                        		   
 
 	                        	   });
 	                           },
@@ -197,6 +238,127 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                           onTreeDrop : function(node,data,overModel,dropPosition) {
 	                           	console.log('moved ' + data.records[0].data.name + ' to ' + overModel.data.name + ' ' + dropPosition );
 	                           },
+	                           
+	                       	
+	                           addFile : function(button, e, options) {
+	                       			console.log ('adding file');
+	                       			var win = Ext.WindowMgr.get('addimportfile');
+	                       			if (!win) {
+	                       				win = Ext.create('RODAdmin.view.studies.AddImportFile');
+	                       			}
+	                       			win.show();
+	                       		},
+
+	                           
+	                       		importStudyFiles : function (button, e, options) {
+	                       			console.log('importstudyfile');
+	                       			button.up('window').close();
+	                       		},
+	                       		
+	                       		saveImportFile : function(button, e, options) {
+	                       			//this should be easy, it has only name and label and related question info
+	                       				console.log('saveimportfile');
+
+	                       				console.log(button.up('window').down('form').down('fieldset#fileinfo'));
+	                       				var form = button.up('window').down('form');
+
+	                       				//ok, let's see if we have a real file
+	                       				var filefield = button.up('window').down('form').down('fieldset#fileinfo').down('filefield#fupload');
+	                       				var filename = button.up('window').down('form').down('fieldset#fileinfo').down('textfield[name=name]').getValue();
+	                       				var fileuri = button.up('window').down('form').down('fieldset#fileinfo').down('textfield[name=uri]').getValue();
+	                       				var filetypeid = button.up('window').down('form').down('fieldset#fileinfo').down('combo[name=ftype]').getValue();
+	                       				var filetypename = button.up('window').down('form').down('fieldset#fileinfo').down('combo[name=ftype]').getRawValue();
+	                       				var filecases = button.up('window').down('form').down('fieldset#datafinfo').down('textfield[name=cases]').getValue();
+	                       				var filereccount = button.up('window').down('form').down('fieldset#datafinfo').down('textfield[name=reccount]').getValue();
+	                       				var filestore = this.getFilesgrid().getStore();
+
+	                       				console.log(button.up('window').down('form').down('fieldset#fileinfo').down('filefield#fupload'));
+
+	                       				if (filefield.value) { 
+	                       					console.log('post savefile');
+	                       					
+	                       					
+	                       				if(form.isValid()){
+	                       					form.submit({
+	                       					url: 'http://localhost:8080/roda/addfiletotemp',
+	                       					method: 'POST',
+	                       					timeout: 10,
+	                       					waitMsg: 'Uploading your file...',
+	                       					success: function(fp, o) {
+	                       						console.log('success');
+	                       						console.log(fp);
+	                       						console.log(o);
+	                       						var nextId = this.getStoreNextId(filestore);
+
+	                       						var file = new RODAdmin.model.studies.CBEditor.File({
+	                       									id : nextId,
+	                       									fname: filename,
+	                       									uri : fileuri,
+	                       									uptype : 'filepost',
+	                       									ftype : filetypename,
+	                       									uploadid : 'uplid',
+	                       									ftypeid : filetypeid,
+	                       									cases: filecases,
+	                       									reccount: filereccount
+	                       								});
+	                       						filestore.add(file);
+	                       						filestore.commitChanges();					
+	                       						button.up('window').close();
+	                       						},
+	                       					failure : function(form, action) {
+	                       						console.log('failure');
+	                       						console.log(form);
+	                       						console.log(action);
+	                       						switch (action.failureType) {
+	                       						      case Ext.form.action.Action.CLIENT_INVALID:
+	                       						      Ext.Msg.alert('Failure', 'Form fields may must be submitted with invalid values');
+	                       						      break;
+	                       					       case Ext.form.action.Action.CONNECT_FAILURE:
+	                       						        Ext.Msg.alert('Failure', 'doesn\'t work');
+	                       						        break;
+	                       						   case Ext.form.action.Action.SERVER_INVALID:
+	                       						        Ext.Msg.alert('Failure', action.response.responseText);
+	                       						   break;
+	                       						        }
+	                       						       }
+	                       					});
+	                       				}
+
+	                       				
+	                       				} else {
+	                       				
+	                       				
+
+	                       					if (filename.length < 2) {
+	                       						alert('file name too small');
+	                       						return;
+	                       					}			
+	                       				
+	                       					var nextId = this.getStoreNextId(filestore);
+
+	                       					var file = new RODAdmin.model.studies.CBEditor.File({
+	                       								id : nextId,
+	                       								fname: filename,
+	                       								uri : fileuri,
+	                       								uptype : 'urlget',
+	                       								ftype : filetypename,
+	                       								ftypeid : filetypeid,
+	                       								cases: filecases,
+	                       								reccount: filereccount
+	                       							});
+	                       					filestore.add(file);
+	                       					filestore.commitChanges();
+	                       					button.up('window').close();
+	                       				}
+//	                       			
+	                       		},
+	                       		
+	                       		
+	                       		
+	                       		
+	                       		
+	                       		
+	                       		
 	                           
 	                           /**
 	                            * @method
@@ -231,6 +393,20 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        	   win.down('form').down('fieldset').down('displayfield').setValue(currentNode.data.directory);
 	                        	   win.show();
 	                           },
+	                           onImportStudyClick : function(component, event) {
+	                        	   var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
+	                        	   console.log(currentNode);
+	                        	   var win = Ext.create('RODAdmin.view.studies.ImportStudyToGroupWindow');
+	                        	   win.setTitle('Import a new study to "' + currentNode.data.name + '" (id: ' + currentNode.data.indice + ')');
+	                        	   win.setIconCls('file_add');
+//	                        	   win.down('form').down('fieldset').down('hiddenfield').setValue(currentNode.data.indice);
+//	                        	   win.down('form').down('fieldset').down('displayfield').setValue(currentNode.data.directory);
+	                        	   win.show();
+	                           },
+	                           
+	                           
+	                           
+	                           
 	                           /**
 	                            * @method
 	                            */
@@ -264,10 +440,12 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                           /**
 	                            * @method
 	                            */
-	                           onEditStudyClick : function(component, record, item, index, e) {
+	                           onEditStudyClick : function(button, event) {
                         		   console.log('edit study smth');
+                        	//	   console.log(record);
+                        		   
 	                        	   var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
-	                        	   if (record.data.itemtype == 'catalog') {	        
+	                        	   if (currentNode.itemtype == 'catalog') {	        
 	                        		   console.log('edit study group');
 		                        	   win = Ext.WindowMgr.get('catalogedit');
 		                        	   console.log(win);
@@ -276,7 +454,9 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 		                        	   }
 		                        	   win.setTitle('Edit Study Group');
 		                        	   var wtree = win.down('treepanel');
-		                        	   var studyitemstore = Ext.create('RODAdmin.store.studies.StudyItem');
+//		                        	   var studyitemstore = Ext.create('RODAdmin.store.studies.StudyItem');
+		                        	   var studyitemstore = Ext.StoreManager.get('studies.StudyItem');
+		                        	   
 		                        	   studyitemstore.load({
 		                        		   id : currentNode.data.indice, // set the id here
 		                        		   scope : this,
@@ -298,7 +478,8 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        	   }
 	                        	   win.setTitle('Edit Study');
 	                        	   var wtree = win.down('treepanel');
-	                        	   var studyitemstore = Ext.create('RODAdmin.store.studies.StudyItem');
+	                        	   var studyitemstore = Ext.StoreManager.get('studies.StudyItem');
+	                        	   
 	                        	   studyitemstore.load({
 	                        		   id : currentNode.data.indice, // set the id here
 	                        		   scope : this,
@@ -441,5 +622,20 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
                         		   //stusage.store.removeAll();
                         		   //stcontent.setValue('');
 	                           }
-	                   }
+	                   },
+	               	getStoreNextId : function(ourstore) {
+	            		var maxId = 0;
+	            		if (ourstore.getCount() > 0) {
+	            			maxId = ourstore.getAt(0).get('id'); // initialise to the first
+	            													// record's id value.
+	            			ourstore.each(function(rec) // go through all the records
+	            					{
+	            						maxId = Math.max(maxId, rec.get('id'));
+	            					});
+	            		}
+	            		return maxId + 1;
+	            	},
+
+	                   
+	                   
 });

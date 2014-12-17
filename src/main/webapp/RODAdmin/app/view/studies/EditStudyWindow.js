@@ -94,7 +94,7 @@ Ext.define('RODAdmin.view.studies.EditStudyWindow', {
 				layout : 'fit',
 				items : [{
 							xtype : 'treepanel',
-							store : Ext.create('RODAdmin.store.studies.StudyInfo'),
+							store : Ext.create('RODAdmin.store.studies.GroupTree'),
 							itemId : 'groupselect',
 							displayField : 'name',
 							useArrows : true,

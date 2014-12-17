@@ -214,7 +214,7 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 			        },
 			        success : function() {
 			        	me.getIconview().store.load();
-			        	RODAdmin.util.Alert.msg('Success!', 'News item deleted.');
+			        	RODAdmin.util.Alert.msg('Success!', 'Temporary study deleted.');
 
 			        },
 			        failure : function(response, opts) {
@@ -484,26 +484,41 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
                     		win.down('form#questionsform datefield#qtranslationend').setValue(new Date(resp.studyQuestions.endqtranslation));
                     	}
 		    			//Data Collection
-		    			if (resp.dataCollection.startsampling) {
+
+                    	
+                    	if (resp.dataCollection.startsampling) {
                     		win.down('form#datacollectionform datefield#startsampling').setValue(new Date(resp.dataCollection.startsampling));
                     	}
                     	if (resp.dataCollection.endsampling) {
                     		win.down('form#datacollectionform datefield#endsampling').setValue(new Date(resp.dataCollection.endsampling));
                     	}
-
+                    	var smrstore = win.down('sdataprod grid#dprespdisplay').store;
+                    	smrstore.removeAll();
+		    			this.loadPOrg(qdstore,resp.studyQuestions.qdesignresp);
                     	
                     	
-                    	
-		    			if (resp.dataCollection.startdatacollection) {
+                    	if (resp.dataCollection.startdatacollection) {
                     		win.down('form#datacollectionform datefield#startdatacollection').setValue(new Date(resp.dataCollection.startdatacollection));
                     	}
                     	if (resp.dataCollection.enddatacollection) {
                     		win.down('form#datacollectionform datefield#enddatacollection').setValue(new Date(resp.dataCollection.enddatacollection));
                     	}
-                   	
-                    	
-                    	
-                    	
+                    	var smrstore = win.down('sdatacollection grid#qsamplingrespdisplay').store;
+                    	smrstore.removeAll();
+		    			this.loadPOrg(smrstore,resp.dataCollection.samplingresp);
+		    			
+		    			
+                    	var dcrrstore = win.down('sdatacollection grid#dcrespdisplay').store;
+                    	dcrrstore.removeAll();
+		    			this.loadPOrg(dcrrstore,resp.dataCollection.datacolresp);                  	
+
+		    			win.down('form#datacollectionform textareafield#sampldescription').setValue(resp.dataCollection.sampledescr);		    			
+		    			win.down('form#datacollectionform textareafield#collectionsituation').setValue(resp.dataCollection.dcolsituation);		    			
+		    			win.down('form#datacollectionform combo#dcollmode').setValue(resp.dataCollection.dcolmode);		    			
+		    			
+		    			
+		    			
+		    			
                     	
                     	//Data Production
 		    			
@@ -522,6 +537,10 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
                     	var variables = win.down('sdataprod grid#variabledisplay').store;
                     	variables.removeAll();
 		    			this.loadVariables(variables,resp.dataProduction.variables);
+	
+                    	var files = win.down('sdataprod grid#filesdisplay').store;
+                    	files.removeAll();
+		    			this.loadFiles(files,resp.dataProduction.files);		    			
 		    			
 		    			//Process Info
 		    			win.down('form#processinfoform checkbox#ccorrect').setValue(resp.dataProcessInfo.ccorrect);
@@ -915,7 +934,6 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     
     
     loadVariables : function(store, data) {
-    	//asta trebuie facut mult mai complicat, sa vedem 
     	    	for (var index in data) {
     	    	    var npr = data[index];
     	    	    console.log(npr);
@@ -928,56 +946,31 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     	                                    									oqid: npr.oqid,
     	                                    									oqtext: npr.oqtext ,	
     				                                                            });
-    				
-//    	//missing
-//    	    	    
-//    	    		for (var miss in npr.missing) {
-//    	    			var missing = new RODAdmin.model.studies.CBEditor.question.Missing(
-//    	    			                                       							{
-//    	    			                                       								value : npr.missing[miss].value,
-//    	    			                                       								label : npr.missing[miss].label
-//    	    			                                       							});
-//    	    			response.missing().add(missing);
-//    	    			response.missing().commitChanges();
-//    	    		}
-//    	    	    
-//    	    	    if (npr.respdomain == 'Category') {
-//    	    	    	console.log('-----------------------------');
-//    	    	    	console.log(npr.catsponses);
-//    	    	    	for (var ncat in npr.catsponses) {
-//    					var catr = new RODAdmin.model.studies.CBEditor.question.response.Category(
-//    					                                                  							{
-//    					                                                  								id : npr.catsponses[ncat].id,
-//    					                                                  								label : npr.catsponses[ncat].label,
-//    					                                                  								lang : npr.catsponses[ncat].lang,
-//    					                                                  								value : npr.catsponses[ncat].value
-//    					                                                  							});
-//    					 
-//    					response.catresponses().add(catr );
-//    					response.catresponses().commitChanges();
-//    	    	    	}
-//    	    	    	
-//    	    	    	
-//    	    	    } else if (npr.respdomain == 'Numeric') {
-//    	    	    		for (var nind in npr.numericresponse) {
-//    	    	    			var num = npr.numericresponse[nind];
-//    	    	    			var numericresponse = new RODAdmin.model.studies.CBEditor.question.response.Numeric(
-//    	    	    	                                                            						{
-//    	    	    	                                                            							type : num.numresponsetype,
-//    	    	    	                                                            							low : num.numresponselow,
-//    	    	    	                                                            							high : num.numresponsehigh
-//    	    	    	                                                            						});
-//    	    	    	
-//    	    	    			response.numericresponse().add(numericresponse );
-//    	    					response.numericresponse().commitChanges();
-//    	    	    		}
-//    	    	    }
-//    	     	    
     	    	    store.add(response);
     				store.commitChanges();    	    
     	    	}
     	    },
 
+   loadFiles : function(store, data) {
+    	    	for (var index in data) {
+    	    	    var npr = data[index];
+    	    	    console.log(npr);
+    	    	    var response = new RODAdmin.model.studies.CBEditor.File (
+    				                                                            {
+    	                                    									id : npr.id ,
+    	                                    									fname: npr.fname,
+    	                                    									uri : npr.uri,
+    	                                    									uptype : npr.uptype,
+    	                                    									uploadid : npr.uploadid,
+    	                                    									ftype : npr.ftype,
+    	                                    									ftypeid : npr.ftypeid,
+    	                                    								    cases : npr.cases,
+    	                                    									reccount : npr.reccount,
+    				                                                            });
+    	    	    store.add(response);
+    				store.commitChanges();    	    
+    	    	}
+    	    },
     
     
     

@@ -340,6 +340,10 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			'addquestion form#questionform fieldset#missinginfo grid#missing' : {
 				deleteRecord : this.onGridDeleteAction
 			},
+
+			'sdataprod form#dataprodform fieldset#dpdatafiles grid#filesdisplay' : {
+				deleteRecord : this.onGridDeleteAction
+			},
 			'squestions form#questionsform fieldset#questions grid#questionsdisplay' : {
 				deleteRecord : this.onGridQuestionDeleteAction,
 				editRecord : this.onQuestionEditAction
@@ -1034,7 +1038,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 
 			console.log(button.up('window').down('form').down('fieldset#fileinfo').down('filefield#fupload'));
 
-			
 			if (filefield.value) { 
 				console.log('post savefile');
 				
@@ -1910,7 +1913,8 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		if (this.getStudyaddmain().getMode() == 'add') {
 			console.log('add mode -------------------------------------');
 			Ext.Ajax.request({
-				url: '/roda/adminjson/cmsjsoncreate',
+//				url: '/roda/adminjson/cmsjsoncreate',
+				url: '/roda/userjson/cmsjsoncreate',
 				waitTitle: 'Connecting',
 				waitMsg: 'Sending data...',                                     
 				params: {
@@ -1952,8 +1956,9 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			console.log('edit mode -------------------------------------');
 			var myid = this.getStudyaddmain().getEditindex();
 			Ext.Ajax.request({
-			    url: '/roda/adminjson/cmsjsonsave/',
-			    waitTitle: 'Connecting',
+//			    url: '/roda/adminjson/cmsjsonsave/',
+				url: '/roda/userjson/cmsjsonsave/',
+				waitTitle: 'Connecting',
 			    waitMsg: 'Sending data...',  
 			    method: 'POST',  
 			    params: {
@@ -1999,7 +2004,8 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		if (this.getStudyaddmain().getMode() == 'add') {
 			console.log('add mode -------------------------------------');
 			Ext.Ajax.request({
-				url: '/roda/adminjson/cmsjsoncreate',
+//				url: '/roda/adminjson/cmsjsoncreate',
+				url: '/roda/userjson/cmsjsoncreate',
 				waitTitle: 'Connecting',
 				waitMsg: 'Sending data...',                                     
 				params: {
@@ -2045,7 +2051,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			console.log('edit mode -------------------------------------');
 			var myid = this.getStudyaddmain().getEditindex();
 			Ext.Ajax.request({
-			    url: '/roda/adminjson/cmsjsonsave/',
+			    url: '/roda/userjson/cmsjsonsave/',
 			    waitTitle: 'Connecting',
 			    waitMsg: 'Sending data...',  
 			    method: 'POST',  

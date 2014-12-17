@@ -217,7 +217,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sDataProd', {
 									width : 60,
 									sortable : false,
 									menuDisabled : true,
-									itemId : 'actionvariabledisplay',
+									itemId : 'actionfiledisplay',
 									items : [{
 										icon : 'images/delete.gif',
 										tooltip : 'Delete file',

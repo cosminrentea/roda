@@ -27,6 +27,12 @@ initComponent: function() {
             },
             {
                 xtype: 'menuitem',
+                itemId: 'importstudy',
+                text: 'Import Study',
+                tooltip: 'Import a new study in this group'
+            },            
+            {
+                xtype: 'menuitem',
                 itemId: 'emptygroup',
                 text: 'Empty Group',
                 tooltip: 'Deletes all the studies from this group'

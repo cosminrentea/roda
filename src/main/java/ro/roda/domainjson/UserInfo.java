@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
+import ro.roda.domain.Authorities;
 import ro.roda.domain.Person;
 import ro.roda.domain.UserMessage;
 import ro.roda.domain.Users;
@@ -23,7 +24,7 @@ public class UserInfo extends UserList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type");
-		serializer.include("messages");
+		serializer.include("messages", "authorities");
 
 		serializer.transform(new FieldNameTransformer("username"), "name");
 		serializer.transform(DATE_TRANSFORMER2, Date.class);
@@ -95,13 +96,16 @@ public class UserInfo extends UserList {
 	// following field:
 	private Set<UserGroupInfo> groups;
 
+	private Set<String> authorities;
+
 	private Set<UserMessage> messages;
 
 	public UserInfo(Integer id, String username, String email, boolean enabled, Set<UserGroupInfo> groups,
-			Set<UserMessage> messages) {
+			Set<UserMessage> messages, Set<String> authorities) {
 		super(id, username, null, null, email, enabled);
 		this.groups = groups;
 		this.messages = messages;
+		this.authorities = authorities;
 	}
 
 	public UserInfo(Users user, Person person) {
@@ -121,6 +125,19 @@ public class UserInfo extends UserList {
 	public UserInfo(Users user) {
 		super(user);
 		this.messages = user.getUserMessages();
+		Set<Authorities> userAuthorities = user.getAuthorities();
+		if (userAuthorities != null) {
+			Set<String> authorities = new HashSet<String>();
+			Iterator<Authorities> itAuthorities = userAuthorities.iterator();
+			while (itAuthorities.hasNext()) {
+				authorities.add(itAuthorities.next().getId().getAuthority());
+			}
+			setAuthorities(authorities);
+		}
+	}
+
+	public Set<String> getAuthorities() {
+		return authorities;
 	}
 
 	public Set<UserGroupInfo> getGroups() {
@@ -129,6 +146,10 @@ public class UserInfo extends UserList {
 
 	public Set<UserMessage> getMessages() {
 		return messages;
+	}
+
+	public void setAuthorities(Set<String> authorities) {
+		this.authorities = authorities;
 	}
 
 	public void setGroups(Set<UserGroupInfo> groups) {
@@ -143,7 +164,7 @@ public class UserInfo extends UserList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type");
-		serializer.include("messages");
+		serializer.include("messages", "authorities");
 
 		serializer.transform(new FieldNameTransformer("username"), "name");
 		serializer.transform(DATE_TRANSFORMER2, Date.class);

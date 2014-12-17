@@ -10,11 +10,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
-import ro.roda.domain.CmsLayout;
-import ro.roda.domain.CmsLayoutGroup;
-import ro.roda.domain.CmsPage;
 import ro.roda.domain.Person;
-import ro.roda.domain.PersonLinks;
 import ro.roda.domain.UserMessage;
 import ro.roda.domain.Users;
 import ro.roda.transformer.FieldNameTransformer;
@@ -26,9 +22,8 @@ public class UserInfo extends UserList {
 	public static String toJsonArr(Collection<UserInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "id", "type", "firstname", "lastname", "profile.name", "profile.id",
-				"profile.type");
-		serializer.include("name", "email", "enabled", "profile", "messages");
+		serializer.exclude("*.class", "type");
+		serializer.include("messages");
 
 		serializer.transform(new FieldNameTransformer("username"), "name");
 		serializer.transform(DATE_TRANSFORMER2, Date.class);
@@ -58,69 +53,54 @@ public class UserInfo extends UserList {
 		Users profile = user;
 
 		if (user != null) {
-			Set<PersonLinks> personLinks = user.getPersonLinkss();
-			if (personLinks != null && personLinks.size() > 0) {
-				Person person = personLinks.iterator().next().getPersonId();
-				result = new UserInfo(user, person);
-				// ensure that there are no differences between the information
-				// in Person (if it exists) and the one in the UserProfile; the
-				// information in the Person table has greater priority
-				if (profile != null) {
-					profile.setLastname(person.getLname());
-					profile.setFirstname(person.getFname());
 
-					// the field mname is nullable in the table Person; if null,
-					// take the one in UserProfile
-					if (person.getMname() != null) {
-						profile.setMiddlename(person.getMname());
-					}
-				}
-			} else {
-				// use the userProfile information
-				result = new UserInfo(user);
-			}
+			result = new UserInfo(user);
+
+			// TODO decide if Person Links are still necessary
+			// Set<PersonLinks> personLinks = user.getPersonLinkss();
+			// if (personLinks != null && personLinks.size() > 0) {
+			// Person person = personLinks.iterator().next().getPersonId();
+			// result = new UserInfo(user, person);
+			// // ensure that there are no differences between the information
+			// // in Person (if it exists) and the one in the UserProfile; the
+			// // information in the Person table has greater priority
+			// if (profile != null) {
+			// profile.setLastname(person.getLname());
+			// profile.setFirstname(person.getFname());
+			//
+			// // the field mname is nullable in the table Person; if null,
+			// // take the one in UserProfile
+			// if (person.getMname() != null) {
+			// profile.setMiddlename(person.getMname());
+			// }
+			// }
+			// } else {
+			// // use the userProfile information
+			// result = new UserInfo(user);
+			// }
 
 			Set<UserMessage> userMessages = new HashSet<UserMessage>();
 
 			// set the remaining information from the profile
-			if (profile != null) {
-				result.setProfile(new UserProfileInfo(profile));
-			}
+			// if (profile != null) {
+			// result.setProfile(new UserProfileInfo(profile));
+			// }
 			result.setMessages(userMessages);
 		}
 
 		return result;
 	}
 
-	public static Set<CmsPage> getLayoutGroupPages(CmsLayoutGroup layoutGroup) {
-		Set<CmsPage> pages = new HashSet<CmsPage>();
-
-		Iterator<CmsLayout> layoutsIterator = layoutGroup.getCmsLayouts().iterator();
-
-		while (layoutsIterator.hasNext()) {
-			pages.addAll(layoutsIterator.next().getCmsPages());
-		}
-
-		Iterator<CmsLayoutGroup> layoutGroupsIterator = layoutGroup.getCmsLayoutGroups().iterator();
-
-		while (layoutGroupsIterator.hasNext()) {
-			pages.addAll(getLayoutGroupPages(layoutGroupsIterator.next()));
-		}
-
-		return pages;
-	}
-
+	// TODO decide if groups are no longer needed; in this case, remove the
+	// following field:
 	private Set<UserGroupInfo> groups;
-
-	private UserProfileInfo profile;
 
 	private Set<UserMessage> messages;
 
 	public UserInfo(Integer id, String username, String email, boolean enabled, Set<UserGroupInfo> groups,
-			UserProfileInfo profile, Set<UserMessage> messages) {
+			Set<UserMessage> messages) {
 		super(id, username, null, null, email, enabled);
 		this.groups = groups;
-		this.profile = profile;
 		this.messages = messages;
 	}
 
@@ -140,14 +120,11 @@ public class UserInfo extends UserList {
 
 	public UserInfo(Users user) {
 		super(user);
+		this.messages = user.getUserMessages();
 	}
 
 	public Set<UserGroupInfo> getGroups() {
 		return groups;
-	}
-
-	public UserProfileInfo getProfile() {
-		return profile;
 	}
 
 	public Set<UserMessage> getMessages() {
@@ -158,10 +135,6 @@ public class UserInfo extends UserList {
 		this.groups = groups;
 	}
 
-	public void setProfile(UserProfileInfo userProfile) {
-		this.profile = userProfile;
-	}
-
 	public void setMessages(Set<UserMessage> messages) {
 		this.messages = messages;
 	}
@@ -169,9 +142,8 @@ public class UserInfo extends UserList {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "id", "type", "firstname", "lastname", "profile.name", "profile.id",
-				"profile.type");
-		serializer.include("name", "email", "enabled", "profile", "messages");
+		serializer.exclude("*.class", "type");
+		serializer.include("messages");
 
 		serializer.transform(new FieldNameTransformer("username"), "name");
 		serializer.transform(DATE_TRANSFORMER2, Date.class);

@@ -98,7 +98,7 @@ public class CmsUserController {
 		} else {
 
 		}
-		return jsonSave.toJsonWithId();
+		return jsonSave.toJson();
 	}
 
 	@RequestMapping(value = "/cmsfilemove", method = RequestMethod.POST, produces = "application/json")

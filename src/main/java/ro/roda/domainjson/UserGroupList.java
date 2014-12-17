@@ -11,7 +11,7 @@ import ro.roda.domain.UserGroup;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class UserGroupList extends UserGroupInfo {
+public class UserGroupList extends JsonInfo {
 
 	public static String toJsonArr(Collection<UserGroupList> collection) {
 		JSONSerializer serializer = new JSONSerializer();
@@ -48,11 +48,17 @@ public class UserGroupList extends UserGroupInfo {
 		return null;
 	}
 
+	private String description;
+
+	private Integer nrusers;
+
 	private boolean enabled;
 
 	public UserGroupList(Integer id, String name, String description, boolean enabled, Integer nrusers) {
-		super(id, name, description, nrusers);
+		super(id, name);
+		this.description = description;
 		this.enabled = enabled;
+		this.nrusers = nrusers;
 	}
 
 	public UserGroupList(UserGroup userGroup) {
@@ -66,6 +72,22 @@ public class UserGroupList extends UserGroupInfo {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Integer getNrusers() {
+		return nrusers;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setNrusers(Integer nrusers) {
+		this.nrusers = nrusers;
 	}
 
 	public String toJson() {

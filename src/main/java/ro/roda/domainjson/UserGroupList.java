@@ -60,6 +60,14 @@ public class UserGroupList extends UserGroupInfo {
 				.getAuthorities() != null ? userGroup.getAuthorities().size() : 0);
 	}
 
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 

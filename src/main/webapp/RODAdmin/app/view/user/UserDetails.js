@@ -19,7 +19,9 @@ Ext.define('RODAdmin.view.user.UserDetails', {
 //			        	 xtype:'userproperties', //change with userview
 			        	 id:'userinfo',
 			        	 itemId: 'userinfo',
-			        	 height:220,
+			        	 flex: 3,
+			        	 autoScroll: true,
+//			        	 height:220,
 			        	 title: 'Details',
 						collapsible: true,
 //			        	 html: 'Select an user or group'
@@ -30,6 +32,12 @@ Ext.define('RODAdmin.view.user.UserDetails', {
 			     			       '</td><td>',
 			     			       '<div class="username"><strong>Username:</strong> {data.username}</div>',
 			     			       '<div class="useremail"><strong>Email:</strong> {data.email}</div>',
+				     			   '<div class="useremail"><strong>Nume:</strong> {data.firstname} {data.lastname}</div>',
+				        		   '<div class="useremail"><strong>Adresa:</strong> {data.address1}<br>{data.address2}</div>',
+				        		   '<div class="useremail"><strong>Oras:</strong> {data.city}</div>',
+				        		   '<div class="useremail"><strong>Tara:</strong> {data.country}</div>',
+				        		   '<div class="useremail"><strong>Data nasterii:</strong> {data.birthdate}</div>',			     			       
+
 			     			       '</td></tr></table>',
 			     			       '</div>',
 			     			       '</tpl>',
@@ -37,7 +45,12 @@ Ext.define('RODAdmin.view.user.UserDetails', {
 			     			      '<div class="userinactive">',
 			     			       '<div class="userimage"></div>',
 			     			      '<div class="username">Username: {data.username}</div>',
-			     			       '<div class="useremail">Email: {data.email}</div>',
+		     			          '<div class="useremail">Email: {data.email}</div>',
+			     			      '<div class="useremail">Nume: {data.firstname} {data.lastname}</div>>',
+			        		      '<div class="useremail">Adresa: {data.address1}<br>{data.address2}</div>',
+			        		      '<div class="useremail">Oras: {data.city}</div>',
+			        		      '<div class="useremail">Tara: {data.country}</div>',
+			        		      '<div class="useremail">Data nasterii: {data.birthdate}</div>',			     			       
 			     			       '</div>',
 			     			       '</tpl>'
 			     			     
@@ -70,36 +83,36 @@ Ext.define('RODAdmin.view.user.UserDetails', {
 									]
 						}]
 			         },
-			         {
-			        	 xtype:'panel',
-//			        	 xtype:'userprofile', //change with userview
-			        	 id: 'userprofile',
-						collapsible: true,
-						flex:2,
-			        	 title: 'Profil',
-			        		tpl: [
-			        		      '<table class="uprofile">',
-			        		      '<tr><td class="uprofilelabel">Nume:</td><td>{data.firstname} {data.lastname}</td></tr>',
-			        		      '<tr><td class="uprofilelabel">Adresa:</td><td>{data.address1}<br>{data.address2}</td></tr>',
-			        		      '<tr><td class="uprofilelabel">Oras:</td><td>{data.city}</td></tr>',
-			        		      '<tr><td class="uprofilelabel">Tara:</td><td>{data.country}</td></tr>',
-			        		      '<tr><td class="uprofilelabel">Data nasterii:</td><td>{data.birthdate}</td></tr></table>',
-		     			       	],
-								dockedItems : [{
-									xtype : 'toolbar',
-									itemId : 'userprofiletoolbar',
-									id : 'userprofiletoolbar',
-									dock : 'bottom',
-									items : [{
-												xtype : 'tbfill'
-											}, {
-												xtype : 'button',
-												itemId : 'editprofile',
-												text : 'Edit profile',
-												tooltip : 'Edit user profile'
-											}											]
-								}]
-			         },
+//			         {
+//			        	 xtype:'panel',
+////			        	 xtype:'userprofile', //change with userview
+//			        	 id: 'userprofile',
+//						collapsible: true,
+//						flex:2,
+//			        	 title: 'Profil',
+//			        		tpl: [
+//			        		      '<table class="uprofile">',
+//			        		      '<tr><td class="uprofilelabel">Nume:</td><td>{data.firstname} {data.lastname}</td></tr>',
+//			        		      '<tr><td class="uprofilelabel">Adresa:</td><td>{data.address1}<br>{data.address2}</td></tr>',
+//			        		      '<tr><td class="uprofilelabel">Oras:</td><td>{data.city}</td></tr>',
+//			        		      '<tr><td class="uprofilelabel">Tara:</td><td>{data.country}</td></tr>',
+//			        		      '<tr><td class="uprofilelabel">Data nasterii:</td><td>{data.birthdate}</td></tr></table>',
+//		     			       	],
+//								dockedItems : [{
+//									xtype : 'toolbar',
+//									itemId : 'userprofiletoolbar',
+//									id : 'userprofiletoolbar',
+//									dock : 'bottom',
+//									items : [{
+//												xtype : 'tbfill'
+//											}, {
+//												xtype : 'button',
+//												itemId : 'editprofile',
+//												text : 'Edit profile',
+//												tooltip : 'Edit user profile'
+//											}											]
+//								}]
+//			         },
 			         {
 
 			        	 //store : 'user.Group',

@@ -98,7 +98,6 @@ Ext.define('RODAdmin.controller.user.UserList', {
 	    if (record) { 
 	    console.log('else here');
 	    var userinfo = this.getUserinfo();
-	    var userprofile = this.getUserprofile();
 	    var userstore = Ext.StoreManager.get('user.UserInfo');
 	    userstore.load({
 	        id : record.data.id, // set the id here
@@ -108,9 +107,7 @@ Ext.define('RODAdmin.controller.user.UserList', {
 			        var useritem = userstore.first();
 			        console.log(useritem);
 			        console.log(useritem.profile);
-			        var profile = useritem.profileStore.getAt(0);
 			        userinfo.update(useritem);
-			        userprofile.update(profile);
 		        }
 	        }
 	    });

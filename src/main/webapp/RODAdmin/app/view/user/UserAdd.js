@@ -2,7 +2,7 @@ Ext.define('RODAdmin.view.user.UserAdd', {
     extend: 'RODAdmin.view.common.WindowForm',
     alias: 'widget.useradd',
     itemId: 'useradd',
-    height: 260,
+    height: 360,
     width: 550,
 
     requires : ['RODAdmin.util.Util'],
@@ -80,6 +80,19 @@ Ext.define('RODAdmin.view.user.UserAdd', {
                             vtype: 'email',
                         },
                         {
+                            fieldLabel: 'Firstname',
+                            name: 'firstname',
+                            allowBlank : false,
+//                            afterLabelTextTpl: RODAdmin.util.Util.required,
+                        },
+                        {
+                            fieldLabel: 'Lastname',
+                            name: 'lastname',
+                           	allowBlank : false,
+//                           	afterLabelTextTpl: RODAdmin.util.Util.required,
+                        },
+                        
+                        {
                             xtype: 'combo',
                             fieldLabel: 'Group',
                             name: 'authority',
@@ -88,13 +101,13 @@ Ext.define('RODAdmin.view.user.UserAdd', {
                             tpl: '<tpl for="."><div class="x-boundlist-item"><strong>{name}</strong><br><i>{description}</i><hr></div></tpl>',
                             store: 'user.Group'
                         },
-                        {
-                            xtype: 'filefield',
-                            fieldLabel: 'Picture',
-                            name: 'picture',
-                            allowBlank: true,
-                            afterLabelTextTpl: ''
-                        }
+//                        {
+//                            xtype: 'filefield',
+//                            fieldLabel: 'Picture',
+//                            name: 'picture',
+//                            allowBlank: true,
+//                            afterLabelTextTpl: ''
+//                        }
                     ]
                 },
             ]

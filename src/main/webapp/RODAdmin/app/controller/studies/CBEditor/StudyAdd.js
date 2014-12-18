@@ -1041,10 +1041,9 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			if (filefield.value) { 
 				console.log('post savefile');
 				
-				
 			if(form.isValid()){
 				form.submit({
-				url: 'http://localhost:8080/roda/addfiletotemp',
+				url: '/roda/cmsfilesave',
 				method: 'POST',
 				timeout: 10,
 				waitMsg: 'Uploading your file...',

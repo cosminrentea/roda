@@ -2,7 +2,7 @@ Ext.define('RODAdmin.view.user.UserEdit', {
     extend: 'RODAdmin.view.common.WindowForm',
     alias: 'widget.useredit',
 
-    height: 260,
+    height: 460,
     width: 550,
 
     requires : ['RODAdmin.util.Util'],
@@ -27,10 +27,10 @@ Ext.define('RODAdmin.view.user.UserEdit', {
                     flex: 2,
                     title: 'User Information',
                     defaults: {
-                        afterLabelTextTpl: RODAdmin.util.Util.required,
+         //               afterLabelTextTpl: RODAdmin.util.Util.required,
                         anchor: '100%',
                         xtype: 'textfield',
-                        allowBlank: false,
+              //          allowBlank: false,
                         labelWidth: 60
                     },
                     items: [
@@ -43,29 +43,44 @@ Ext.define('RODAdmin.view.user.UserEdit', {
                             fieldLabel: 'Username',
                             name: 'username'
                         },
+
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: 'Password',
+                            name: 'password',
+                            inputType:'password', 
+                            id : 'passf',
+                            allowBlank:false,
+                            afterLabelTextTpl: RODAdmin.util.Util.required,
+                        },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: 'Password',
+                            name: 'passwordcheck',
+                            id : 'passs',
+                            inputType:'password', 
+                            allowBlank:false,
+                            afterLabelTextTpl: RODAdmin.util.Util.required,
+                            validator: function() {
+                                var pass1 = Ext.getCmp('passf').getValue();
+                                var pass2 = Ext.getCmp('passs').getValue();
+                                console.log("pass 1 = " + pass1 + "--pass 2 = " + pass2);
+                                 if (pass1 == pass2)
+                                     return true;
+                                 else 
+                                     return "Passwords do not match!";
+                            }
+                        },
+                        
                         {
                             fieldLabel: 'Email',
                             maxLength: 100,
                             name: 'email'
                         },
                         {
-                            xtype: 'textfield',
-                            fieldLabel: 'Password',
-                            name: 'password',
-                            inputType:'password', 
-                            allowBlank:false,
-                        },
-                        {
-                            xtype: 'textfield',
-                            fieldLabel: 'Password',
-                            name: 'passwordcheck',
-                            inputType:'password', 
-                            allowBlank:false,
-                        },
-                        {
                             xtype: 'combo',
                             fieldLabel: 'Group',
-                            name: 'Group_id',
+                            name: 'authority',
                             displayField: 'name',
                             valueField: 'id',
 //                            queryMode: 'local',
@@ -74,27 +89,44 @@ Ext.define('RODAdmin.view.user.UserEdit', {
                             store: 'user.Group'
                         },
                         {
-                            xtype: 'filefield',
-                            fieldLabel: 'Picture',
-                            name: 'picture',
-                            allowBlank: true,
-                            afterLabelTextTpl: ''
-                        }
+                            fieldLabel: 'Firstname',
+                            name: 'firstname',
+                            allowBlank : false,
+//                            afterLabelTextTpl: RODAdmin.util.Util.required,
+                        },
+                        {
+                            fieldLabel: 'Lastname',
+                            name: 'lastname',
+                           	allowBlank : false,
+//                           	afterLabelTextTpl: RODAdmin.util.Util.required,
+                        },
+                        {
+                            fieldLabel: 'Adresa1',
+                            maxLength: 100,
+                            name: 'address1',
+//                            allowBlank : false,                            
+//                            afterLabelTextTpl: RODAdmin.util.Util.required,
+                        },
+                        {
+                            fieldLabel: 'Adresa2',
+                            maxLength: 100,
+                            name: 'address2',
+//                           	allowBlank : true,
+                        },
+                        {
+                            fieldLabel: 'Tara',
+                            name: 'country',
+//                           	allowBlank : true,                            	
+                        },
+                        {
+                            fieldLabel: 'Oras',
+                            name: 'city',
+//                            allowBlank : true,
+                        },
+
                     ]
                 },
-                {
-                    xtype: 'fieldset',
-                    title: 'Picture',
-                    width: 170,
-                    items: [
-                        {
-                            xtype: 'image',
-                            height: 150,
-                            width: 150,
-                            src: '/roda/images/userdefault.png',
-                        }
-                    ]
-                }
+
             ]
         }
     ],

@@ -5,11 +5,10 @@ Ext.define('RODAdmin.store.user.UserInfo', {
     extend: 'RODAdmin.store.Base',
 
     requires: [
-        'RODAdmin.model.user.UserInfo',
-        'RODAdmin.model.user.UserProfile'        
+        'RODAdmin.model.user.User',
     ],
 
-    model: 'RODAdmin.model.user.UserInfo',
+    model: 'RODAdmin.model.user.User',
     autoLoad: false,    
     proxy: {type: 'main', url: 'adminjson/userinfo/'},      
 

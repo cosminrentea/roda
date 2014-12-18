@@ -27,7 +27,7 @@ Ext.application({
             'Ext.util.History','RODAdmin.proxy.Main','RODAdmin.proxy.MainAjax', 'RODAdmin.proxy.MainNoRest','RODAdmin.util.Globals',
             'RODAdmin.util.TreeGridFilter', 'Ext.menu.Menu', 'Ext.window.Window', 'Ext.form.Panel',
             'Ext.layout.container.Accordion', 'RODAdmin.util.Util', 'Ext.form.FieldSet', 'Ext.form.field.Hidden',
-            'Ext.form.field.ComboBox', 'Ext.form.Label', 'Ext.form.field.File', 'Ext.grid.Panel','Ext.ux.grid.FiltersFeature',
+            'Ext.form.field.ComboBox', 'Ext.form.Label', 'Ext.form.field.File', 'Ext.grid.Panel','Ext.ux.grid.FiltersFeature','Ext.ux.form.MultiSelect'
     ],
 
     views : [

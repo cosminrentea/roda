@@ -9,7 +9,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.Authorities;
-import ro.roda.domain.Person;
 import ro.roda.domain.UserGroup;
 import ro.roda.domain.Users;
 import ro.roda.transformer.FieldNameTransformer;
@@ -61,7 +60,8 @@ public class UsersByGroup extends UserList {
 	}
 
 	public UsersByGroup(Users user) {
-		super(user, (Person) null);
+		// super(user, (Person) null);
+		super(user);
 	}
 
 	public String toJson() {

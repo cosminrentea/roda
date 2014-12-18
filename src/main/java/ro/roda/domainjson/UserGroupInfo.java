@@ -11,13 +11,13 @@ import ro.roda.domain.UserGroup;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class UserGroupInfo extends JsonInfo {
+public class UserGroupInfo extends UserGroupList {
 
 	public static String toJsonArray(Collection<UserGroupInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type");
-		serializer.include("id", "name", "description", "nrusers");
+		serializer.include("id", "name", "enabled", "description", "nrusers");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -48,43 +48,20 @@ public class UserGroupInfo extends JsonInfo {
 		return null;
 	}
 
-	private String description;
-
-	private Integer nrusers;
-
-	public UserGroupInfo(Integer id, String name, String description, Integer nrusers) {
-		this.setId(id);
-		this.setName(name);
-		this.description = description;
-		this.nrusers = nrusers;
+	public UserGroupInfo(Integer id, String name, String description, boolean enabled, Integer nrusers) {
+		super(id, name, description, enabled, nrusers);
 	}
 
 	public UserGroupInfo(UserGroup userGroup) {
-		this(userGroup.getId(), userGroup.getGroupname(), userGroup.getDescription(),
-				userGroup.getAuthorities() != null ? userGroup.getAuthorities().size() : 0);
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Integer getNrusers() {
-		return nrusers;
-	}
-
-	public void setNrusers(Integer nrusers) {
-		this.nrusers = nrusers;
+		this(userGroup.getId(), userGroup.getGroupname(), userGroup.getDescription(), userGroup.isEnabled(), userGroup
+				.getAuthorities() != null ? userGroup.getAuthorities().size() : 0);
 	}
 
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type");
-		serializer.include("id", "name", "description", "nrusers");
+		serializer.include("id", "name", "enabled", "description", "nrusers");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

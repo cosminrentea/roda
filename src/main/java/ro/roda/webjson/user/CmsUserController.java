@@ -21,7 +21,6 @@ import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import ro.roda.domainjson.AdminJson;
 import ro.roda.service.AdminJsonService;
-import ro.roda.service.filestore.CmsFileStoreService;
 
 @RequestMapping("/userjson")
 @Controller
@@ -29,9 +28,6 @@ public class CmsUserController {
 
 	@Autowired
 	AdminJsonService adminJsonService;
-
-	@Autowired
-	CmsFileStoreService cmsFileStoreService;
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -91,36 +87,30 @@ public class CmsUserController {
 	@RequestMapping(value = "/cmsjsonimport", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String jsonImport(@RequestParam(value = "id") Integer id) {
-		log.trace("> jsonImport controller: " + id);
+		log.trace("> json import controller: " + id);
 		AdminJson jsonSave = adminJsonService.jsonImport(id);
+		return jsonSave.toJsonWithId();
+	}
+
+	@RequestMapping(value = "/cmsstudyimport", method = RequestMethod.POST)
+	@ResponseBody
+	public String studyImport(@RequestParam(value = "ddi") Integer ddiId, @RequestParam(value = "csv") Integer csvId,
+			@RequestParam(value = "file") Integer[] fileIds) {
+		log.trace("> study import controller");
+		log.trace(ddiId);
+		log.trace(csvId);
+		for (Integer fileId : fileIds) {
+			log.trace(fileId);
+		}
+
+		AdminJson jsonSave = adminJsonService.studyImport(ddiId, csvId, fileIds);
 		if (jsonSave == null) {
-			return null;
-		} else {
-
+			jsonSave = new AdminJson(false, "Study was not imported");
 		}
-		return jsonSave.toJson();
-	}
+		return jsonSave.toJsonWithId();
 
-	@RequestMapping(value = "/cmsfilemove", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public String fileMove(@RequestParam(value = "folder") Integer folderId, @RequestParam(value = "id") Integer fileId) {
-		AdminJson fileMove = adminJsonService.fileMove(folderId, fileId);
-		if (fileMove == null) {
-			return null;
-		}
-		return fileMove.toJson();
-
-	}
-
-	@RequestMapping(value = "/cmsfoldermove", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public String folderMove(@RequestParam(value = "parent") Integer parentGroupId,
-			@RequestParam(value = "folder") Integer folderId) {
-		AdminJson folderMove = adminJsonService.folderMove(parentGroupId, folderId);
-		if (folderMove == null) {
-			return null;
-		}
-		return folderMove.toJson();
+		// return
+		// "{\"message\":\"Study imported successfully (DDI, CSV, files)\",\"success\":true}";
 	}
 
 }

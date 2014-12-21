@@ -15,12 +15,15 @@ public interface DdiImporterService {
 
 	public abstract void importDdiFiles() throws Exception;
 
-	public abstract void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, String titleParameter,
+	public abstract void afterImport(List<String[]> csvLines) throws Exception;
+
+	public abstract Integer importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, String titleParameter,
 			boolean nesstarExported, boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv,
 			List<MultipartFile> multipartSyntax) throws Exception;
 
-	public abstract void afterImport(List<String[]> csvLines) throws Exception;
+	public abstract Integer importDdiTestFile(String jsonName, InputStream is);
 
-	public abstract void importDdiTestFile(String jsonName, InputStream is);
+	public abstract Integer importDdiFileFromWeb(MultipartFile ddiMultipartFile, MultipartFile csvMultipartFile,
+			List<MultipartFile> otherMultipartFiles);
 
 }

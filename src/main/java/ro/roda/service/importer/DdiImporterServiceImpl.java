@@ -300,7 +300,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, String titleParameter,
+	public Integer importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, String titleParameter,
 			boolean nesstarExported, boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv,
 			List<MultipartFile> multipartSyntax) throws FileNotFoundException, IOException {
 
@@ -889,9 +889,11 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		// Merge & Flush the study (+related data)
 		s.merge();
 		s.flush();
+
+		return s.getId();
 	}
 
-	public void importDdiTestFile(String jsonName, InputStream is) {
+	public Integer importDdiTestFile(String jsonName, InputStream is) {
 		try {
 			this.getUnmarshaller();
 			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
@@ -904,12 +906,27 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 					new FileInputStream(ddiFile));
 			CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
 			boolean ddiPersistence = "yes".equalsIgnoreCase(rodaDataDdiPersist);
-			boolean importDdiCsv = "yes".equalsIgnoreCase(rodaDataDdiCsv);
 
-			importDdiFile(cb, mockMultipartFileDdi, jsonName, true, true, ddiPersistence, null, null);
+			return importDdiFile(cb, mockMultipartFileDdi, jsonName, true, true, ddiPersistence, null, null);
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			return null;
 		}
 	}
+
+	public Integer importDdiFileFromWeb(MultipartFile ddiMultipartFile, MultipartFile csvMultipartFile,
+			List<MultipartFile> otherMultipartFiles) {
+		try {
+			this.getUnmarshaller();
+			CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiMultipartFile.getInputStream());
+			boolean ddiPersistence = "yes".equalsIgnoreCase(rodaDataDdiPersist);
+
+			return importDdiFile(cb, ddiMultipartFile, null, true, true, ddiPersistence, csvMultipartFile,
+					otherMultipartFiles);
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 }

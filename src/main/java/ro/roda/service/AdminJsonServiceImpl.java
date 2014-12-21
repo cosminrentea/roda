@@ -1,5 +1,6 @@
 package ro.roda.service;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -9,8 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
 import ro.roda.domain.CmsLayout;
@@ -212,14 +218,53 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	public AdminJson jsonImport(Integer cmsFileId) {
+		AdminJson result;
 		CmsFile jsonFile = CmsFile.findCmsFile(cmsFileId);
 		InputStream is = fileStoreService.fileLoad(jsonFile);
-		ddiImporterService.importDdiTestFile(jsonFile.getFilename(), is);
+		Integer studyId = ddiImporterService.importDdiTestFile(jsonFile.getFilename(), is);
+		if (studyId == null) {
+			result = new AdminJson(false, "JSON Study was not imported");
+		} else {
+			// remove the last version of the JSON
+			fileDrop(cmsFileId);
+			result = new AdminJson(true, "Study was imported", studyId);
+		}
+		return result;
+	}
 
-		// remove the last version of the JSON
-		fileDrop(cmsFileId);
+	public AdminJson studyImport(Integer ddiId, Integer csvId, Integer[] fileIds) {
+		AdminJson result;
+		try {
+			CmsFile ddiCmsFile = CmsFile.findCmsFile(ddiId);
+			InputStream ddiStream = fileStoreService.fileLoad(ddiCmsFile);
+			MockMultipartFile ddiMultipartFile = new MockMultipartFile(ddiCmsFile.getFilename(),
+					ddiCmsFile.getFilename(), "text/xml", ddiStream);
 
-		return new AdminJson(true, "Study was imported");
+			CmsFile csvCmsFile = CmsFile.findCmsFile(csvId);
+			InputStream csvStream = fileStoreService.fileLoad(csvCmsFile);
+			MockMultipartFile csvMultipartFile = new MockMultipartFile(csvCmsFile.getFilename(),
+					csvCmsFile.getFilename(), "text/csv", csvStream);
+
+			List<MultipartFile> otherMultipartFiles = new ArrayList<MultipartFile>();
+			for (Integer fileId : fileIds) {
+				CmsFile otherCmsFile = CmsFile.findCmsFile(fileId);
+				InputStream otherStream = fileStoreService.fileLoad(otherCmsFile);
+				MockMultipartFile otherMultipartFile = new MockMultipartFile(otherCmsFile.getFilename(),
+						otherCmsFile.getFilename(), "text/application", otherStream);
+				otherMultipartFiles.add(otherMultipartFile);
+			}
+
+			Integer studyId = ddiImporterService.importDdiFileFromWeb(ddiMultipartFile, csvMultipartFile,
+					otherMultipartFiles);
+			if (studyId != null) {
+				result = new AdminJson(true, "Study was imported", studyId);
+			} else {
+				result = new AdminJson(false, "Study was not imported");
+			}
+		} catch (Exception e) {
+			result = new AdminJson(true, "Study was not imported. Exception: " + e.getMessage());
+		}
+		return result;
 	}
 
 	public AdminJson fileMove(Integer folderId, Integer fileId) {

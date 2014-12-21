@@ -76,4 +76,6 @@ public interface AdminJsonService {
 
 	public abstract AdminJson newsDrop(Integer layoutId);
 
+	public abstract AdminJson studyImport(Integer ddiId, Integer csvId, Integer[] fileIds);
+
 }

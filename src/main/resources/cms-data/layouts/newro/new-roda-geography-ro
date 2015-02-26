@@ -2,8 +2,8 @@
       <title>RODA - [[Code: PageTitle]]</title>
       <meta http-equiv="Keywords" name="Keywords" content="Databrowser, RODA" />
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
- 	  <script src="[[Code: ContextPath]]/resources/RODAAnax/ext-js/ext-all-debug-w-comments.js"></script>
-	  <link rel="stylesheet" href="[[Code: ContextPath]]/resources/RODAAnax/ext-js/resources/ext-theme-roda/ext-theme-roda-all.css">
+ 	  <script src="[[Code: ContextPath]]/resources/libs/extjs/ext-all-debug-w-comments.js"></script>
+	  <link rel="stylesheet" href="[[Code: ContextPath]]/resources/libs/extjs/resources/ext-theme-roda/ext-theme-roda-all.css">
 	  <script src="[[Code: ContextPath]]/resources/RODAAnax/translations/ro.js"></script>
 	  <script src="[[Code: ContextPath]]/resources/RODAAnax/ux/plugins/FitToParent.js"></script>
       <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />

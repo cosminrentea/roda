@@ -131,6 +131,7 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 	public void start() {
 		log.trace("start()");
 		log.trace(System.getProperties());
+		log.info(System.getProperty("jri.ignore.ule"));
 
 		re = null;
 		rWorkingDirectory = null;

@@ -13,6 +13,19 @@
 	</organization>
 	<developers>
 		<developer>
+			<id>cosmin</id>
+			<name>Cosmin Rentea</name>
+			<email>cosmin.rentea@gmail.com</email>
+			<url>http://www.rentea.ro</url>
+			<organization>RODA</organization>
+			<organizationUrl>http://www.roda.ro</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+2</timezone>
+			<!-- <properties> <picUrl>http://tinyurl.com/prv4t</picUrl> </properties> -->
+		</developer>
+		<developer>
 			<id>sorin</id>
 			<name>Sorin Milutinovici</name>
 			<email></email>
@@ -20,7 +33,6 @@
 			<organization>RODA</organization>
 			<organizationUrl>http://www.roda.ro</organizationUrl>
 			<roles>
-				<role>architect</role>
 				<role>developer</role>
 			</roles>
 			<timezone>+2</timezone>
@@ -31,19 +43,6 @@
 			<name>Letitia Velcescu</name>
 			<email></email>
 			<url></url>
-			<organization>RODA</organization>
-			<organizationUrl>http://www.roda.ro</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+2</timezone>
-			<!-- <properties> <picUrl>http://tinyurl.com/prv4t</picUrl> </properties> -->
-		</developer>
-		<developer>
-			<id>cosmin</id>
-			<name>Cosmin Rentea</name>
-			<email>cosmin.rentea@gmail.com</email>
-			<url>http://www.rentea.ro</url>
 			<organization>RODA</organization>
 			<organizationUrl>http://www.roda.ro</organizationUrl>
 			<roles>
@@ -73,43 +72,43 @@
 		<github.global.server>github</github.global.server>
 
 		<!-- dependencies versions -->
-		<spring.version>4.0.7.RELEASE</spring.version> <!-- original: 3.2.6.RELEASE -->
-		<spring-security.version>3.2.5.RELEASE</spring-security.version> <!-- original: 3.2.5.RELEASE -->
+		<spring.version>4.1.6.RELEASE</spring.version> <!-- original: 3.2.6.RELEASE -->
+		<spring-security.version>4.0.0.RELEASE</spring-security.version> <!-- original: 3.2.5.RELEASE -->
 		<spring-js-resources.version>2.4.1.RELEASE</spring-js-resources.version>
-		<spring-data-jpa.version>1.7.1.RELEASE</spring-data-jpa.version>
-		<spring-data-rest-webmvc.version>2.2.1.RELEASE</spring-data-rest-webmvc.version>
-		<aspectj.version>1.8.4</aspectj.version> <!-- verified: 1.8.2 -->
-		<slf4j.version>1.7.7</slf4j.version>
+		<spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
+		<spring-data-rest-webmvc.version>2.3.0.RELEASE</spring-data-rest-webmvc.version>
+		<aspectj.version>1.8.5</aspectj.version> <!-- verified: 1.8.2 -->
+		<slf4j.version>1.7.12</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<jsp-api.version>2.1</jsp-api.version>
 		<jstl-api.version>1.2</jstl-api.version>
 		<el-api.version>2.2</el-api.version>
-		<httpcomponents.version>4.3.4</httpcomponents.version>
-		<hibernate.version>4.3.7.Final</hibernate.version>
-		<hibernate-validator.version>5.1.2.Final</hibernate-validator.version>
+		<httpcomponents.version>4.4.1</httpcomponents.version>
+		<hibernate.version>4.3.8.Final</hibernate.version>
+		<hibernate-validator.version>5.2.0.Beta1</hibernate-validator.version>
 		<javax-validation.version>1.1.0.Final</javax-validation.version>
 		<javax-cache.version>1.0.0-PFD</javax-cache.version>
 		<umlgraph.version>5.6</umlgraph.version>
 		<flexjson.version>3.3</flexjson.version>
-		<solr-solrj.version>4.10.2</solr-solrj.version>
+		<solr-solrj.version>5.0.0</solr-solrj.version>
 		<ehcache.version>2.8.4</ehcache.version>
-		<ehcache-core.version>2.6.9</ehcache-core.version>
+		<ehcache-core.version>2.6.10</ehcache-core.version>
 		<tiles-jsp.version>3.0.5</tiles-jsp.version>
-		<selenium.version>2.44.0</selenium.version>
+		<selenium.version>2.45.0</selenium.version>
 		<jstl-impl.version>1.2</jstl-impl.version>
 		<JRI.version>0.9-6</JRI.version>
 		<c3p0.version>0.9.1.1</c3p0.version>
 		<junit.version>4.12</junit.version>
-		<xstream.version>1.4.7</xstream.version>
+		<xstream.version>1.4.8</xstream.version>
 		<opencsv.version>2.3</opencsv.version>
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<jcr.version>2.0</jcr.version>
-		<jackrabbit.version>2.9.0</jackrabbit.version>
+		<jackrabbit.version>2.10.0</jackrabbit.version>
 		<imgscalr-lib.version>4.2</imgscalr-lib.version>
 		<jsoup.version>1.8.1</jsoup.version>
 		<cglib-nodep.version>3.1</cglib-nodep.version> <!-- 2.2.2 -->
-		<joda-time.version>2.6</joda-time.version>
+		<joda-time.version>2.7</joda-time.version>
 		<commons-io.version>2.4</commons-io.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
@@ -294,6 +293,12 @@
 			<version>${el-api.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- ROO dependencies -->
 		<!-- <dependency> <groupId>org.springframework.roo</groupId> <artifactId>org.springframework.roo.annotations</artifactId> 
@@ -314,7 +319,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
-			<!-- <scope>test</scope> -->
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -725,15 +730,6 @@
 						<!-- <projectnature>com.springsource.sts.roo.core.nature</projectnature> -->
 						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
 					</additionalProjectnatures>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-idea-plugin</artifactId>
-				<version>2.2.1</version>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<dependenciesAsLibraries>true</dependenciesAsLibraries>
 				</configuration>
 			</plugin>
 

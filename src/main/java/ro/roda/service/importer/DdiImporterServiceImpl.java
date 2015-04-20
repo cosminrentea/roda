@@ -84,7 +84,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private static final String jaxbContextPath = "ro.roda.ddi";
-	private static final String ddiFoldername = "ddi";
 	private static final String profilesFoldername = "ddi-import-profiles";
 
 	@PersistenceContext
@@ -110,6 +109,9 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 	@Autowired
 	AdminJsonService adminJsonService;
+
+	@Value("${roda.data.ddi.foldername}")
+	private String ddiFoldername;
 
 	@Value("${roda.data.ddi.profile}")
 	private String rodaDataDdiProfile;
@@ -203,8 +205,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				if (importDdiCsv) {
 					// get CSV file name (RODA naming rules)
 					String csvFilename = ddiFile.getName().split("\\.|_|-")[0].concat("_T.csv");
-					// TODO @Value for "ddi" folder below
-					Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
+					Resource csvResource = pmr.getResource("classpath:" + ddiFoldername + "/" + csvFilename);
 					FileInputStream fisCsv = new FileInputStream(csvResource.getFile());
 					mockMultipartFileCsv = new MockMultipartFile(csvFilename, csvFilename, "text/csv", fisCsv);
 

@@ -66,8 +66,8 @@
 		<property name="targetMethod" value="putAll" />
 		<property name="arguments">
 			<util:properties>
-				<prop key="java.library.path">${roda.R.java.library.path}</prop>
 				<prop key="jri.ignore.ule">${roda.R.jri.ignore.ule}</prop>
+				<prop key="java.library.path">${roda.R.java.library.path}</prop>
 			</util:properties>
 		</property>
 	</bean>

@@ -1,21 +1,31 @@
+/*
+
+modificare portocaliu:
+#ff750e
+in
+#ffad69
+
+*/
+
+
 .jsdatatable {
 	border-collapse: collapse;  width: 90%; margin: 0 auto 1rem; text-align: center;
 	
 }
 
 .jsdatatable tr {
-	background-color: #c8e262;
+	background-color: #b3cdbb;
 }
 
 
 
 .jsdatatable tr, .jsdatatable td { transition: .4s ease-in; } 
 
-.jsdatatable tr:first-child {background-color: #ff750e; }
+.jsdatatable tr:first-child {background-color: #ffad69; }
 
-.jsdatatable tr:nth-child(even) { background-color: #a6c040; }
+.jsdatatable tr:nth-child(even) { background-color: #fffcf7; }
 
-.jsdatatable td:empty {background-color: #a6c040; }
+.jsdatatable td:empty {background-color: #fffcf7; }
 
 
 

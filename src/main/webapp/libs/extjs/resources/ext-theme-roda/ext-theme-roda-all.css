@@ -3,6 +3,11 @@
 verde inchis: #1b5f30
 verde inchis putin mai pastelat: #1f6932
 
+modificare portocaliu:
+a6c040 (care de fapt in GitHub trebuia sa fie: ff750e
+in
+ff953a
+
 */
 
 
@@ -4177,7 +4182,7 @@ body.x-nbr .x-btn-default-toolbar-large-frameInfo {
 	border-color: silver;
 	border-width: 1px;
 	background-image: none;
-	background-color: #a6c040;
+	background-color: #ff953a;
 }
 
 .x-toolbar-default .x-box-scroller {
@@ -10734,7 +10739,7 @@ body.x-nbr .x-tab-default-right-frameInfo {
 }
 
 .x-tab-default-active {
-	background-color: #a6c040
+	background-color: #ff953a
 }
 
 .x-tab-default-active .x-tab-inner {
@@ -10751,11 +10756,11 @@ body.x-nbr .x-tab-default-right-frameInfo {
 
 .x-tab-default-top-active,.x-tab-default-left-active,.x-tab-default-right-active
 	{
-	border-bottom: 0 solid #a6c040
+	border-bottom: 0 solid #ff953a
 }
 
 .x-tab-default-bottom-active {
-	border-top: 0 solid #a6c040
+	border-top: 0 solid #ff953a
 }
 
 .x-tab-default-disabled {
@@ -10836,7 +10841,7 @@ body.x-nbr .x-tab-default-right-frameInfo {
 
 .x-tab-default-top-active .x-frame-mc,.x-tab-default-left-active .x-frame-mc,.x-tab-default-right-active .x-frame-mc
 	{
-	background-color: #a6c040
+	background-color: #ff953a
 }
 
 .x-tab-default-bottom-active .x-frame-tl,.x-tab-default-bottom-active .x-frame-bl,.x-tab-default-bottom-active .x-frame-tr,.x-tab-default-bottom-active .x-frame-br,.x-tab-default-bottom-active .x-frame-tc,.x-tab-default-bottom-active .x-frame-bc
@@ -10850,7 +10855,7 @@ body.x-nbr .x-tab-default-right-frameInfo {
 }
 
 .x-tab-default-bottom-active .x-frame-mc {
-	background-color: #a6c040
+	background-color: #ff953a
 }
 
 .x-tab-default-top-disabled .x-frame-tl,.x-tab-default-top-disabled .x-frame-bl,.x-tab-default-top-disabled .x-frame-tr,.x-tab-default-top-disabled .x-frame-br,.x-tab-default-top-disabled .x-frame-tc,.x-tab-default-top-disabled .x-frame-bc,.x-tab-default-left-disabled .x-frame-tl,.x-tab-default-left-disabled .x-frame-bl,.x-tab-default-left-disabled .x-frame-tr,.x-tab-default-left-disabled .x-frame-br,.x-tab-default-left-disabled .x-frame-tc,.x-tab-default-left-disabled .x-frame-bc,.x-tab-default-right-disabled .x-frame-tl,.x-tab-default-right-disabled .x-frame-bl,.x-tab-default-right-disabled .x-frame-tr,.x-tab-default-right-disabled .x-frame-br,.x-tab-default-right-disabled .x-frame-tc,.x-tab-default-right-disabled .x-frame-bc
@@ -10999,7 +11004,7 @@ body.x-nbr .x-tab-default-right-frameInfo {
 .x-tab-bar-strip-default {
 	border-style: solid;
 	border-color: #1f6932;
-	background-color: #a6c040
+	background-color: #ff953a
 }
 
 .x-content-box .x-tab-bar-strip-default-horizontal {
@@ -12624,7 +12629,7 @@ body.x-nbr .x-btn-plain-toolbar-large-frameInfo {
 }
 
 .x-toolbar-default .x-box-scroller {
-	background-color: #a6c040;
+	background-color: #ff953a;
 }
 
 .x-toolbar-scroller {

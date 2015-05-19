@@ -72,12 +72,12 @@
 		<github.global.server>github</github.global.server>
 
 		<!-- dependencies versions -->
-		<spring.version>4.1.6.RELEASE</spring.version> <!-- original: 3.2.6.RELEASE -->
-		<spring-security.version>4.0.1.RELEASE</spring-security.version> <!-- original: 3.2.5.RELEASE -->
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<spring-security.version>3.2.7.RELEASE</spring-security.version>
 		<spring-js-resources.version>2.4.1.RELEASE</spring-js-resources.version>
 		<spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
 		<spring-data-rest-webmvc.version>2.3.0.RELEASE</spring-data-rest-webmvc.version>
-		<aspectj.version>1.8.5</aspectj.version> <!-- verified: 1.8.2 -->
+		<aspectj.version>1.8.5</aspectj.version>
 		<slf4j.version>1.7.12</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
 		<servlet-api.version>2.5</servlet-api.version>
@@ -107,7 +107,7 @@
 		<jackrabbit.version>2.10.0</jackrabbit.version>
 		<imgscalr-lib.version>4.2</imgscalr-lib.version>
 		<jsoup.version>1.8.2</jsoup.version>
-		<cglib-nodep.version>3.1</cglib-nodep.version> <!-- 2.2.2 -->
+		<cglib-nodep.version>3.1</cglib-nodep.version>
 		<joda-time.version>2.7</joda-time.version>
 		<commons-io.version>2.4</commons-io.version>
 		<commons-lang3.version>3.4</commons-lang3.version>

@@ -1,26 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pagedata>
-	<title>Acasa</title>
-	<menutitle>Acasa</menutitle>
-	<synopsis><![CDATA[RODA este institutia nationala din Romania specializata in arhivarea colectiilor de date electronice provenite din cercetarea sociala.]]></synopsis>
-	<lang>ro</lang>
-	<url>home</url>
-	<content><![CDATA[
-	<H1>Bine ati venit la RODA - Arhiva Romana de Date Sociale</H1>
+    <title>Acasa</title>
+    <menutitle>Acasa</menutitle>
+    <synopsis><![CDATA[
+        RODA este instituția națională din România specializată în arhivarea
+        colecțiilor de date electronice provenite din cercetarea socială.
+    ]]></synopsis>
+    <lang>ro</lang>
+    <url>home</url>
+    <content><![CDATA[
+    <H1>Bine ati venit la RODA - Arhiva Romana de Date Sociale</H1>
 
-<p align="justify">RODA este instituția națională din România specializată în arhivarea colecțiilor de date electronice provenite din cercetarea socială.</p>
-
-<p align="justify">Arhiva întreține o colecție de date digitale, accesibilă comunității academice și altor părți interesate. Utilizate îndeosebi pentru analiză secundară și analiza comparativă, datele pot fi accesate sub anumite categorii de acces care variază de la acces liber până la acces restricționat de către proprietarul datelor.</p> 
-
-<p align="justify">Scopul arhivei este de a păstra aceste date pe termen îndelungat și servește ca intermediar între proprietarii datelor și utilizatorii acestora.</p>
-
-<p align="justify">RODA s-a integrat într-o rețea globală de arhive, fiind afiliată din februarie 2002 la CESSDA (Council of European Social Science Data Archives) și din decembrie 2002 la IFDO (International Federation of Data Organizations). Prin aceste legături, se facilitează posibilitatea accesului internațional la datele altor arhive din Europa.</p>
-
-<p align="justify">În decembrie 2013, CESSDA a devenit un ERIC – European Research Infrastructure Consortium, o entitate de cercetare care operează sub legislație europeană, cu sediul în Bergen, Norvegia. Odată cu modernizarea sistemului informatic, RODA este pregătită pentru interoperarea cu această nouă instituție.</p>
-
-<p align="justify">RODA este găzduită de către Facultatea de Sociologie și Asistență Socială a Universității din București, ca parte a consorțiului instituțional OSR – Observatorul Social din Romțnia, din care mai fac parte: Universitatea Al.I.Cuza din Iași, Universitatea Babes-Bolyai din Cluj-Napoca, Universitatea de Vest din Timișoara, Universitatea din Craiova, Universitatea din Oradea, Universitatea Lucian Blaga din Sibiu, CURS – Centrul de Sociologie Urbană și Regională, IRES – Institutul Român pentru Evaluare și Strategie și SSR – Societatea Sociologilor din România.</p>
-
-
+    <p align="justify">
+    RODA este instituția națională din România specializată în arhivarea colecțiilor
+    de date electronice provenite din cercetarea socială.
+    </p>
+    
+    <p align="justify">
+    Arhiva întreține o colecție de date digitale, accesibilă comunității academice
+    și altor părți interesate. Utilizate îndeosebi pentru analiză secundară și analiză
+    comparativă, datele pot fi accesate sub anumite categorii de acces care variază
+    de la acces liber până la acces restricționat de către proprietarul datelor.
+    </p> 
+    
+    <p align="justify">
+    Scopul arhivei este de a păstra aceste date pe termen îndelungat și servește ca
+    intermediar între proprietarii datelor și utilizatorii acestora.
+    </p>
+    
+    <p align="justify">
+    RODA este integrată într-o rețea globală de arhive, fiind afiliată din februarie
+    2002 la CESSDA (Council of European Social Science Data Archives) și din decembrie
+    2002 la IFDO (International Federation of Data Organizations). Prin aceste
+    legături, se facilitează posibilitatea accesului internațional la datele altor
+    arhive din Europa.
+    </p>
+    
+    <p align="justify">
+    În decembrie 2013, CESSDA a devenit un ERIC – European Research Infrastructure
+    Consortium, o entitate de cercetare care operează sub legislație europeană, cu
+    sediul în Bergen, Norvegia. Odată cu modernizarea sistemului informatic, RODA
+    este pregătită pentru interoperarea cu această nouă instituție.
+    </p>
+    
+    <p align="justify">
+    RODA este găzduită de către Facultatea de Sociologie și Asistență Socială a
+    Universității din București.
+    </p>
 
 	]]></content>
 	<cms_layout>new-roda-home-ro</cms_layout>

@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pagedata>
-	<title>Obiectivele RODA</title>
-	<menutitle>Obiectivele RODA</menutitle>
-	<synopsis><![CDATA[]]></synopsis>
-	<lang>ro</lang>
-	<content><![CDATA[
-	<div align="left">
-	<ul>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">faciliteaza folosirea datelor existente;<br />
-			</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">promoveaza analiza secundara a datelor;<br />
-			</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">sprijina pregatirea metodologica a studentilor din stiintele sociale;<br />
-			</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">pastreaza datele provenite din cercetarea sociala si le protejeaza impotriva pierderii sau deteriorarii;<br />
-			</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">acorda informatii si expertiza creatorilor si utilizatorilor bazelor de date, cu privire la standardele documentarii datelor.</font></li>
-	</ul>
-</div>
-	]]></content>
-	<cms_layout>new-roda-main-ro</cms_layout>
-	<pagetype>content</pagetype>
-	<cacheable>3600</cacheable>
-	<searchable>true</searchable>		
-	<default_page>0</default_page>
-	<external_redirect></external_redirect>
-	<internal_redirect></internal_redirect>
-	<navigable>true</navigable>
-	<published>true</published>
-	<target></target>
-	<visible>true</visible>
-	<sequence>1</sequence>
+    <title>Obiectivele RODA</title>
+    <menutitle>Obiectivele RODA</menutitle>
+    <synopsis><![CDATA[]]></synopsis>
+    <lang>ro</lang>
+    <content><![CDATA[
+    <div align="left">
+    <ul>
+        <li>
+            facilitează folosirea datelor existente;<br />
+        </li>
+        <li>
+            promovează analiza secundară a datelor;<br />
+        </li>
+        <li>
+            sprijină pregătirea metodologică a studenților din științele sociale;<br />
+        </li>
+        <li>
+            păstrează datele provenite din cercetarea socială și le protejează împotriva
+            pierderii sau deteriorării;<br />
+        </li>
+        <li>
+            acordă informații și expertiza creatorilor și utilizatorilor bazelor de date,
+            cu privire la standardele documentării datelor.
+        </li>
+    </ul>
+    </div>
+    ]]></content>
+    <cms_layout>new-roda-main-ro</cms_layout>
+    <pagetype>content</pagetype>
+    <cacheable>3600</cacheable>
+    <searchable>true</searchable>		
+    <default_page>0</default_page>
+    <external_redirect></external_redirect>
+    <internal_redirect></internal_redirect>
+    <navigable>true</navigable>
+    <published>true</published>
+    <target></target>
+    <visible>true</visible>
+    <sequence>1</sequence>
 </pagedata>

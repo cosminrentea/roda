@@ -2,40 +2,71 @@
 <pagedata>
 	<title>Comandarea datelor</title>
 	<menutitle>Comandarea datelor</menutitle>
-	<synopsis><![CDATA[Arhiva sprijina activitatea de cercetare, oferind accesul la baze de date sociale pentru analiza secundara, respectand cerintele de confidentialitate impuse de proprietarii datelor.]]></synopsis>
+	<synopsis><![CDATA[
+	    Arhiva sprijina activitatea de cercetare, oferind accesul la baze de date
+	    sociale pentru analiza secundara, respectand cerintele de confidentialitate
+	    impuse de proprietarii datelor.
+    ]]></synopsis>
 	<lang>ro</lang>
-	<content><![CDATA[<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Arhiva sprijină activitatea de cercetare, oferind accesul la baze de date sociale pentru analiza secundara, respectand cerintele de confidentialitate impuse de proprietarii datelor.</font></p>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Arhiva își propune să asigure un acces la date cât se poate de liber, deschis și usor, insa proprietarii datelor sunt aceia care stabilesc conditiile de acces. Din aceste motive, utilizatorii vor fi impartiti in patru <a href="[[Code: PageLinkbyUrl('categorii-de-utilizatori')]]">categorii</a>, iar seturile de date vor avea patru <a href="[[Code: PageLinkbyUrl('niveluri-de-acces')]]">niveluri de acces</a>.</font></p>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Incepand cu luna iulie 2004, RODA a lansat un nou sistem de control al accesului; odata inregistrati cu nume de cont si parola, utilizatorii pot incepe descarcarea seturilor de date pe diferite niveluri de acces.</font></p>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Seturile de date pentru care utilizatorii nu au suficiente drepturi pentru a le descarca pot fi comandate offline sau printr-un e-mail la adresa <a href="mailto:roda@roda.ro">roda@roda.ro</a>; cererea va ajunge la proprietarul datelor care va decide raspunsul.</font></p>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Utilizatorii care nu au acces la internet pot sa comande seturile de date:</font></p>
-<div align="justify">
-	<ul>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">direct la sediul arhivei</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">printr-o scrisoare trimisa prin posta pe <a href="[[Code: PageLinkbyUrl('contact')]]">adresa noastra</a></font></li>
-	</ul>
-</div>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Datele si documentatiile pot fi puse la dispozitia utilizatorilor pe orice mediu de stocare disponibil sau transfer electronic, in functie de numarul sau marimea seturilor de date cerute:</font></p>
-<div align="justify">
-	<ul>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">discheta</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">CD</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">FTP</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">descarcare directa de pe pagina de web</font></li>
-	</ul>
-</div>
+	<content><![CDATA[
+	<p align="justify">
+	    Arhiva sprijină activitatea de cercetare, oferind accesul la baze de date
+	    sociale pentru analiza secundară, respectând cerințele de confidențialitate
+	    impuse de proprietarii datelor.
+    </p>
+    <p align="justify">
+        Arhiva își propune să asigure un acces la date cât se poate de liber, deschis
+        și usor, însă proprietarii datelor sunt aceia care stabilesc condițiile de acces.
+        Din aceste motive, utilizatorii sunt împărțiți în patru
+        <a href="[[Code: PageLinkbyUrl('categorii-de-utilizatori')]]">categorii</a>,
+        iar seturile de date au patru
+        <a href="[[Code: PageLinkbyUrl('niveluri-de-acces')]]">niveluri de acces</a>.
+    </p>
+    <p align="justify">
+        RODA beneficiază de un sistem modern de control al accesului: odată înregistrați cu
+        nume de cont și parola, utilizatorii pot începe descărcarea seturilor de date pe
+        diferite niveluri de acces.
+    </p>
+    <p align="justify">
+        Seturile de date pentru care utilizatorii nu au suficiente drepturi pentru a le
+        descărca pot fi comandate printr-un e-mail la adresa
+        <a href="mailto:roda@roda.ro">roda@roda.ro</a>; cererea va ajunge la proprietarul
+        datelor care va decide răspunsul.
+    </p>
+    <p align="justify">
+        Utilizatorii care nu au acces la internet pot sa comande seturile de date:
+	</p>
+	<div align="justify">
+        <ul>
+            <li>
+                direct la sediul arhivei</li>
+            <li>
+                printr-o scrisoare trimisă prin poșta pe
+                <a href="[[Code: PageLinkbyUrl('contact')]]">adresa noastră</a>
+            </li>
+        </ul>
+    </div>
+    <p align="justify">
+	    Datele și documentațiile pot fi puse la dispoziția utilizatorilor pe orice
+	    mediu de stocare disponibil sau transfer electronic, în funcție de numărul
+	    sau mărimea seturilor de date cerute:
+    </p>
+    <div align="justify">
+        <ul>
+            <li>
+                CD
+            </li>
+            <li>
+                stick USB
+            </li>
+            <li>
+                FTP
+            </li>
+            <li>
+                descărcare directă de pe pagina de web
+            </li>
+        </ul>
+    </div>
 	]]></content>
 	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>

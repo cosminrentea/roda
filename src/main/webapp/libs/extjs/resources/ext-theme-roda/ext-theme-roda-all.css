@@ -1434,7 +1434,7 @@ svg,vml {
 	color: black;
 	font-size: 13px;
 	font-family: helvetica, arial, verdana, sans-serif;
-	background: #f5f5f5
+	background: #fffcf7 /* culoare fundal intreaga pagina */
 }
 
 .x-animating-size,.x-collapsed {
@@ -1482,7 +1482,7 @@ svg,vml {
 .x-mask {
 	filter: alpha(opacity = 70);
 	opacity: .7;
-	background: white
+	background: #fffcf7
 }
 
 .x-mask-msg {
@@ -1671,7 +1671,7 @@ body.x-nbr .x-btn-default-small-frameInfo {
 	font-size: 12px;
 	font-weight: bold;
 	font-family: helvetica, arial, verdana, sans-serif;
-	color: white;
+	color: #fffcf7;
 	padding: 0 5px
 }
 
@@ -1690,7 +1690,7 @@ body.x-nbr .x-btn-default-small-frameInfo {
 .x-btn-default-small .x-btn-glyph {
 	font-size: 16px;
 	line-height: 16px;
-	color: white;
+	color: #fffcf7;
 	opacity: .5
 }
 
@@ -2085,7 +2085,7 @@ body.x-nbr .x-btn-default-medium-frameInfo {
 	font-size: 14px;
 	font-weight: bold;
 	font-family: helvetica, arial, verdana, sans-serif;
-	color: white;
+	color: #fffcf7;
 	padding: 0 8px
 }
 
@@ -2104,7 +2104,7 @@ body.x-nbr .x-btn-default-medium-frameInfo {
 .x-btn-default-medium .x-btn-glyph {
 	font-size: 24px;
 	line-height: 24px;
-	color: white;
+	color: #fffcf7;
 	opacity: .5
 }
 
@@ -4302,7 +4302,7 @@ body.x-nbr .x-btn-default-toolbar-large-frameInfo {
 }
 
 .x-panel-header-text-container-default {
-	color: white;
+	color: #fffcf7; /* culoare font titlu tabel frecvente si grafic */
 	font-size: 13px;
 	font-weight: bold;
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -4312,9 +4312,9 @@ body.x-nbr .x-btn-default-toolbar-large-frameInfo {
 }
 
 .x-panel-body-default {
-	background: white;
+	background: #fffcf7; /* culoare fundal tabel frecvente si grafic */
 	border-color: #1f6932;
-	color: black;
+	color: #002d0c; /* culoare font tabel frecvente si etichete variabile */
 	font-size: 13px;
 	font-size: normal;
 	border-width: 1px;
@@ -4392,7 +4392,7 @@ body.x-nbr .x-btn-default-toolbar-large-frameInfo {
 }
 
 .x-panel-header-default .x-panel-header-glyph {
-	color: white;
+	color: #fffcf7;
 	font-size: 16px;
 	line-height: 16px;
 	opacity: .5
@@ -4583,7 +4583,7 @@ body.x-nbr .x-btn-default-toolbar-large-frameInfo {
 }
 
 .x-panel-body-default-framed {
-	background: white;
+	background: #fffcf7;
 	border-color: #1f6932;
 	color: black;
 	font-size: 13px;
@@ -4601,11 +4601,11 @@ body.x-nbr .x-btn-default-toolbar-large-frameInfo {
 	padding: 0;
 	border-width: 5px;
 	border-style: solid;
-	background-color: white
+	background-color: #fffcf7
 }
 
 .x-panel-default-framed-mc {
-	background-color: white
+	background-color: #fffcf7
 }
 
 .x-nbr .x-panel-default-framed {
@@ -6590,11 +6590,11 @@ body.x-nbr .x-btn-group-default-framed-notitle-frameInfo {
 	padding: 0;
 	border-width: 5px;
 	border-style: solid;
-	background-color: white
+	background-color: #fffcf7
 }
 
 .x-window-default-mc {
-	background-color: white
+	background-color: #fffcf7
 }
 
 .x-nbr .x-window-default {
@@ -6692,7 +6692,7 @@ body.x-nbr .x-window-default-frameInfo {
 	border-color: #3892d3;
 	border-width: 1px;
 	border-style: solid;
-	background: white;
+	background: #fffcf7;
 	color: black
 }
 
@@ -7908,7 +7908,7 @@ div.x-lbl-top-err-icon {
 
 .x-form-type-text textarea.x-form-invalid-field,.x-form-type-text input.x-form-invalid-field,.x-form-type-password textarea.x-form-invalid-field,.x-form-type-password input.x-form-invalid-field,.x-form-type-number textarea.x-form-invalid-field,.x-form-type-number input.x-form-invalid-field,.x-form-type-email textarea.x-form-invalid-field,.x-form-type-email input.x-form-invalid-field,.x-form-type-search textarea.x-form-invalid-field,.x-form-type-search input.x-form-invalid-field,.x-form-type-tel textarea.x-form-invalid-field,.x-form-type-tel input.x-form-invalid-field
 	{
-	background-color: white;
+	background-color: #fffcf7;
 	border-color: #cf4c35
 }
 
@@ -7921,7 +7921,7 @@ div.x-lbl-top-err-icon {
 .x-form-text {
 	color: black;
 	padding: 4px 6px 3px 6px;
-	background: white repeat-x 0 0;
+	background: #fffcf7 repeat-x 0 0;
 	border-width: 1px;
 	border-style: solid;
 	border-color: silver #d9d9d9 #d9d9d9;
@@ -8246,7 +8246,7 @@ div.x-lbl-top-err-icon {
 
 div.x-form-spinner-up,div.x-form-spinner-down {
 	background-image: url(images/form/spinner.png);
-	background-color: white;
+	background-color: #fffcf7;
 	width: 22px;
 	height: 11px
 }
@@ -8728,7 +8728,7 @@ a.x-color-picker-item:hover {
 }
 
 .x-grid-body {
-	background: white;
+	background: #fffcf7; /* culoare fundal tree si lista variabile */
 	border-width: 1px;
 	border-style: solid;
 	border-color: silver
@@ -8737,57 +8737,57 @@ a.x-color-picker-item:hover {
 .x-grid-empty {
 	padding: 10px;
 	color: gray;
-	background-color: white;
+	background-color: #fffcf7;
 	font: normal 13px helvetica, arial, verdana, sans-serif
 }
 
 .x-grid-cell {
 	color: null;
 	font: normal 13px/15px helvetica, arial, verdana, sans-serif;
-	background-color: white;
+	background-color: #fffcf7; /* culoare fundal tree si etichete variabile */
 	border-color: #ededed;
 	border-style: solid
 }
 
 .x-grid-row-alt .x-grid-td {
-	background-color: #fafafa
+	background-color: #fffcf7 /* culoare linii pare */
 }
 
 .x-grid-row-before-over .x-grid-td {
 	border-bottom-style: solid;
-	border-bottom-color: #e2eff8
+	border-bottom-color: #b3cdbb /* culoare border sus variabila mouse over */
 }
 
 .x-grid-row-over .x-grid-td {
 	border-bottom-style: solid;
-	border-bottom-color: #e2eff8
+	border-bottom-color: #b3cdbb /* culoare border jos variabila mouse over */
 }
 
 .x-grid-row-before-selected .x-grid-td {
 	border-bottom-style: solid;
-	border-bottom-color: #c1ddf1
+	border-bottom-color: #ffad69
 }
 
 .x-grid-row-selected .x-grid-td {
 	border-bottom-style: solid;
-	border-bottom-color: #c1ddf1
+	border-bottom-color: #ffad69
 }
 
-.x-grid-row-before-focused .x-grid-td {
+.x-grid-row-before-focused .x-grid-td { /* culoare border sus linie selectata */
 	border-bottom-style: solid;
-	border-bottom-color: #e2eff8
+	border-bottom-color: #ffad69
 }
 
-.x-grid-row-focused .x-grid-td {
-	background-color: #e2eff8
+.x-grid-row-focused .x-grid-td { /* culoare border jos linie selectata */
+	background-color: #ffad69
 }
 
 .x-grid-row-over .x-grid-td {
-	background-color: #e2eff8
+	background-color: #b3cdbb /* culoare linie mouse over */
 }
 
 .x-grid-row-selected .x-grid-td {
-	background-color: #c1ddf1
+	background-color: #ffad69 /* culoare linie selectata tree si lista variabile*/
 }
 
 .x-grid-row-focused .x-grid-td {
@@ -8800,7 +8800,7 @@ a.x-color-picker-item:hover {
 }
 
 .x-grid-row-selected .x-grid-row-summary .x-grid-td {
-	border-bottom-color: #c1ddf1;
+	border-bottom-color: #b3cdbb;
 	border-top-width: 0
 }
 
@@ -8814,7 +8814,7 @@ a.x-color-picker-item:hover {
 }
 
 .x-grid-with-row-lines .x-grid-table {
-	border-top: 1px solid white
+	border-top: 1px solid #fffcf7
 }
 
 .x-grid-with-row-lines .x-grid-table-over-first {
@@ -8824,7 +8824,7 @@ a.x-color-picker-item:hover {
 
 .x-grid-with-row-lines .x-grid-table-selected-first {
 	border-top-style: solid;
-	border-top-color: #c1ddf1
+	border-top-color: #b3cdbb
 }
 
 .x-grid-with-row-lines .x-grid-table-focused-first {
@@ -10189,8 +10189,8 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
 	padding: 8px 12px 7px 12px;
 	border-width: 0;
 	border-style: solid;
-	background-color: #f7750e
-}
+	background-color: #4D8A5D
+} /* culoare tab inactiv */
 
 .x-tab-default-top-mc {
 	background-color: #f7750e
@@ -10639,11 +10639,11 @@ body.x-nbr .x-tab-default-right-frameInfo {
 	cursor: pointer
 }
 
-.x-tab-default .x-tab-inner {
+.x-tab-default .x-tab-inner { /* culoare font tab-uri inactive */
 	font-size: 13px;
 	font-weight: bold;
 	font-family: helvetica, arial, verdana, sans-serif;
-	color: white;
+	color: #fffcf7;
 	line-height: 16px
 }
 
@@ -10742,8 +10742,8 @@ body.x-nbr .x-tab-default-right-frameInfo {
 	background-color: #ff953a
 }
 
-.x-tab-default-active .x-tab-inner {
-	color: #1f6932
+.x-tab-default-active .x-tab-inner { /* culoare font tab activ */
+	color: #002d0c
 }
 
 .x-tab-default-active .x-tab-glyph {
@@ -10756,6 +10756,7 @@ body.x-nbr .x-tab-default-right-frameInfo {
 
 .x-tab-default-top-active,.x-tab-default-left-active,.x-tab-default-right-active
 	{
+    /* culoare tab activ */
 	border-bottom: 0 solid #ff953a
 }
 

@@ -83,9 +83,9 @@ se continuă pe traseul roșu pe aceleași indicații ca mai sus.
 	<default_page>0</default_page>
 	<external_redirect></external_redirect>
 	<internal_redirect></internal_redirect>
-	<navigable>true</navigable>
+	<navigable>false</navigable>
 	<published>true</published>
 	<target></target>
-	<visible>true</visible>
+	<visible>false</visible>
 	<sequence>9</sequence>
 </pagedata>

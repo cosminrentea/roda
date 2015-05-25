@@ -27,7 +27,7 @@ in
 
 .jsdatatable td:empty {background-color: #fffcf7; }
 
-
+.jsdatatable tr th {text-align: left; padding-left:5px;}
 
 
 #container

@@ -26,9 +26,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.DataView.DragSelector": [],
   "Ext.ux.grid.menu.ListMenu": [],
   "Ext.ux.GMapPanel": [],
-  "Ext.ux.form.MultiSelect": [
-    "Ext.ux.Multiselect"
-  ],
+//  "Ext.ux.form.MultiSelect": [
+//    "Ext.ux.Multiselect"
+//  ],
   "Ext.ux.DataView.LabelEditor": [],
   "Ext.ux.GroupTabPanel": [],
   "Ext.ux.grid.filter.StringFilter": [],

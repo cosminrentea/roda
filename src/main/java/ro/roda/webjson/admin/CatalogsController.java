@@ -37,13 +37,12 @@ public class CatalogsController {
 			@RequestParam(value = "parent", required = false) Integer parentId,
 			@RequestParam(value = "description") String description,
 			@RequestParam(value = "added", required = false) Calendar added,
-			@RequestParam(value = "owner") Integer ownerId,
 			@RequestParam(value = "sequencenr", required = false) Integer sequencenr,
 			@RequestParam(value = "level", required = false) Integer level,
 			@RequestParam(value = "series", required = false) Integer seriesId,
 			@RequestParam(value = "catalog", required = false) Integer catalogId) {
-		AdminJson layoutGroupSave = adminJsonService.catalogSave(parentId, added, catalogname, description, ownerId,
-				sequencenr, level, seriesId, catalogId);
+		AdminJson layoutGroupSave = adminJsonService.catalogSave(parentId, added, catalogname, description, sequencenr,
+				level, seriesId, catalogId);
 		if (layoutGroupSave == null) {
 			return null;
 		}

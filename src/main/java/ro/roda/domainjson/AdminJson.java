@@ -13,6 +13,9 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domain.Catalog;

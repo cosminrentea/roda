@@ -27,6 +27,11 @@ Ext.define('databrowser.view.FrequencyChart', {
 	          type : 'bar',
 	          axis: 'bottom',
 	          highlight: true,
+	          renderer : function (sprite, record, attr, index, store) {
+	        	  return Ext.apply(attr, {
+	                  fill: '#b3cdbb'
+	               }); 
+	          },
 	          tips: {
 	        	  trackMouse: true,
 	        	  width: 140,
@@ -41,7 +46,7 @@ Ext.define('databrowser.view.FrequencyChart', {
 	        	  field: 'value',
 	        	  renderer: Ext.util.Format.numberRenderer('0'),
 	        	  orientation: 'horizontal',
-	        	  color: '#ff750e'
+	        	  color: '#333333'
 	          },
 	          xField: 'name',
 	          yField: 'value',
@@ -52,3 +57,5 @@ Ext.define('databrowser.view.FrequencyChart', {
 		 this.callParent(arguments);
 	}
 });
+
+

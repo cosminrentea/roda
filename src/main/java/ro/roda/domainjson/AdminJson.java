@@ -1,5 +1,6 @@
 package ro.roda.domainjson;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -12,13 +13,9 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.multipart.MultipartFile;
 
-import ro.roda.domain.Authorities;
-import ro.roda.domain.AuthoritiesPK;
+import ro.roda.domain.Catalog;
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
 import ro.roda.domain.CmsLayout;
@@ -30,8 +27,7 @@ import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.CmsSnippetGroup;
 import ro.roda.domain.Lang;
 import ro.roda.domain.News;
-import ro.roda.domain.UserGroup;
-import ro.roda.domain.UserMessage;
+import ro.roda.domain.Series;
 import ro.roda.domain.Users;
 import flexjson.JSONSerializer;
 
@@ -604,7 +600,6 @@ public class AdminJson {
 		return new AdminJson(true, "News item saved");
 	}
 
-
 	// Cms Page Management Methods
 	public static AdminJson cmsPageSave(Boolean save, Integer cmsPageParentId, String name, String langName,
 			String menutitle, String synopsis, String target, String url, Boolean defaultPage, String externalredirect,
@@ -1094,7 +1089,6 @@ public class AdminJson {
 		return new AdminJson(true, "CMS File moved successfully");
 	}
 
-	
 	public static AdminJson newsDrop(Integer newsId) {
 		News news = News.findNews(newsId);
 		if (news == null)
@@ -1106,8 +1100,7 @@ public class AdminJson {
 		}
 		return new AdminJson(true, "News item dropped successfully");
 	}
-	
-	
+
 	public static AdminJson folderMove(Integer parentFolderId, Integer folderId) {
 
 		CmsFolder folder = null;
@@ -1147,6 +1140,86 @@ public class AdminJson {
 		}
 
 		return new AdminJson(true, "CMS Folder moved successfully");
+	}
+
+	public static AdminJson catalogDrop(Integer catalogId) {
+		Catalog catalog = Catalog.findCatalog(catalogId);
+		if (catalog == null)
+			return new AdminJson(false, "The catalog does not exist");
+		if ((catalog.getCatalogs() != null && catalog.getCatalogs().size() > 0)
+				|| (catalog.getCatalogStudies() != null && catalog.getCatalogStudies().size() > 0)) {
+			return new AdminJson(false, "The catalog could not be dropped because it contains studies");
+		}
+
+		try {
+			Catalog parentCatalog = catalog.getParentId();
+			if (parentCatalog != null && parentCatalog.getCatalogs() != null
+					&& parentCatalog.getCatalogs().contains(catalog)) {
+				parentCatalog.getCatalogs().remove(catalog);
+			}
+
+			CmsLayout.entityManager().remove(catalog);
+		} catch (Exception e) {
+			return new AdminJson(false, "Catalog not dropped: " + e.getMessage());
+		}
+
+		return new AdminJson(true, "Catalog dropped successfully");
+	}
+
+	public static AdminJson catalogSave(Integer parentId, Calendar added, String name, String description,
+			Integer ownerId, Integer sequencenr, Integer level, Integer seriesId, Integer catalogId) {
+
+		Catalog catalog = null;
+		if (catalogId != null) {
+			catalog = Catalog.findCatalog(catalogId);
+		}
+
+		if (catalog == null) {
+			catalog = new Catalog();
+		}
+
+		catalog.setName(name);
+		catalog.setDescription(description);
+
+		if (added == null && catalogId == null) {
+			added = Calendar.getInstance();
+		}
+
+		if (catalogId == null) {
+			catalog.setAdded(added);
+		}
+
+		catalog.setOwner(Users.findUsers(ownerId));
+		catalog.setSequencenr(sequencenr);
+		catalog.setLevel(level);
+		catalog.setSeries(Series.findSeries(seriesId));
+
+		try {
+			if (parentId != null) {
+				Catalog parentCatalog = Catalog.findCatalog(parentId);
+				if (parentCatalog != null) {
+					if (parentCatalog.getCatalogs() != null && parentCatalog.getCatalogs().contains(catalog)) {
+						// do nothing
+					} else {
+						if (parentCatalog.getCatalogs() == null) {
+							parentCatalog.setCatalogs(new HashSet<Catalog>());
+							parentCatalog.getCatalogs().add(catalog);
+						} else {
+							parentCatalog.getCatalogs().add(catalog);
+						}
+						CmsLayoutGroup.entityManager().persist(parentCatalog);
+					}
+
+					catalog.setParentId(parentCatalog);
+				}
+			}
+
+			Catalog.entityManager().persist(catalog);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "Catalog not created " + e.getMessage());
+		}
+
+		return new AdminJson(true, "Catalog created or updated successfully");
 	}
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -1200,21 +1273,19 @@ public class AdminJson {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	 public static AdminJson cmsPageSetNavigable(boolean navigable,
-             Integer cmsPageId) {
+	public static AdminJson cmsPageSetNavigable(boolean navigable, Integer cmsPageId) {
 
-     CmsPage cmsPage = null;
-     if (cmsPageId != null) {
-             cmsPage = CmsPage.findCmsPage(cmsPageId);
-             cmsPage.setNavigable(navigable);
-             return new AdminJson(true, "Navigable set");
-     }
+		CmsPage cmsPage = null;
+		if (cmsPageId != null) {
+			cmsPage = CmsPage.findCmsPage(cmsPageId);
+			cmsPage.setNavigable(navigable);
+			return new AdminJson(true, "Navigable set");
+		}
 
-     if (cmsPage == null) {
-             return new AdminJson(false, "CMS Page does not exist");
-     }
-     return null;
-}
+		if (cmsPage == null) {
+			return new AdminJson(false, "CMS Page does not exist");
+		}
+		return null;
+	}
 
-	
 }

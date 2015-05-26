@@ -1,7 +1,9 @@
 package ro.roda.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.Calendar;
 import java.util.Date;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domainjson.AdminJson;
 
@@ -77,5 +79,10 @@ public interface AdminJsonService {
 	public abstract AdminJson newsDrop(Integer layoutId);
 
 	public abstract AdminJson studyImport(Integer ddiId, Integer csvId, Integer[] fileIds);
+
+	public abstract AdminJson catalogSave(Integer parentId, Calendar added, String name, String description,
+			Integer ownerId, Integer sequencenr, Integer level, Integer seriesId, Integer catalogId);
+
+	public abstract AdminJson catalogDrop(Integer catalogId);
 
 }

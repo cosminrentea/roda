@@ -1,21 +1,18 @@
 package ro.roda.service;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
@@ -282,6 +279,19 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	public AdminJson cmsPageNav(boolean navigable, Integer cmsPageId) {
 		rodaPageService.evictAll();
 		return AdminJson.cmsPageSetNavigable(navigable, cmsPageId);
+	}
+
+	public AdminJson catalogSave(Integer parentId, Calendar added, String name, String description, Integer ownerId,
+			Integer sequencenr, Integer level, Integer seriesId, Integer catalogId) {
+		rodaPageService.evictAll();
+
+		return AdminJson.catalogSave(parentId, added, name, description, ownerId, sequencenr, level, seriesId,
+				catalogId);
+	}
+
+	public AdminJson catalogDrop(Integer catalogId) {
+		rodaPageService.evictAll();
+		return AdminJson.catalogDrop(catalogId);
 	}
 
 }

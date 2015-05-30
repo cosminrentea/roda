@@ -16,6 +16,8 @@ import javax.persistence.TypedQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domain.Catalog;
@@ -1170,7 +1172,7 @@ public class AdminJson {
 	}
 
 	public static AdminJson catalogSave(Integer parentId, Calendar added, String name, String description,
-			Integer ownerId, Integer sequencenr, Integer level, Integer seriesId, Integer catalogId) {
+			Integer sequencenr, Integer level, Integer seriesId, Integer catalogId) {
 
 		Catalog catalog = null;
 		if (catalogId != null) {
@@ -1192,6 +1194,9 @@ public class AdminJson {
 			catalog.setAdded(added);
 		}
 
+		String username = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+
+		Integer ownerId = Users.findUsersByUsernameLike(username).getSingleResult().getId();
 		catalog.setOwner(Users.findUsers(ownerId));
 		catalog.setSequencenr(sequencenr);
 		catalog.setLevel(level);

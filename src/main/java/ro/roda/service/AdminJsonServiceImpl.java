@@ -281,12 +281,11 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return AdminJson.cmsPageSetNavigable(navigable, cmsPageId);
 	}
 
-	public AdminJson catalogSave(Integer parentId, Calendar added, String name, String description, Integer ownerId,
-			Integer sequencenr, Integer level, Integer seriesId, Integer catalogId) {
+	public AdminJson catalogSave(Integer parentId, Calendar added, String name, String description, Integer sequencenr,
+			Integer level, Integer seriesId, Integer catalogId) {
 		rodaPageService.evictAll();
 
-		return AdminJson.catalogSave(parentId, added, name, description, ownerId, sequencenr, level, seriesId,
-				catalogId);
+		return AdminJson.catalogSave(parentId, added, name, description, sequencenr, level, seriesId, catalogId);
 	}
 
 	public AdminJson catalogDrop(Integer catalogId) {

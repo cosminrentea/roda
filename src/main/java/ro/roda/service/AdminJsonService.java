@@ -81,7 +81,7 @@ public interface AdminJsonService {
 	public abstract AdminJson studyImport(Integer ddiId, Integer csvId, Integer[] fileIds);
 
 	public abstract AdminJson catalogSave(Integer parentId, Calendar added, String name, String description,
-			Integer ownerId, Integer sequencenr, Integer level, Integer seriesId, Integer catalogId);
+			Integer sequencenr, Integer level, Integer seriesId, Integer catalogId);
 
 	public abstract AdminJson catalogDrop(Integer catalogId);
 

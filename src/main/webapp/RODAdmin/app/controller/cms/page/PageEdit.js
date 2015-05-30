@@ -90,12 +90,12 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
       onPageEditSaveClick : function(button, e, options) {
   	    var win = button.up('window');
   	    var formPanel = win.down('form');
-
+  	    console.log ('baseurl: '+RODAdmin.util.Globals.baseurl);
   	    var me = this;
   	    if (formPanel.getForm().isValid()) {
   		    formPanel.getForm().submit({
   		        clientValidation : true,
-  		        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagesave',
+  		        url : RODAdmin.util.Globals.baseurl + 'adminjson/cmspagesave',
   		        success : function(form, action) {
   			        var result = action.result;
   			        if (result.success) {
@@ -144,7 +144,7 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
     	    if (formPanel.getForm().isValid()) {
     		    formPanel.getForm().submit({
     		        clientValidation : true,
-    		        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagepreview',
+    		        url : RODAdmin.util.Globals.baseurl + 'adminjson/cmspagepreview',
     		        success : function(form, action) {
     			        var result = action.result;
     			        if (result.success) {
@@ -197,7 +197,7 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
     	    if (formPanel.getForm().isValid()) {
     		    formPanel.getForm().submit({
     		        clientValidation : true,
-    		        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagesave',
+    		        url : RODAdmin.util.Globals.baseurl + 'adminjson/cmspagesave',
     		        success : function(form, action) {
     			        var result = action.result;
     			        if (result.success) {

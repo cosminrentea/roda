@@ -177,7 +177,7 @@ Ext.define('RODAdmin.controller.user.User', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : RODAdmin.util.Globals.baseurl + '/adminjson/usermessage',
+		        url : RODAdmin.util.Globals.baseurl + 'adminjson/usermessage',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -273,7 +273,7 @@ Ext.define('RODAdmin.controller.user.User', {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    Ext.Ajax.request({
-			        url : RODAdmin.util.Globals.baseurl + '/adminjson/userdrop',
+			        url : RODAdmin.util.Globals.baseurl + 'adminjson/userdrop',
 			        method : "POST",
 			        params : {
 				        userid : currentNode.data.id
@@ -302,10 +302,10 @@ Ext.define('RODAdmin.controller.user.User', {
     onUserCheckChange : function(column, rowIndex, checked) {
 
 	    if (checked == false) {
-		    ajurl = RODAdmin.util.Globals.baseurl + '/adminjson/userdisable';
+		    ajurl = RODAdmin.util.Globals.baseurl + 'adminjson/userdisable';
 	    }
 	    else if (checked == true) {
-		    ajurl = RODAdmin.util.Globals.baseurl + '/adminjson/userenable';
+		    ajurl = RODAdmin.util.Globals.baseurl + 'adminjson/userenable';
 	    }
 	    Ext.Ajax.request({
 	        url : ajurl,
@@ -326,9 +326,9 @@ Ext.define('RODAdmin.controller.user.User', {
 	    console.log('checkchange in controller' + checked);
 
 	    // if (checked == false) {
-	    // ajurl = RODAdmin.util.Globals.baseurl + '/adminjson/userdisable';
+	    // ajurl = RODAdmin.util.Globals.baseurl + 'adminjson/userdisable';
 	    // } else if (checked == true) {
-	    // ajurl = RODAdmin.util.Globals.baseurl + '/adminjson/userenable';
+	    // ajurl = RODAdmin.util.Globals.baseurl + 'adminjson/userenable';
 	    // }
 	    // Ext.Ajax.request({
 	    // url : ajurl,
@@ -354,7 +354,7 @@ Ext.define('RODAdmin.controller.user.User', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : RODAdmin.util.Globals.baseurl + '/adminjson/usersave',
+		        url : RODAdmin.util.Globals.baseurl + 'adminjson/usersave',
 
 		        success : function(form, action) {
 			        var result = action.result;
@@ -402,12 +402,12 @@ Ext.define('RODAdmin.controller.user.User', {
 	    var formPanel = win.down('form');
 	    // var currentNode =
 		// this.getUsersview().getSelectionModel().getLastSelected();
-	    console.log(RODAdmin.util.Globals.baseurl + '/adminjson/usersave');
+	    console.log(RODAdmin.util.Globals.baseurl + 'adminjson/usersave');
 	    var me = this;
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : RODAdmin.util.Globals.baseurl + '/adminjson/usercreate',
+		        url : RODAdmin.util.Globals.baseurl + 'adminjson/usercreate',
 
 		        success : function(form, action) {
 

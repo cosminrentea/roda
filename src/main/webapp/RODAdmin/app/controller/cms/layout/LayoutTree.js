@@ -222,7 +222,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                        		   if (id === 'yes') {
 	                        			   console.log('we will delete');
 	                        			   Ext.Ajax.request({
-	                        				   url : RODAdmin.util.Globals.baseurl + '/adminjson/layoutdrop',
+	                        				   url : RODAdmin.util.Globals.baseurl + 'adminjson/layoutdrop',
 	                        				   method : "POST",
 	                        				   params : {
 	                        					   layoutid : currentNode.data.indice
@@ -385,7 +385,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                            	}
                             		console.log(newparent);
     	                           	Ext.Ajax.request({
-	                       	        url : RODAdmin.util.Globals.baseurl + '/adminjson/layoutgroupmove/',
+	                       	        url : RODAdmin.util.Globals.baseurl + 'adminjson/layoutgroupmove/',
 	                       	        method : "POST",
 	                       	        params : {
 		                       	            group : tomove,

@@ -110,7 +110,7 @@ Ext.define('RODAdmin.controller.user.GroupList', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : RODAdmin.util.Globals.baseurl + '/adminjson/groupsave',
+		        url : RODAdmin.util.Globals.baseurl + 'adminjson/groupsave',
 		        success : function(form, action) {
 			        console.log('wtf???');
 			        console.log(action);
@@ -164,7 +164,7 @@ Ext.define('RODAdmin.controller.user.GroupList', {
 		   					if (id === 'yes') {
 		   							console.log('we will delete');
 		   							Ext.Ajax.request({
-		   								url : RODAdmin.util.Globals.baseurl + '/adminjson/groupdrop',
+		   								url : RODAdmin.util.Globals.baseurl + 'adminjson/groupdrop',
 				   method : "POST",
 				   params : {
 					   layoutid : currentNode.data.indice

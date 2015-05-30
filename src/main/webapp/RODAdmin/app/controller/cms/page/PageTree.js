@@ -148,7 +148,7 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
     	console.log('group checkchange in controller' + checked);
     	
 //	    Ext.Ajax.request({
-//	        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagenavigable',
+//	        url : RODAdmin.util.Globals.baseurl + 'adminjson/cmspagenavigable',
 //	        method : "POST",
 //	        params : {
 //	        	navigable : checked,
@@ -176,7 +176,7 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 		    if (id === 'yes') {
 		    	console.log('what?' + currentNode.data.indice);
 			    Ext.Ajax.request({
-			        url : RODAdmin.util.Globals.baseurl + '/adminjson/cache/evict-page-id/'+currentNode.data.indice,
+			        url : RODAdmin.util.Globals.baseurl + 'adminjson/cache/evict-page-id/'+currentNode.data.indice,
 			        method : "POST",
 			        success : function(response,request) {
 				           var responseJson = Ext.decode(response.responseText);
@@ -211,7 +211,7 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
     	var groupid = overModel.data.indice;
     	var mode = dropPosition;
     	Ext.Ajax.request({
-	        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagemove/',
+	        url : RODAdmin.util.Globals.baseurl + 'adminjson/cmspagemove/',
 	        method : "POST",
 	        params : {
 	            id : pgid,
@@ -302,7 +302,7 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 	            + '?', function(id, value) {
 		    if (id === 'yes') {
 			    Ext.Ajax.request({
-			        url : RODAdmin.util.Globals.baseurl + '/adminjson/cmspagedrop',
+			        url : RODAdmin.util.Globals.baseurl + 'adminjson/cmspagedrop',
 			        method : "POST",
 			        params : {
 				        cmspageid : currentNode.data.indice

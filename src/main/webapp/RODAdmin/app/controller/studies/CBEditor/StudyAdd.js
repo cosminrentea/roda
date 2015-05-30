@@ -1912,7 +1912,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		if (this.getStudyaddmain().getMode() == 'add') {
 			console.log('add mode -------------------------------------');
 			Ext.Ajax.request({
-//				url: '/roda/adminjson/cmsjsoncreate',
+//				url: '/rodaadminjson/cmsjsoncreate',
 				url: '/roda/userjson/cmsjsoncreate',
 				waitTitle: 'Connecting',
 				waitMsg: 'Sending data...',                                     
@@ -1955,7 +1955,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			console.log('edit mode -------------------------------------');
 			var myid = this.getStudyaddmain().getEditindex();
 			Ext.Ajax.request({
-//			    url: '/roda/adminjson/cmsjsonsave/',
+//			    url: '/rodaadminjson/cmsjsonsave/',
 				url: '/roda/userjson/cmsjsonsave/',
 				waitTitle: 'Connecting',
 			    waitMsg: 'Sending data...',  
@@ -2003,7 +2003,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		if (this.getStudyaddmain().getMode() == 'add') {
 			console.log('add mode -------------------------------------');
 			Ext.Ajax.request({
-//				url: '/roda/adminjson/cmsjsoncreate',
+//				url: '/rodaadminjson/cmsjsoncreate',
 				url: '/roda/userjson/cmsjsoncreate',
 				waitTitle: 'Connecting',
 				waitMsg: 'Sending data...',                                     

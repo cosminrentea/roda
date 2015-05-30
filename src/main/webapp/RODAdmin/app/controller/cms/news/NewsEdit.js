@@ -55,7 +55,7 @@ Ext.define('RODAdmin.controller.cms.news.NewsEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : RODAdmin.util.Globals.baseurl + '/adminjson/newssave',
+		        url : RODAdmin.util.Globals.baseurl + 'adminjson/newssave',
 
 		        success : function(form, action) {
 			        var result = action.result;

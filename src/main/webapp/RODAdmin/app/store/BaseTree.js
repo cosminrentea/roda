@@ -16,19 +16,23 @@ Ext.define('RODAdmin.store.BaseTree', {
 			} else if (purl.match(baseurlreg))	 {
 				console.log('leave url alone' + purl);				
 			} else {
-				console.log('initial url ' + purl);	
-//				console.log('add base url ' + RODAdmin.util.Globals.baseurl);
-				console.log('final url ' + RODAdmin.util.Globals.baseurl + purl);
-				store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
+				if (RODAdmin.util.Globals.baseurl) {
+					store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
+				} else {
+					store.getProxy().url = purl;
+				} 
 				if (purl.match(/^\/adminjson/)) {
 					store.getProxy().url =  purl;
 				} else if (purl.match(/^\/userjson/)) {
 					store.getProxy().url = purl;
-//				} else if (purl.match(/\//)) {
-//							store.getProxy().url = purl;
 				} else {
-					store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
+					if (RODAdmin.util.Globals.baseurl) {
+						store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
+					} else {
+						store.getProxy().url = purl;
+					} 
 				}
+
 			}
 		}
 	}

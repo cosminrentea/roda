@@ -70,7 +70,7 @@ Ext.define('RODAdmin.controller.metadata.mcomponents.Person', {
     	            if (id === 'yes') {
     	                    console.log('we will delete');
     	                    Ext.Ajax.request({
-    	                        url : RODAdmin.util.Globals.baseurl + '/adminjson/dropperson',
+    	                        url : RODAdmin.util.Globals.baseurl + 'adminjson/dropperson',
     	                        method : "POST",
     	                        params : {
     	                                prefixid : record.data.indice
@@ -105,9 +105,9 @@ Ext.define('RODAdmin.controller.metadata.mcomponents.Person', {
     	 var win = button.up('window');
     	 var editId = win.getEditId();
     	 if (editId > 0) {
-    		 var purl = RODAdmin.util.Globals.baseurl + '/adminjson/personsave/' + editId
+    		 var purl = RODAdmin.util.Globals.baseurl + 'adminjson/personsave/' + editId
     	 } else {
-    		 var purl = RODAdmin.util.Globals.baseurl + '/adminjson/personsave'
+    		 var purl = RODAdmin.util.Globals.baseurl + 'adminjson/personsave'
     	 }
          var formPanel = win.down('form');
          var me = this;

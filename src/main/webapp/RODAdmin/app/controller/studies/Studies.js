@@ -204,11 +204,11 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 			    console.log('we will delete');
 			    var url = '';
 			    if (fp.data.itemtype == 'studygroup') {
-				    url = RODAdmin.util.Globals.baseurl + '/adminjson/catalogdrop';
+				    url = RODAdmin.util.Globals.baseurl + 'adminjson/catalogdrop';
 				    parms = {'groupid' : fp.data.id };
 			    }
 			    else {
-				    url = RODAdmin.util.Globals.baseurl + '/adminjson/studydrop';
+				    url = RODAdmin.util.Globals.baseurl + 'adminjson/studydrop';
 				    parms = {'studyid' : fp.data.id };
 			    }
 

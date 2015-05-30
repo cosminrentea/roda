@@ -158,7 +158,7 @@ onDeleteClick : function(component, event) {
 				if (id === 'yes') {
 					console.log('we will delete');
 					Ext.Ajax.request({
-								url : RODAdmin.util.Globals.baseurl + '/adminjson/crondrop',
+								url : RODAdmin.util.Globals.baseurl + 'adminjson/crondrop',
 								method : "POST",
 								params : {
 									layoutid : currentNode.data.indice

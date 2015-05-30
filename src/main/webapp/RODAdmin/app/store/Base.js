@@ -6,27 +6,31 @@ Ext.define('RODAdmin.store.Base', {
 
 	listeners: {
 		beforeload: function(store, operation, options){
-			console.log('base url globals' + RODAdmin.util.Globals.baseurl);
 			store.getProxy().extraParams = {
 				lang : localStorage ? (localStorage.getItem('user-lang') || 'en') : 'en'
 			};
 			var purl = store.getProxy().url;
 			var baseurlreg = new RegExp('^'+RODAdmin.util.Globals.baseurl, '');
 			if (purl.match(/^http:/i)) {
-				console.log('leave url alone' + purl);
 			} else if (purl.match(baseurlreg))	 {
-				console.log('leave url alone' + purl);
 			} else {
-				console.log('initial url ' + purl);	
-				console.log('final url ' + RODAdmin.util.Globals.baseurl + purl);
-				if (purl.match(/^\/adminjson/)) {
-					store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
-				} else if (purl.match(/^\/userjson/)) {
-					console.log('userjson url');
-					store.getProxy().url = RODAdmin.util.Globals.baseurl + purl; 
+				if (RODAdmin.util.Globals.baseurl) {
+					if (purl.match(/^\/adminjson/)) {
+						store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
+					} else if (purl.match(/^\/userjson/)) {
+						store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
+					} else {
+						store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
+					}
 				} else {
-					store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
-				}
+						if (purl.match(/^\/adminjson/)) {
+							store.getProxy().url = purl;
+						} else if (purl.match(/^\/userjson/)) {
+							store.getProxy().url = purl;
+						} else {
+							store.getProxy().url = purl;
+						}
+					}
 			}
 		}
 	}

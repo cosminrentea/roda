@@ -324,7 +324,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 					if (id === 'yes') {
 						console.log('we will delete');
 						Ext.Ajax.request({
-									url : RODAdmin.util.Globals.baseurl + '/adminjson/cmsfiledrop',
+									url : RODAdmin.util.Globals.baseurl + 'adminjson/cmsfiledrop',
 									method : "POST",
 									params : {
 										fileid : currentNode.data.indice
@@ -444,7 +444,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 						+ currentNode.data.name + '?', function(id, value) {
 					if (id === 'yes') {
 						Ext.Ajax.request({
-									url : RODAdmin.util.Globals.baseurl + '/adminjson/cmsfolderempty',
+									url : RODAdmin.util.Globals.baseurl + 'adminjson/cmsfolderempty',
 									method : "POST",
 									params : {
 										folderid : currentNode.data.indice
@@ -475,7 +475,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 						+ currentNode.data.name + '?', function(id, value) {
 					if (id === 'yes') {
 						Ext.Ajax.request({
-									url :RODAdmin.util.Globals.baseurl + '/adminjson/cmsfolderdrop',
+									url :RODAdmin.util.Globals.baseurl + 'adminjson/cmsfolderdrop',
 									method : "POST",
 									params : {
 										folderid : currentNode.data.indice

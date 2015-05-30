@@ -10,56 +10,58 @@
     ]]></synopsis>
     <lang>ro</lang>
     <content><![CDATA[
-    <H1>Despre RODA</H1>
-	<p align="justify">
-	    <b>Arhiva Română de Date Sociale</b> a fost înființată în anul 2001, ca
-        dezvoltare la nivel național al departamentului de baze de date a
-        Institutului de Cercetare a Calității Vietii, în colaborare cu
-        Universitatea din București, catedra de Sociologie.
-    </p>
-    <p align="justify">
-        Arhiva a fost creată pentru a sprijini și impulsiona cercetarea cantitativa
-        bazată pe analiză secundară și analiza comparativă. Întreține o colectie de
-        baze de date electronice și documentatiile aferente, coordoneaza achiziția
-        de noi date din surse variate și pune la dispoziție accesul nemijlocit la
-        datele publice.
-    </p>
-    <p align="justify">
-	    Initiațiva construirii arhivei a început in 1996, cu un grant CNCSIS, initiatori
-	    prof. Cătălin Zamfir și conf. Poliana Ștefanescu. Proiectul a continuat cu un
-	    grant de inițiere al Băncii Mondiale, director de grant prof. Ioan Mărginean,
-	    și cu un grant CNCSIS coordonat de lector Lucian Pop. Din anul 2002 directorul
-	    proiectului este Adrian Dușa, continuându-l cu o finanțare INFOSOC.<br />
-        În anul 2012, proiectul a beneficiat de o finanțare ANCS pe linia Planului
-        Sectorial, în urma căreia a fost realizat actualul sistem IT al RODA.
-        Mulțumim colegilor din Institut care, de-a lungul anilor, au contribuit la
-        pregătirea arhivei și a seturilor de date: Manuela Stănculescu, Iuliana Precupețu,
-        Narcisa Țambrea, Ana Maria Preoteasa, Mălina Voicu, Bogdan Voicu, Cristina 
-        Băjenaru, Dana Nițulescu, Mariana Dan.
-    </p>
-    <p align="justify">
-	    RODA aduce un plus de valoare fiecărui set de date prin curățare, documentare
-	    și păstrarea pentru siguranță, ferindu-le de riscul pierderii sau deteriorării.
-    </p>
-	<p align="justify">
-	    Arhiva menține un contact strâns cu cercetătorii și furnizorii de date, pentru
-	    a fi la curent cu apariția noilor seturi de date, tehnici de management al
-	    informațiilor și tehnologii computaționale.
-    </p>
-	<p align="justify">
-	    Datele din colecția RODA se bazează în cea mai mare parte pe bazele de date ale
-	    ICCV, însă există și date provenite de la alte instituții de cercetare și avem
-	    în vedere colectarea a cât mai multe seturi de date de la toate instituțiile cu
-	    profil de cercetare din România.
-    </p>
-	<p align="justify">
-	    Arhiva acordă asistență în localizarea variabilelor, seturilor de date și
-	    documentațiilor, în funcție de nevoile particulare ale cercetătorilor,
-	    studenților și profesorilor. Utilizatorii pot consulta
-	    <a href="[[Code: PageLinkbyUrl('contact')]]">personalul Arhivei</a> în
-	    identificarea intereselor de cercetare și în selectarea datelor potrivite
-	    pentru proiecte de cercetare specifice.
-    </p>
+    
+<H1>Despre RODA</H1>
+<p align="justify">
+    <b>Arhiva Română de Date Sociale</b> a fost înființată în anul 2001, ca
+    dezvoltare la nivel național al departamentului de baze de date a
+    Institutului de Cercetare a Calității Vietii, în colaborare cu
+    Universitatea din București, catedra de Sociologie.
+</p>
+<p align="justify">
+    Arhiva a fost creată pentru a sprijini și impulsiona cercetarea cantitativa
+    bazată pe analiză secundară și analiza comparativă. Întreține o colectie de
+    baze de date electronice și documentatiile aferente, coordoneaza achiziția
+    de noi date din surse variate și pune la dispoziție accesul nemijlocit la
+    datele publice.
+</p>
+<p align="justify">
+    Initiațiva construirii arhivei a început în 1996, cu un grant CNCSIS, inițiatori
+    prof. Cătălin Zamfir și conf. Poliana Ștefanescu. Proiectul a continuat cu un
+    grant de inițiere al Băncii Mondiale, director de grant prof. Ioan Mărginean,
+    și cu un grant CNCSIS coordonat de lector Lucian Pop. Din anul 2002 directorul
+    proiectului este Adrian Dușa, continuându-l cu o finanțare INFOSOC.<br />
+    În anul 2012, proiectul a beneficiat de o finanțare ANCS pe linia Planului
+    Sectorial, în urma căreia a fost realizat actualul sistem IT al RODA.
+    Mulțumim colegilor din Institut care, de-a lungul anilor, au contribuit la
+    pregătirea arhivei și a seturilor de date: Manuela Stănculescu, Iuliana Precupețu,
+    Narcisa Țambrea, Ana Maria Preoteasa, Mălina Voicu, Bogdan Voicu, Cristina 
+    Băjenaru, Dana Nițulescu, Mariana Dan.
+</p>
+<p align="justify">
+    RODA aduce un plus de valoare fiecărui set de date prin curățare, documentare
+    și păstrarea pentru siguranță, ferindu-le de riscul pierderii sau deteriorării.
+</p>
+<p align="justify">
+    Arhiva menține un contact strâns cu cercetătorii și furnizorii de date, pentru
+    a fi la curent cu apariția noilor seturi de date, tehnici de management al
+    informațiilor și tehnologii computaționale.
+</p>
+<p align="justify">
+    Datele din colecția RODA se bazează în cea mai mare parte pe bazele de date ale
+    ICCV, însă există și date provenite de la alte instituții de cercetare și avem
+    în vedere colectarea a cât mai multe seturi de date de la toate instituțiile cu
+    profil de cercetare din România.
+</p>
+<p align="justify">
+    Arhiva acordă asistență în localizarea variabilelor, seturilor de date și
+    documentațiilor, în funcție de nevoile particulare ale cercetătorilor,
+    studenților și profesorilor. Utilizatorii pot consulta
+    <a href="[[Code: PageLinkbyUrl('contact')]]">personalul Arhivei</a> în
+    identificarea intereselor de cercetare și în selectarea datelor potrivite
+    pentru proiecte de cercetare specifice.
+</p>
+
     ]]></content>
     <cms_layout>new-roda-main-ro</cms_layout>
     <pagetype>content</pagetype>

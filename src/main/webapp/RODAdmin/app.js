@@ -82,7 +82,7 @@ Ext.application({
 	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
         //see if we can get the user session
 	    Ext.Ajax.request({
-			url: '/roda/userjson/session/list',
+			url: '/userjson/session/list',
 			waitTitle: 'Connecting',
 			waitMsg: 'Sending data...',                                     
 			scope:this,

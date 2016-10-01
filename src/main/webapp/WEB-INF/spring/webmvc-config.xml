@@ -31,6 +31,9 @@
 	<mvc:resources location="/libs/" mapping="/libs/**"
 		order="-1" />
 
+	<mvc:resources location="/static/" mapping="/static/**"
+		order="-1" />
+
 	<mvc:resources location="/root/" mapping="/root/**"
 		order="-1" />
 

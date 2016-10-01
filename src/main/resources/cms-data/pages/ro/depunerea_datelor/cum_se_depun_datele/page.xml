@@ -2,52 +2,72 @@
 <pagedata>
 	<title>Cum se depun datele</title>
 	<menutitle>Cum se depun datele</menutitle>
-	<synopsis><![CDATA[Procesul de depunere a datelor este foarte important, odata pentru a intelege foarte clar doleantele proprietarilor de date, precum si pentru o integrare cat mai rapida si mai corecta a seturilor de date in arhiva noastra.]]></synopsis>
+	<synopsis><![CDATA[
+	    Procesul de depunere a datelor este foarte important, odată pentru a înțelege
+	    foarte clar doleanțele proprietarilor de date, precum și pentru o integrare cât
+	    mai rapidă și mai corectă a seturilor de date în arhivă.
+	]]></synopsis>
 	<lang>ro</lang>
 	<content><![CDATA[
-	<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Procesul de depunere a datelor este foarte important, odata pentru a intelege foarte clar doleantele proprietarilor de date, precum si pentru o integrare cat mai rapida si mai corecta a seturilor de date in arhiva noastra.</font></p>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">In informatiile de mai jos, puteti afla care sunt etapele procesului de depunere, cum trebuie sa fie pregatite datele pentru depunere, cum ajung datele la RODA si ce se va intampla cu datele dupa ce ajung la noi. Daca aveti orice nedumeriri sau intrebari, nu ezitati sa ne <a href="http://roda.ro/public/RO/template.php?url=4">contactati</a> pentru lamuriri suplimentare.</font></p>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Pentru ca setul de date sa fie complet utilizabil, orice cercetator sau persoana interesata va avea nevoie de niste informatii suplimentare. Fara o documentatie bine structurata, baza de date nu poate fi folosita. Pentru a putea depune setul de date, va invitam:</font></p>
-<div align="justify">
-	<ul>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">sa completati <a href="[[FileURL:Depunere]]">Formularul de depunere</a> (cu detalii despre setul de date depus);</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">sa completati si sa semnati <a href="licents">Acordul de licentiere</a>, unde se vor specifica conditiile si restrictiile in care datele vor fi distribuite utilizatorilor;</font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">sa ne trimiteti aceste acte, odata cu setul de date si documentatia aferenta.</font></li>
-	</ul>
-</div>
-<div align="justify">
-	<ul>
-		Daca doriti sa completati aceste informatii in format electronic, puteti descarca fisierele in format Word de mai jos<br />
-		(atentie insa, Acordul de licentiere trebuie semnat in format fizic):
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2"><a href="[[FileURL:Depuneredoc]]">Formularul de depunere in format Word</a></font></li>
-		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2"><a href="[[FileURL:Licentadoc]]">Acordul de licentiere in format Word</a></font></li>
-	</ul>
-</div>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Putem folosi baze de date construite in ASCII (de preferinta delimitate prin tab), R, Access, Excel, SPSS, SAS, STATA.<br />
-	Informatiile pentru documentarea setului de date pot fi trimise in format OpenOffice, Word, RTF, Acrobat PDF, atat in format electronic cat si in forma tiparita.<br />
-	Descrierile variabilelor si a valorilor pot fi trimise in orice format (SPSS Syntax, Excel, R sau in format simplu ASCII).</font></p>
-<p align="justify">
-	<b><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">Va sugeram sa pregatiti:</font></b></p>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">- o copie a setului de date;<br />
-	- o copie a chestionarului, pe cat posibil cu numele variabilelor care sa fie identice cu cele din baza de date;<br />
-	- detalii despre schema de esantionare folosita si modul de culegere a datelor;<br />
-	- o copie a instructiunilor pentru operatorii de teren;<br />
-	- informatii despre variabile si valorile acestora, codificarea si schemele de clasificare folosite;<br />
-	- informatii despre variabilele construite;<br />
-	- detalii despre ponderarile folosite si variabilele de ponderare.</font></p>
-<p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Mediile de stocare pe care le putem folosi sunt discheta si CD-ul, insa putem transfera fisierele si prin FTP.</font></p>
 	
+<p align="justify">
+	Procesul de depunere a datelor este foarte important, odată pentru a înțelege
+	foarte clar doleanțele proprietarilor de date, precum și pentru o integrare cât
+	mai rapidă și mai corectă a seturilor de date în arhivă.
+</p>
+<p align="justify">
+	În informațiile de mai jos, puteți afla care sunt etapele procesului de depunere,
+	cum trebuie să fie pregătite datele pentru depunere, cum ajung datele la RODA și
+	ce se va întâmpla cu datele după ce ajung la noi. Dacă aveți orice nedumeriri sau
+	întrebări, nu ezitați să ne <a href="[[Code: PageLinkbyUrl('contact')]]">contactați</a>
+	pentru lămuriri suplimentare.
+</p>
+<p align="justify">
+	Pentru ca setul de date să fie complet utilizabil, orice cercetător sau persoană
+	interesată va avea nevoie de niște informații suplimentare. Fără o documentație
+	bine structurată, baza de date nu poate fi utilizată. Pentru a putea depune setul
+	de date, va invităm:
+</p>
+<div align="justify">
+	<ul>
+		<li>
+			sa completați <a href="[[FileURL:Depunere]]">Formularul de depunere</a>
+			(cu detalii despre setul de date depus);
+        </li>
+		<li>
+			sa completați și să semnați <a href="[[FileURL:Licenta]]">Acordul de licențiere</a>,
+			unde se vor specifica condițiile și restricțiile în care datele vor fi
+			distribuite utilizatorilor;
+        </li>
+		<li>
+            sa ne trimiteți aceste acte, odată cu setul de date și documentația aferentă.
+        </li>
+	</ul>
+</div>
+<p align="justify">
+	Putem folosi baze de date salvate în format text (de preferință delimitate prin tab, encodate
+	UTF8), R, Access, Excel, SPSS, SAS, STATA.<br />
+	Informațiile pentru documentarea setului de date pot fi trimise în format OpenOffice,
+	Word, RTF, Acrobat PDF, atât în format electronic cât și în formă tipărită.<br />
+	Descrierile variabilelor și a valorilor pot fi trimise în orice format (SPSS Syntax,
+	Excel, R sau în format simplu text).</p>
+<p align="justify">
+	<b><font color="FF0000">Vă sugerăm să pregătiți:</font></b>
+</p>
+<p align="justify">
+	- o copie a setului de date;<br />
+	- o copie a chestionarului, pe cât posibil cu numele variabilelor care să fie identice
+	  cu cele din baza de date;<br />
+	- detalii despre schema de eșantionare folosită și modul de culegere a datelor;<br />
+	- o copie a instrucțiunilor pentru operatorii de teren;<br />
+	- informații despre variabile și valorile acestora, codificarea și schemele de clasificare folosite;<br />
+	- informații despre variabilele construite;<br />
+	- detalii despre ponderările folosite și variabilele de ponderare utilizate.</p>
+<p align="justify">
+	Pot fi utilizate diverse medii de stocare (CD, stick USB), însă putem transfera fișierele
+	și prin FTP.
+</p>
+
 	]]></content>
 	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>

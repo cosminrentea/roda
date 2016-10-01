@@ -5,56 +5,36 @@
 	<synopsis></synopsis>
 	<lang>ro</lang>
 	<content><![CDATA[
-            <p align="left"><strong><font face="Arial, Helvetica, sans-serif" size="2">Adresa:</font></strong><font face="Arial, Helvetica, sans-serif" size="2"><br>
-              Arhiva Romana de Date Sociale<br>
-			  Șos. Panduri nr. 90-92<br>
-			  050663 București<br>
-              Romania</font></p>
+<p align="left">
+    <strong>Adresa:</strong><br>
+    Arhiva Română de Date Sociale<br>
+    Șoseaua Panduri nr. 90-92<br>
+    050663 București<br>
+    România
+</p>
+<br>
+<br>
+<br>
+<br>
+<table class="contacttable">
+    <tbody>
+        <tr> 
+            <th><b>Nume</b></th>
+            <th><b>e-mail</b></th>
+        </tr>
+        
+        <tr> 
+            <td>Adrian Dușa</td>
+            <td><a href="mailto:dusa.adrian@unibuc.ro">dusa.adrian (at) unibuc.ro</a></td>
+        </tr>
+        
+        <tr> 
+            <td>Sorin Milutinovici</td>
+            <td><a href="mailto:sorinmilu@gmail.com">sorinmilu (at) gmail.com</a></td>
+        </tr>
+    </tbody>
+</table>
 
-
-
-		<br>
-		<br>
-		<br>
-		<br>
-
-            <table class="contacttable">
-              <tbody><tr> 
-                <th><b><font face="Arial, Helvetica, sans-serif" size="2">Nume</font></b></th>
-                <th><b><font face="Arial, Helvetica, sans-serif" size="2">e-mail</font></b></th>
-              </tr>
-              <tr> 
-                <td><font face="Arial, Helvetica, sans-serif" size="2">Adrian Dusa</font></td>
-                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:dusa.adrian@unibuc.ro">dusa.adrian@unibuc.ro</a></font></td>
-              </tr>
-
-              <tr> 
-                <td><font face="Arial, Helvetica, sans-serif" size="2">Sorin Milutinovici</font></td>
-                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:sorinmilu@gmail.com">sorinmilu@gmail.com</a></font></td>
-              </tr>
-              <tr> 
-                <td><font face="Arial, Helvetica, sans-serif" size="2">Cosmin Rentea</font></td>
-                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:cosmin.rentea@gmail.com">cosmin.rentea@gmail.com</a></font></td>
-              </tr>
-              <tr> 
-                <td><font face="Arial, Helvetica, sans-serif" size="2">Letitia Velcescu</font></td>
-                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:letitia.v@gmail.com">letitia.v@gmail.com</a></font></td>
-              </tr>
-              <tr> 
-                <td><font face="Arial, Helvetica, sans-serif" size="2">Irina Cristescu</font></td>
-                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:irina.cristescu@g.unibuc.ro">irina.cristescu@g.unibuc.ro</a></font></td>
-              </tr>
-              <tr> 
-                <td><font face="Arial, Helvetica, sans-serif" size="2">Alexandra Gheondea</font></td>
-                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:alexandra.gheondea@gmail.com">alexandra.gheondea@gmail.com</a></font></td>
-              </tr>
-              <tr> 
-                <td><font face="Arial, Helvetica, sans-serif" size="2">Alexandra Ciritel</font></td>
-                <td><font face="Arial, Helvetica, sans-serif" size="2"><a href="mailto:ciritel.alexandra@gmail.com">ciritel.alexandra@gmail.com</a></font></td>
-              </tr>
-
-
-           </tbody></table>
 	]]></content>
 	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>

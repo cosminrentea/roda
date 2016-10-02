@@ -20,7 +20,7 @@ de date electronice provenite din cercetarea socială.
 <p align="justify">
 Arhiva întreține o colecție de date digitale, accesibilă comunității academice
 și altor părți interesate. Utilizate îndeosebi pentru analiză secundară și analiză
-comparativă, datele pot fi accesate sub anumite categorii de acces care variază
+comparativă, datele pot fi accesate sub <a href="[[Code: PageLinkbyUrl('niveluri-de-acces')]]">anumite categorii de acces</a> care variază
 de la acces liber până la acces restricționat de către proprietarul datelor.
 </p> 
 
@@ -31,8 +31,8 @@ intermediar între proprietarii datelor și utilizatorii acestora.
 
 <p align="justify">
 RODA este integrată într-o rețea globală de arhive, fiind afiliată din februarie
-2002 la CESSDA (Council of European Social Science Data Archives) și din decembrie
-2002 la IFDO (International Federation of Data Organizations). Prin aceste
+2002 la <a target="_blank" href="http://www.cessda.org">CESSDA (Council of European Social Science Data Archives)</a> și din decembrie
+2002 la <a target="_blank" href="http://www.ifdo.org">IFDO (International Federation of Data Organizations)</a>. Prin aceste
 legături, se facilitează posibilitatea accesului internațional la datele altor
 arhive din Europa.
 </p>
@@ -48,7 +48,6 @@ este pregătită pentru interoperarea cu această nouă instituție.
 RODA este găzduită de către Facultatea de Sociologie și Asistență Socială a
 Universității din București.
 </p>
-
 	]]></content>
 	<cms_layout>new-roda-home-ro</cms_layout>
 	<pagetype>content</pagetype>

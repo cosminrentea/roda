@@ -31,17 +31,28 @@
 <div align="justify">
 	<ul>
 		<li>
-			sa completați <a href="[[FileURL:Depunere]]">Formularul de depunere</a>
+			sa completați <a target="_blank" href="/static/docs/ro/Depunere.pdf">Formularul de depunere</a>
 			(cu detalii despre setul de date depus);
         </li>
 		<li>
-			sa completați și să semnați <a href="[[FileURL:Licenta]]">Acordul de licențiere</a>,
+			sa completați și să semnați <a target="_blank" href="/static/docs/ro/Licenta.pdf">Acordul de licențiere</a>,
 			unde se vor specifica condițiile și restricțiile în care datele vor fi
 			distribuite utilizatorilor;
         </li>
 		<li>
             sa ne trimiteți aceste acte, odată cu setul de date și documentația aferentă.
         </li>
+	</ul>
+</div>
+<div align="justify">
+	<ul>
+		Dacă doriți să completați aceste informații în format electronic, puteți descărca
+		fișierele în format Word de mai jos<br />
+		(atentie însa, Acordul de licențiere trebuie semnat în format fizic):
+		<li>
+			<a target="_blank" href="/static/docs/ro/Depuneredoc.doc">Formularul de depunere în format Word</a></li>
+		<li>
+			<a target="_blank" href="/static/docs/ro/Licentadoc.doc">Acordul de licențiere în format Word</a></li>
 	</ul>
 </div>
 <p align="justify">
@@ -67,7 +78,6 @@
 	Pot fi utilizate diverse medii de stocare (CD, stick USB), însă putem transfera fișierele
 	și prin FTP.
 </p>
-
 	]]></content>
 	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>

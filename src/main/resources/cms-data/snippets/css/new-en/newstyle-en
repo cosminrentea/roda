@@ -29,13 +29,13 @@ html {
 
 #header_wrapper{
 	width:100%;
-	background:  url('[[FileURL:bgsl_header]]') no-repeat top center;
+	background:  url('/static/img/bgsl_header.jpg') no-repeat top center;
 	height: 100px;
 }
 
 #pgheader{
 	width:100%;
-	background: url('[[FileURL:bg_header_slim]]') no-repeat top center;
+	background: url('/static/img/bg_header_slim.jpg') no-repeat top center;
 	height: 72x;
 }
 
@@ -61,7 +61,7 @@ html {
 }
 
 #search input[type='text']{
-	background:  url('[[FileURL:bg_search]]');
+	background:  url('/static/img/bg_search.png');
 	width:100px;
 	height:22px;
 	color:#eee;
@@ -72,7 +72,7 @@ html {
 }
 
 #search input[type='submit']{
-	background: url('[[FileURL:bg_search]]') no-repeat center right;
+	background: url('/static/img/bg_search.png') no-repeat center right;
 	width:30px;
 	height:22px;
 	font-size:0.1px;
@@ -91,7 +91,7 @@ html {
 }
 
 .sidebar_box{
-	background:  url('[[FileURL:bg_sidebar]]') bottom left no-repeat;
+	background:  url('/static/img/bg_sidebar.jpg') bottom left no-repeat;
 	border-radius:10px;
 	width:250px;
 	padding:15px 0px;
@@ -145,7 +145,7 @@ ul#navmenu li a. ul#navmenu li ul li a{
 
 ul#navmenu li:hover ul {
 	display: block; 
-	background: url('[[FileURL:bg_sidebar]]') bottom left no-repeat;
+	background: url('/static/img/bg_sidebar.jpg') bottom left no-repeat;
 	border-radius:0px 10px 10px 10px;
 	width:200px;
 	-webkit-box-shadow: 3px 3px 5px 0px rgba(50, 50, 50, 0.3);
@@ -167,7 +167,7 @@ ul#navmenu li:hover a{
 }
 
 ul#navmenu li:hover ul{
-	background: url('[[FileURL:bg_sidebar]]')  bottom left no-repeat;
+	background: url('/static/img/bg_sidebar.jpg')  bottom left no-repeat;
 }
 
 ul#navmenu li:hover ul li a{
@@ -179,7 +179,7 @@ ul#navmenu li ul li:hover a{
 }
 
 #content_wrapper{
-	background: url('[[FileURL:bg_content]]') repeat-y top left #f0ece1;
+	background: url('/static/img/bg_content.jpg') repeat-y top left #f0ece1;
 	border-radius:10px;
 	-webkit-box-shadow: 3px 3px 5px 0px rgba(50, 50, 50, 0.3);
 	-moz-box-shadow:    3px 3px 5px 0px rgba(50, 50, 50, 0.3);
@@ -264,7 +264,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 #footer_wrapper{
-	background: url('[[FileURL:bg_footer]]') no-repeat top center #2c803b;
+	background: url('/static/img/bg_footer.jpg') no-repeat top center #2c803b;
 	background-color: #F5F5F5;
     bottom: 0;
     height: 80px;
@@ -360,7 +360,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 #box_links ul {
-    list-style-image:  url('[[FileURL:arrow]]');
+    list-style-image:  url('/static/img/arrow.png');
     padding-bottom: 20px;
 }
 
@@ -476,7 +476,7 @@ margin:5px 0px 10px 0px;
 
 #results{
 font-size:12px;
-background: url('[[FileURL:bg_sidebar]]') no-repeat scroll left bottom #f0ece0;
+background: url('/static/img/bg_sidebar.jpg') no-repeat scroll left bottom #f0ece0;
 border-radius: 10px;
 -webkit-box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.24);
 -moz-box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.24);
@@ -515,7 +515,7 @@ color:#014217;
 
 #header_res{
 background: #d5d1c6; 
-/* background:  url('[[FileURL:bg_sidebar]]') no-repeat scroll left bottom #f0ece0; */
+/* background:  url('/static/img/bg_sidebar.jpg') no-repeat scroll left bottom #f0ece0; */
 -webkit-box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.24);
 -moz-box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.24);
 box-shadow: 0px 4px 5px -1px rgba(0,0,0,0.24);
@@ -552,7 +552,7 @@ border-radius: 10px 10px 0px 0px;
 }
 .loadmask-msg div {
     padding:15px 20px 15px 25px;
-    background:  url('[[FileURL:loading]]') no-repeat scroll 5px 12px #FBFBFB;
+    background:  url('/static/img/loading.gif') no-repeat scroll 5px 12px #FBFBFB;
     line-height: 16px;
         border:1px solid #0F3E1E;
     color:#222;
@@ -570,27 +570,27 @@ border-radius: 10px 10px 0px 0px;
 }
 
 td.spage{
-background: url('[[FileURL:spage]]') no-repeat center center;
+background: url('/static/img/spage.png') no-repeat center center;
 width:50px;
 }
 
 td.sstudy{
-background: url('[[FileURL:sstudii]]') no-repeat center center;
+background: url('/static/img/sstudy.png') no-repeat center center;
 width:50px;
 }
 
 td.scatalog{
-background: url('[[FileURL:scatalog]]') no-repeat center center;
+background: url('/static/img/scatalog.png') no-repeat center center;
 width:50px;
 }
 
 td.squestion{
-background: url('[[FileURL:spage]]') no-repeat center center;
+background: url('/static/img/spage.png') no-repeat center center;
 width:50px;
 }
 
 td.svariable{
-background: url('[[FileURL:svariable]]') no-repeat center center;
+background: url('/static/img/svariable.png') no-repeat center center;
 width:50px;
 }
 

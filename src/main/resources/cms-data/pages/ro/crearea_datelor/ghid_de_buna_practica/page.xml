@@ -5,7 +5,7 @@
 	<synopsis><![CDATA[O buna documentare a datelor are o importanta cruciala atat pentru pastrarea datelor pentru viitor, cat si pentru analiza secundara curenta. Orice persoana care foloseste un set de date are nevoie de toate informatiile disponibile pentru a produce tabele relevante si pentru a trage concluzii consistente.]]></synopsis>
 	<lang>ro</lang>
 	<content><![CDATA[
-	<p align="justify">
+<p align="justify">
 	<font face="Arial, Helvetica, sans-serif" size="2">O buna documentare a datelor are o importanta cruciala atat pentru pastrarea datelor pentru viitor, cat si pentru analiza secundara curenta. Orice persoana care foloseste un set de date are nevoie de toate informatiile disponibile pentru a produce tabele relevante si pentru a trage concluzii consistente.</font></p>
 <p align="justify">
 	<font face="Arial, Helvetica, sans-serif" size="2">Pentru un buna documentare a setului de date, producatori datelor pot pregati:</font></p>
@@ -42,8 +42,7 @@
 <p align="justify">
 	<font face="Arial, Helvetica, sans-serif" size="2">Este necesara pregatirea detaliata a informatiilor legate de metodele de culegere a datelor, a instructiunilor pentru operatorii de teren, proceduri de esantionare, proceduri de ponderare.</font></p>
 <p align="justify">
-	<font face="Arial, Helvetica, sans-serif" size="2">Persoanele interesate pot consulta <a href="[[FileURL:depunere]]">Formularul de depunere</a> pentru completarea informatiilor relevante.</font></p>
-	
+	<font face="Arial, Helvetica, sans-serif" size="2">Persoanele interesate pot consulta <a target="_blank" href="/static/docs/ro/Depunere.pdf">Formularul de depunere</a> pentru completarea informatiilor relevante.</font></p>	
 	]]></content>
 	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>

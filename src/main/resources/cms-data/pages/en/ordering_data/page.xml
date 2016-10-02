@@ -12,8 +12,8 @@
 <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The archive commits 
 	itself to ensure an as free, open and easy access as possible, but it is up the 
 	data owners to set the access conditions. For these reasons, there will be four 
-	<a href="template.php?url=7">user categories</a>, and the data sets will have four 
-	<a href="template.php?url=8">access levels</a>.</font></p>
+	<a href="[[Code: PageLinkbyUrl('user-categories')]]">user categories</a>, and the data sets will have four 
+	<a href="[[Code: PageLinkbyUrl('access-levels')]]">access levels</a>.</font></p>
 <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Starting with July 
 	2004, RODA has launched a brand new access control system; once registered with a 
 	username and a password, our users can start downloading data on different access 
@@ -26,7 +26,7 @@
 	have access to Internet can order data:</font></p>
 <div align="justify"><ul><font face="Arial, Helvetica, sans-serif" size="2">
 	<li>directly to our office</li>
-	<li>by mail to <a href="template.php?url=4">our address</a></li>
+	<li>by mail to <a href="[[Code: PageLinkbyUrl('contact-us')]]">our address</a></li>
 </font></ul></div>
 <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Data and documentation 
 	will be provided on every available storage media or electronic transfer, depending 
@@ -36,7 +36,7 @@
 	<li>CD</li>
 	<li>FTP</li>
 	<li>direct download</li>
-</font></ul></div>				
+</font></ul></div>			
 	]]></content>
 	<cms_layout>new-roda-main-en</cms_layout>
 	<pagetype>content</pagetype>

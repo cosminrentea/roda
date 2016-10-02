@@ -5,7 +5,7 @@
 	<synopsis></synopsis>
 	<lang>ro</lang>
 	<content><![CDATA[
-	<p align="justify">
+<p align="justify">
 	    Acordul de acces este un document pe care orice utilizator trebuie să îl semneze
 	    pentru a obține validarea contului RODA. Acest document trebuie semnat ***doar o
 	    singura data***, dupa care utilizatorul își poate utiliza contul pentru descărcarea
@@ -32,16 +32,15 @@
 	    <br />
 	    <br />
         Pentru utilizare individuală, poate fi descărcat acest
-        <a href="[[FileURL:individual]]">Acord de acces individual</a>.
+        <a href="/static/docs/ro/Individual.pdf">Acord de acces individual</a>.
         <br />
         <br />
         Pentru utilizarea datelor in scop didactic, atât profesorul cât și studenții
-        vor trebui să semneze un <a href="[[FileURL:didactic]]">Acord de acces didactic</a>.
+        vor trebui să semneze un <a href="/static/docs/ro/Didactic.pdf">Acord de acces didactic</a>.
         <br />
         Deoarece studenții se schimbă anual, acest document trebuie actualizat, semnat și
         trimis arhivei în luna noiembrie a fiecărui an.
-    </p>
-    
+    </p>    
     ]]></content>
     <cms_layout>new-roda-main-ro</cms_layout>
     <pagetype>content</pagetype>

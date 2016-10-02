@@ -15,7 +15,7 @@
 <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The information below 
 	guide you through the depositing procedure steps, how the data should be prepared for 
 	depositing, how the data reach RODA and what happen to them afterwards. If you have any 
-	questions, please <a href="template.php?url=4">contact</a> us for further explanations.</font></p>
+	questions, please <a href="[[Code: PageLinkbyUrl('contact-us')]]">contact</a> us for further explanations.</font></p>
 
 <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">In order for the data set 	
 	to be fully usable, any researcher or interested person will need additional information. 
@@ -23,9 +23,9 @@
 	With a view to depositing data, please:</font></p>
 
 <div align="justify"><ul><font face="Arial, Helvetica, sans-serif" size="2">
-	<li>fill in the <a href="http://www.roda.ro/documente/Depunere.pdf">Depositing form</a> 
+	<li>fill in the <a  target="_blank" href="/static/docs/en/DepositForm.pdf">Depositing form</a> 
 		(giving details about the dataset);</li>
-	<li>fill in and the sign the <a href="http://www.roda.ro/documente/Licenta.pdf">License 
+	<li>fill in and the sign the <a target="_blank" href="/static/docs/en/LicenceAgreement.pdf">License 
 		agreement</a>, mentioning the conditions and restrictions regarding the dissemination 
 		of data;</li>
 	<li>send these documents to us, with the data set and the related documentation.</li>
@@ -49,8 +49,7 @@
 	in Word, RTF, Acrobat PDF, both on electronic and printed format, if they can be scanned.</font></p>
 
 <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The current storage media we 
-	can use are floppy disks, CDs and electronic transfer by FTP.</font></p>
-	
+	can use are floppy disks, CDs and electronic transfer by FTP.</font></p>	
 	]]></content>
 	<cms_layout>new-roda-main-en</cms_layout>
 	<pagetype>content</pagetype>

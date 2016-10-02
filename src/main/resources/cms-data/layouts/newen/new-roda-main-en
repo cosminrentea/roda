@@ -8,7 +8,7 @@
       <meta http-equiv="Keywords" name="Keywords" content="RODA, DDI" />
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
-      <link rel="SHORTCUT ICON" href="/static/img/favicon.ico" />
+      <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
 	  <script type="text/javascript" src="/static/js/jquery-1.11.1.min.js"></script>
 	  <script type='text/javascript' src="/static/js/jquery.loadmask.js"></script>
 	  <script type='text/javascript' src="/static/js/solr-search.js"></script>	  

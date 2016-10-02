@@ -7,11 +7,11 @@
       <title>RODA - [[Code: PageTitle]] </title>
       <meta http-equiv="Keywords" name="Keywords" content="RODA, DDI" />
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
+      <link rel="icon" href="/static/img/favicon.ico" type="image/png" />
       <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
-	  <script type="text/javascript" src="[[FileURL:jquery-1.11.1.min]]"></script>
-	  <script type='text/javascript' src="[[FileURL:jquery.loadmask]]"></script>
-	  <script type='text/javascript' src="[[FileURL:solr-search]]"></script>
+	  <script type="text/javascript" src="/staic/js/jquery-1.11.1.min.js"></script>
+	  <script type='text/javascript' src="/staic/js/jquery.loadmask.js"></script>
+	  <script type='text/javascript' src="/staic/js/solr-search.js"></script>
 	  
   		<script type="text/javascript">
 	$(document).ready(function(){
@@ -26,11 +26,11 @@
 <div id="wrap">
 	<div id="header_wrapper">
 		<div id="header">
-			<div id="logo"><a href="[[Code: ContextPath]]/ro">[[ImgLink: logore]]</a></div>
+			<div id="logo"><a href="[[Code: ContextPath]]/ro"><img src="/static/img/logore.png"></a></div>
 			<div id="header_right">
 				<div id="flags">
-					<a href="#" style="margin-right:5px; margin-left:70px;"><img src="[[FileURL:flag_ro]]"></a>
-					<a href="[[Code: ContextPath]]/en"><img src="[[FileURL:flag_uk]]"></a>
+					<a href="#" style="margin-right:5px; margin-left:70px;"><img src="/static/img/flag_ro.png"></a>
+					<a href="[[Code: ContextPath]]/en"><img src="/static/img/flag_uk.png"></a>
 				</div>
 				<div id="search">
 					<input id="query" value="" type="text">

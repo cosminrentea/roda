@@ -72,9 +72,8 @@
 	operators, sampling procedures and weighting procedures.</font></p>
 
 <p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The interested persons
-	can consult our <a href="Depunere.pdf">Depositing form</a> in order to fill in the
-	relevant information.</font></p>				
-	]]></content>
+	can consult our <a target="_blank" href="/static/docs/en/DepositForm.pdf">Depositing form</a> in order to fill in the
+	relevant information.</font></p>	]]></content>
 	<cms_layout>new-roda-main-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>

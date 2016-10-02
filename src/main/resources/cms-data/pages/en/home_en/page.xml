@@ -6,20 +6,40 @@
 	<synopsis><![CDATA[RODA is the national Romanian institution specialised in archiving electronic data collections obtained by social research.]]></synopsis>
 	<lang>en</lang>
 	<content><![CDATA[
-<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">RODA is the national Romanian institution specialised in archiving electronic data collections obtained by social research.</font></p>
-<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The archive contains data collections accessible for the academic community and the interested public, 
-for secondary and comparative analysis, under certain <a href="[[Code: PageLinkbyUrl('access-level')]]">access conditions</a> 
-ranging from free access to some level of restriction imposed by owners. 
-The archive serves as an intermediary between the data owners and data users.</font></p>
-<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">RODA is integrated into a global archive network, being affiliated since February 2002 to 
-<a href="http://www.nsd.uib.no/cessda/">CESSDA</a> (Council of European Social Science Data Archives) and since December 2002 to <a href="http://www.ifdo.org/">IFDO</a> 
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">
+RODA is the national Romanian institution specialised in archiving electronic data collections obtained by social research.
+</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">
+The archive contains data collections accessible for the academic community and the interested public, 
+for secondary and comparative analysis, under certain
+<a href="[[Code: PageLinkbyUrl('access-levels')]]">access conditions</a> 
+ranging from free access to some level of restriction imposed by owners.
+</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">
+The main goal of the data archive is to preserve these data indefinitely, and to serve
+as an intermediary between the data owners and data users.
+</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">
+RODA is integrated into a global archive network, being affiliated since February 2002 to 
+<a target="_blank" href="http://www.cessda.org">CESSDA</a> (Council of European Social Science Data Archives) and since December 2002 to <a target="_blank" href="http://www.ifdo.org/">IFDO</a> 
 (International Federation of Data Organisations). By these links, international data exchanges are enabled; 
-through RODA, users have access to national and international datasets from other European data archives.</font></p>
-<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">This consortium also contains, as associated institutions: Institute of Sociology &quot;Dimitrie Gusti&quot;, 
-<a href="http://asis.ubbcluj.ro/" target="_blank">Faculty of Sociology and Social Work</a> from the <a href="http://www.ubbcluj.ro/ubb-en/index.html">University Babes-Bolyiai</a>, 
-<a href="http://www.uoradea.ro/topic/77/The$Faculty$of$Social$Humanistic$Science.html">Faculty of Social Humanistic Science</a> from the <a href="http://www.uoradea.ro">University of Oradea</a>, 
-<a href="http://www.curs.ro/" target="_blank">CURS - Centre of Urban and Regional Sociology</a> and <a href="http://www.mmt.ro/" target="_blank">MMT - Metro Media Transilvania</a>.</font></p>
-	]]></content>
+through RODA, users have access to national and international datasets from other European data archives.
+</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">
+In december 2013, CESSDA has become an ERIC - European Research Infrastructure Consortium, a research entity
+considered a pan-European priority, located in Bergen, Norway. Since our IT system has been recently upgraded,
+RODA is prepared to inter-operate with this new institution.
+</font></p>
+
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">
+RODA is now organised an institutional consortium, governed by the University of Bucharest, the National Institute
+of Statistics and the Institute for Quality of Life Research of the Romanian Academy of Sciences.
+</font></p>	]]></content>
 	<cms_layout>new-roda-home-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>

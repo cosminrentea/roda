@@ -44,8 +44,6 @@ Ext.define('RODAdmin.view.cms.page.AddPageWindow', {
 											xtype : 'hiddenfield',
 											fieldLabel : translations.pg_parent,
 											name : 'parentid',
-//											value : '',
-//											itemId : 'groupid'
 										},
 			                            {
 			                                fieldLabel : translations.ly_title,
@@ -59,6 +57,7 @@ Ext.define('RODAdmin.view.cms.page.AddPageWindow', {
 			                                anchor : '-18',
 			                                fieldLabel : translations.ly_url,
 			                                itemId : 'pageurl',
+			                                name : 'url'
 			                            }, {
 			                                fieldLabel : translations.pg_menutitle,
 			                                xtype : 'textfield',
@@ -267,29 +266,15 @@ Ext.define('RODAdmin.view.cms.page.AddPageWindow', {
 			                                                                 {
 			     				                                                xtype : 'combo',
 			     				                                                labelWidth : 60,
-			     				                                                name : translations.pg_pagetype,
-			     				                                                fieldLabel : 'Type',
+			     				                                                name : 'pagetype',
+			     				                                                fieldLabel : translations.pg_pagetype,
 			     				                                                anchor : '100%',
 			     				                                                displayField: 'name',
-			     				                                            //    forceSelection : true,
 			     				                                                typeAhead: true,
 			     				                                                valueField: 'indice',
 			     				                                                tpl: '<tpl for="."><div class="x-boundlist-item"><strong>{name}</strong><br><i>{description}</i><hr></div></tpl>',
 			     				                                                store : 'cms.pages.PageType'
 			     				                                            }			                                                                 
-//			                                                                 
-//			                                                                 
-//			                                                                 {
-//				                                                            xtype : 'textfield',
-//				                                                            name : 'pagetype',
-//				                                                            labelWidth : 60,
-//				                                                            //queryMode: 'local',
-//				                                                            fieldLabel : 'Type',
-//				                                                            anchor : '100%',
-//				                                                            store : [
-//				                                                                    'Content', 'Static', '404'
-//				                                                            ]
-//				                                                        }
 			                                                        ]
 			                                                    }
 			                                            ]

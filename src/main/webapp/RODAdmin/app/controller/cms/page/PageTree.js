@@ -349,11 +349,6 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 	    win.down('form').down('combobox[name=default]').setValue('No');
 	    win.down('form').down('combobox[name=searchable]').setValue('Yes');
 	    win.down('form').down('textfield[name=cacheable]').setValue('3600');	    
-	    win.down('form').down('combobox[name=target]').setValue('_self');
-	    
-	    win.down('form').down('combobox[name=pagetype]').store.load();
-	    console.log('pagetypeid' + fp.data.pagetypeid);
-	    win.down('form').down('combobox[name=pagetype]').setValue(fp.data.pagetypeid);	    
 	    win.show();
     },
     /**

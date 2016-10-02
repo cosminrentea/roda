@@ -8,11 +8,10 @@
       <meta http-equiv="Keywords" name="Keywords" content="RODA, DDI" />
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
-      <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
+      <link rel="SHORTCUT ICON" href="/static/img/favicon.ico" />
 	  <script type="text/javascript" src="/static/js/jquery-1.11.1.min.js"></script>
 	  <script type='text/javascript' src="/static/js/jquery.loadmask.js"></script>
 	  <script type='text/javascript' src="/static/js/solr-search.js"></script>	  
-
 	<script type="text/javascript">
 	$(document).ready(function(){
 		if ($(document).height() < $(window).height()) {
@@ -54,7 +53,7 @@
 		
 			<td id="content_wrapper" align="left" valign="top">
 				<div id="content">
-					<img class="fright" src="[[FileURL:h0]]">
+					<img class="fright" src="/static/img/h0.jpg">
 					[[Code: PageContent]]
 				</div>
 			</td>
@@ -63,15 +62,15 @@
 			<td colspan="2" style="padding-top:15px;">
 				<div class="boxuri">
 					<div class="box">
-						<a href="[[Code: PageLinkbyUrl('ordering-data')]]"><img src="/static/img/h1.png"></a><br>
+						<a href="[[Code: PageLinkbyUrl('ordering-data')]]"><img src="/static/img/h1.jpg"></a><br>
 						<div class="cont_box"><a href="[[Code: PageLinkbyUrl('ordering-data')]]">Data orders</a></div>
 					</div>
 					<div class="box">
-						<a href="[[Code: PageLinkbyUrl('data-creation')]]"><img src="/static/img/h2.png"></a><br>
+						<a href="[[Code: PageLinkbyUrl('data-creation')]]"><img src="/static/img/h2.jpg"></a><br>
 						<div class="cont_box"><a href="[[Code: PageLinkbyUrl('data-creation')]]">Data creation</a></div>
 					</div>
 					<div class="box last">
-						<a href="[[Code: PageLinkbyUrl('data-depositing')]]"><img src="/static/img/h3.png"></a><br>
+						<a href="[[Code: PageLinkbyUrl('data-depositing')]]"><img src="/static/img/h1.jpg"></a><br>
 						<div class="cont_box"><a href="[[Code: PageLinkbyUrl('data-depositing')]]">Data depositing</a></div>
 					</div>
 					<div class="cpl">&nbsp;</div>

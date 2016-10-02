@@ -7,11 +7,11 @@
 	  <script src="[[Code: ContextPath]]/resources/root/translations/ro.js"></script>	  
   	  <script type="text/javascript" src="[[Code: ContextPath]]/resources/root/app.js"></script>
 	  <link rel="stylesheet" href="[[Code: ContextPath]]/resources/root/style.css">  	  
-      <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
+      <link rel="icon" href="/static/img/favicon.ico" type="image/png" />
       <style>
 	  [[Snippet: main-css-ro]]  
       </style>
-      <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
+      <link rel="SHORTCUT ICON" href="/static/img/favicon.ico" />
 
  	  <script>
   	  Ext.Loader.setConfig({
@@ -151,7 +151,7 @@ body {
     left:0px;
     background: #CCCCCC;
     position:absolute;
-	background: url('[[FileURL:bg_header_slim]]') no-repeat top center;
+	background: url('/static/img/bgsl_header.jpg') no-repeat top center;
 }
 
 #pgfooter {
@@ -161,7 +161,7 @@ body {
     left:0px;
     background: #CCCCCC;
     position:absolute;
-    background: url('[[FileURL:bg_footer_slim]]') no-repeat top center #2c803b;
+    background: url('/static/img/bg_footer.jpg') no-repeat top center #2c803b;
 }
 #content {
     -webkit-box-sizing: border-box;
@@ -192,13 +192,13 @@ body {
 }
 
 td.personic{
-background: url('[[FileURL:persoane]]') no-repeat center center;
+background: url('/static/img/persoane.png') no-repeat center center;
 width:50px;
 height: 50px;
 }
 
 td.orgic{
-background: url('[[FileURL:organizatii]]') no-repeat center center;
+background: url('/static.img/organizatii.png') no-repeat center center;
 width:50px;
 height: 50px;
 }
@@ -211,11 +211,11 @@ height: 50px;
 		<div id="pgheader">
 			<div id="insideheader">
 			<div id="logo_slim">
-			<a href="[[Code: ContextPath]]/ro">[[ImgLink: logo_slim]]</a></div>
+			<a href="[[Code: ContextPath]]/ro"><img src="/static/img/logore.png"></a></div>
 			<div id="header_right">
 				<div id="flags">
-					<a href="#" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
-					<a href="[[Code: ContextPath]]/ro"><img src="[[FileURL:flag_uk]]"></a>
+					<a href="#" style="margin-right:5px; margin-left:100px;"><img src="/static/img/flag_ro.png"></a>
+					<a href="[[Code: ContextPath]]/ro"><img src="/static/img/flag_uk.png"></a>
 				</div>
 			</div>
 			</div>

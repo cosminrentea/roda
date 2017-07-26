@@ -119,27 +119,27 @@
 		<commons-codec.version>1.10</commons-codec.version>
 
 		<!-- plugins versions -->
-		<maven-assembly-plugin.version>2.5.1</maven-assembly-plugin.version> <!-- original: 2.4.1 -->
-		<maven-compiler-plugin.version>3.2</maven-compiler-plugin.version> <!-- original: 3.1 -->
-		<maven-failsafe-plugin.version>2.18</maven-failsafe-plugin.version> <!-- original: 2.17 -->
-		<maven-surefire-plugin.version>2.18</maven-surefire-plugin.version> <!-- original: 2.17 -->
-		<maven-surefire-report-plugin.version>2.18</maven-surefire-report-plugin.version>
-		<maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version> <!-- original: 2.9.1 -->
-		<maven-war-plugin.version>2.5</maven-war-plugin.version> <!-- original: 2.4 -->
-		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version> <!-- original: 2.7 -->
-		<maven-resources-plugin.version>2.7</maven-resources-plugin.version> <!-- original: 2.6 -->
-		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version> <!-- original: 2.7 -->
-		<maven-changelog-plugin.version>2.3</maven-changelog-plugin.version> <!-- original: 2.2 -->
+		<maven-assembly-plugin.version>2.6</maven-assembly-plugin.version>
+		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+		<maven-failsafe-plugin.version>2.19.1</maven-failsafe-plugin.version>
+		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+		<maven-surefire-report-plugin.version>2.20</maven-surefire-report-plugin.version>
+		<maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+		<maven-war-plugin.version>2.6</maven-war-plugin.version>
+		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+		<maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
+		<maven-changelog-plugin.version>2.3</maven-changelog-plugin.version>
 		<maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
-		<maven-pmd-plugin.version>3.2</maven-pmd-plugin.version>
+		<maven-pmd-plugin.version>3.5</maven-pmd-plugin.version>
 		<maven-site-plugin.version>3.4</maven-site-plugin.version>
-		<aspectj-maven-plugin.version>1.7</aspectj-maven-plugin.version> <!-- !! original: 1.6 -->
+		<aspectj-maven-plugin.version>1.7</aspectj-maven-plugin.version>
 		<cobertura-maven-plugin.version>2.5.2</cobertura-maven-plugin.version>
 		<jdepend-maven-plugin.version>2.0</jdepend-maven-plugin.version>
 		<javancss-maven-plugin.version>2.1</javancss-maven-plugin.version>
 		<findbugs-maven-plugin.version>2.5.5</findbugs-maven-plugin.version>
 		<taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
-		<license-maven-plugin.version>1.7</license-maven-plugin.version>
+		<license-maven-plugin.version>1.8</license-maven-plugin.version>
 		<selenium-maven-plugin.version>2.3</selenium-maven-plugin.version>
 		<latex-maven-plugin.version>1.1</latex-maven-plugin.version>
 		<exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
@@ -857,7 +857,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.7</version>
+				<version>2.8.1</version>
 			</plugin>
 		</plugins>
 	</build>

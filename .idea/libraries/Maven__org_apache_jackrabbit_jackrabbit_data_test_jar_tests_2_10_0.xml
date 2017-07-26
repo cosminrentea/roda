@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.jackrabbit:jackrabbit-data:test-jar:tests:2.10.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/jackrabbit/jackrabbit-data/2.10.0/jackrabbit-data-2.10.0-tests.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/jackrabbit/jackrabbit-data/2.10.0/jackrabbit-data-2.10.0-test-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/jackrabbit/jackrabbit-data/2.10.0/jackrabbit-data-2.10.0-test-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

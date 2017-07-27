@@ -1,2 +1,6 @@
 language: java
-script: mvn test -B
+sudo: false
+script: "mvn test -B -Dspring.profiles.active=devel"
+jdk:
+  - oraclejdk8
+  - oraclejdk7
